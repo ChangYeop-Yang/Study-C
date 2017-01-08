@@ -5,7 +5,7 @@ using namespace std;
 * OR (Logical Disjunction) : 두 명제의 논리합은 문장의 의미가 통하든 통하지 않든  나  중 어느 하나가 참이면 참인 명제이다.
 * XOR (Exclusive OR) : 수리 논리학에서 주어진 2개의 명제 가운데 1개만 참일 경우를 판단하는 논리 연산이다.
 */
-/* Typedef */
+/* Typedef  */
 typedef unsigned long DWORD;
 /* Initial Permutation Map */
 static const unsigned char IP[64] = 
