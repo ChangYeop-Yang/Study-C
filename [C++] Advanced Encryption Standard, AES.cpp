@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
  
-/* Define */
+/* Define  */
 #define xtime(x) ((x << 1) ^ (((x >> 7) & 1) * 0x1b))
 /* 상태 배열의 각 열을 GF(2^8) 상에서의 다항식들로 고정된 다항식와 곱셈 수행하는 매크로 */
 #define Multiply(x,y) (((y & 1) * x) ^ ((y>>1 & 1) * xtime(x)) ^ ((y>>2 & 1) * xtime(xtime(x))) ^ ((y>>3 & 1) * xtime(xtime(xtime(x)))) ^ ((y>>4 & 1) * xtime(xtime(xtime(xtime(x))))))
