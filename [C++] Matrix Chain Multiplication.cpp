@@ -4,7 +4,7 @@
 using namespace std;
 
 /* Define */
-#define SIZE 7
+#define SIZE 1001
 #define INF 999999999L
 
 /* Declare Function */
