@@ -8,22 +8,26 @@ USER asUser_Current[FLAG_USER_NUM];
 
 /* Declear Function */
 int select_Position();
-void * handle_Clnt(void * arg);
+void * handle_Read(void * arg);
 void handle_Error(const short sError);
+void send_Msg(const int nSocket, const ssize_t nLength, const char * sMsg);
+void Whisper_Member(const char * sBuf, const int nSock);
+char * Select_Nickname(const int nSock);
 char * join_Member(const char * sBuf, const int nSock);
 char * login_Member(const char * sBuf, const int nSock);
-short send_Msg(const int nSocket, const char * sMsg);
 USER * insert_UserData(const int nSocket, const int nVersion, const char * sID, const char * sPasswd);
 
 int main(int argc, char * argv[])
 {
     if (argc != 2) { handle_Error(FLAG_IP_ERROR); }
-
+    
     /* Pthread */
-    pthread_t t_id;
+    pthread_t read_id;
+    pthread_mutex_init(&pMutx, NULL);
     
     /* Integer */
-    int nServ_Sock = socket(PF_INET, SOCK_STREAM, 0);
+    int nClnt_Sock = 0;
+    int nServ_Sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
     
     /* struct sockaddr_in */
     SOCK_IN sServ_Adr, sClnt_Adr;
@@ -34,40 +38,34 @@ int main(int argc, char * argv[])
     sServ_Adr.sin_addr.s_addr = htonl(INADDR_ANY);
     sServ_Adr.sin_port = htons(atoi(argv[1]));
     
-    /* Mutex Initialization */
-    pthread_mutex_init(&pMutx, NULL);
-    
     /* Socket Bind & Listen */
     if (bind(nServ_Sock, (struct sockaddr *) &sServ_Adr, sizeof(sServ_Adr)) == EOF) { handle_Error(FLAG_BIND_ERROR); }
-    if (listen(nServ_Sock, 5) == EOF) { handle_Error(FLAG_LISTEN_ERROR); }
+    if (listen(nServ_Sock, 10) == EOF) { handle_Error(FLAG_LISTEN_ERROR); }
     
-    for (int nClnt_Sock = 0; FLAG_TRUE;)
+    while(FLAG_TRUE)
     {
         socklen_t unClnt_Adr_Sz = sizeof(sClnt_Adr);
-        if ( (nClnt_Sock = accept(nServ_Sock, (struct sockaddr *)&sClnt_Adr, &unClnt_Adr_Sz)) == EOF ) { continue; }
+        if ( (nClnt_Sock = accept(nServ_Sock, (struct sockaddr *)&sClnt_Adr, &unClnt_Adr_Sz)) == EOF ) { break; }
         
-        /* Pthread Mutex Range */
-        pthread_mutex_lock(&pMutx);
-        {
-            const int nPosition = select_Position();
-            USER * sTemp_User = insert_UserData(nClnt_Sock, nPosition, "", "");
-            char * sTemp_String = (char*)malloc(sizeof(char) * BUFSIZ);
+        const int nPosition = select_Position();
+        USER * sTemp_User = insert_UserData(nClnt_Sock, nPosition, "NoUser", "NoUser");
+        char * sTemp_String = (char*)malloc(sizeof(char) * BUFSIZ);
+
+        asUser_Current[nPosition] = *sTemp_User;
+        sprintf(sTemp_String, "Connection Success, Your ID is User%d\n", sTemp_User->nVersion + 1);
+        send_Msg(sTemp_User->nFileDiscript, strlen(sTemp_String), sTemp_String);
             
-            asUser_Current[nPosition] = *sTemp_User;
-            sprintf(sTemp_String, "Connection Success, Your ID is User%d\n", sTemp_User->nVersion + 1);
-            send_Msg(sTemp_User->nFileDiscript, sTemp_String);
-            
-            free(sTemp_String);
-        }
-        pthread_mutex_unlock(&pMutx);
+        /* Memory Reset */
+        free(sTemp_User);
+        free(sTemp_String);
         
-        pthread_create(&t_id, NULL, handle_Clnt, (void*)&nClnt_Sock);
-        pthread_detach(t_id);
+        pthread_create(&read_id, NULL, handle_Read, (void*)&nClnt_Sock);
+        pthread_detach(read_id);
         
         /* Printf Current Total User Number */
         printf("New client is connected – Number of total client is %d\n", ++nCurrent_User_Num);
     }
-
+    
     close(nServ_Sock);
     return 0;
 }
@@ -83,43 +81,66 @@ int select_Position()
     
     return nPosition;
 }
-void * handle_Clnt(void * arg)
+void send_Msg(const int nSocket, const ssize_t nLength, const char * sMsg)
+{ write(nSocket, sMsg, nLength); }
+void * handle_Read(void * arg)
 {
     /* Integer */
+    ssize_t nStr_Len = 0;
+    ssize_t nPosition = 0;
     int nClnt_Sock = *((int*)arg);
-    int nStr_Len = 0;
     
     /* Char */
-    char * sMsg = (char*)malloc(sizeof(char) * BUFSIZ);
+    char sMsg[BUFSIZ];
+    memset(sMsg, 0, sizeof(sMsg));
     
-    while ( (nStr_Len = read(nClnt_Sock, sMsg, BUFSIZ) != 0) )
+    while ( (nStr_Len = read(nClnt_Sock, sMsg, sizeof(sMsg))) != 0 )
     {
-        /* Pthread Mutex Range */
-        pthread_mutex_lock(&pMutx);
+        printf("%s\n", sMsg);
+        if (sMsg[0] == '/')
         {
-            /* Special Instruction */
-            if (sMsg[0] == '/')
+            switch (sMsg[1])
             {
-                switch (sMsg[1])
-                {
-                    /* Register */
-                    case ('r') : { send_Msg(nClnt_Sock, join_Member(sMsg, nClnt_Sock)); break; }
-                    /* Login */
-                    case ('l') : { send_Msg(nClnt_Sock, login_Member(sMsg, nClnt_Sock)); break; }
-                    /* Game */
-                    case ('g') : { break; }
-                    /* Ban */
-                    case ('b') : { break; }
-                }
-            }
-            /* Nomal Instruction */
-            else
-            {
-                for (int ii = 0; ii < nCurrent_User_Num; ii++)
-                { send_Msg(asUser_Current[ii].nFileDiscript, sMsg); }
+                /* Register */
+                case ('r') : { send_Msg(nClnt_Sock, nStr_Len, join_Member(sMsg, nClnt_Sock)); break; }
+                /* Login */
+                case ('l') : { send_Msg(nClnt_Sock, nStr_Len, login_Member(sMsg, nClnt_Sock)); break; }
+                /* Game */
+                case ('g') : { break; }
+                /* Ban */
+                case ('b') : { break; }
+                /* Whisper */
+                case ('w') : { Whisper_Member(sMsg, nClnt_Sock); break; }
             }
         }
-        pthread_mutex_unlock(&pMutx);
+        else
+        {
+            /* Select User */
+            for (size_t ii = 0; ii < FLAG_USER_NUM; ii++)
+            { if (asUser_Current[ii].nFileDiscript == nClnt_Sock) { nPosition = ii; } }
+            
+            /* UnEable Login User */
+            if (asUser_Current[nPosition].sLoginState == FLAG_FALSE)
+            {    send_Msg(asUser_Current[nPosition].nFileDiscript, nStr_Len,sMsg);   }
+            /* Eable Login User */
+            else
+            {
+                /* Send User Message */
+                for (size_t ii = 0; ii < nCurrent_User_Num; ii++)
+                {
+                    /* UnRegistered User Or UnEable Login User */
+                    if (asUser_Current[ii].nFileDiscript != nClnt_Sock && asUser_Current[ii].nFileDiscript != 0)
+                    {
+                        /* Registered User Or Eable Login User */
+                        char * sNickName = MALLOC(char, BUFSIZ);
+                        sprintf(sNickName, "%s)%s", asUser_Current[nPosition].sID, sMsg);
+                        send_Msg(asUser_Current[ii].nFileDiscript, strlen(sNickName), sNickName);
+                        free(sNickName);
+                    }
+                }
+            }
+        }
+        memset(sMsg, 0, sizeof(sMsg));
     }
     
     pthread_mutex_lock(&pMutx);
@@ -142,6 +163,7 @@ void * handle_Clnt(void * arg)
     }
     pthread_mutex_unlock(&pMutx);
     
+    /* Reset Memory */
     close(nClnt_Sock);
     return NULL;
 }
@@ -157,67 +179,121 @@ void handle_Error(const short sError)
         default : { printf("Network UnKnown Error!!!\n"); break; }
     }
 }
+char * Select_Nickname(const int nSock)
+{
+    /* String */
+    char * sNickName = MALLOC(char, BUFSIZ);
+    
+    /* Select User Nickname */
+    for (int ii = 0; ii < FLAG_USER_NUM; ii++)
+    {
+        /* Select User Nickname Success */
+        if (nSock == asUser_Current[ii].nFileDiscript)
+        { sprintf(sNickName ,"%s)", asUser_Current[ii].sID); }
+    }
+    
+    return sNickName;
+}
+void Whisper_Member(const char * sBuf, const int nSock)
+{
+    /* String */
+    char sID_Temp[BUF_REG];
+    char sComment[BUF_REG];
+    char * sSend_Msg = "Whisper fail, no user\n";
+    
+    /* Integer */
+    size_t nPosition = 3;
+    int nReceive_Sock = nSock;
+    for (int ii = 0; sBuf[nPosition] != ' '; sID_Temp[ii++] = sBuf[nPosition++]);   /* ID */
+    for (int ii = 0; sBuf[nPosition] != '\n'; sComment[ii++] = sBuf[nPosition++]);  /* Comment */
+    
+    /* Select User */
+    for (int ii = 0; ii < FLAG_USER_NUM; ii++)
+    {
+        /* Select User Success */
+        if (strcmp(asUser_Current[ii].sID, sID_Temp) == 0)
+        {
+            sSend_Msg = Select_Nickname(nSock);
+            strcat(sSend_Msg, sComment);    /* Append Comment */
+            nReceive_Sock = asUser_Current[ii].nFileDiscript;
+            break;
+        }
+    }
+    
+    /* Send Message to Sender */
+    send_Msg(nReceive_Sock, strlen(sSend_Msg), sSend_Msg);
+}
 char * join_Member(const char * sBuf, const int nSock)
 {
     /* String */
-    char * sID_Temp = MALLOC(char, BUFSIZ);
-    char * sPasswd_Temp = MALLOC(char, BUFSIZ);
+    char sID_Temp[BUF_REG];
+    char sPasswd_Temp[BUF_REG];
+    char * sMessage = "Registration success\n";
+    
+    /* Struct User */
+    USER * sCheck_Temp = MALLOC(USER, 1);
     
     /* Integer */
     size_t nPosition = 10;
+    size_t nChecking = FLAG_FALSE;
     for (int ii = 0; sBuf[nPosition] != ' '; sID_Temp[ii++] = sBuf[nPosition++]);       /* ID */
     for (int ii = 0; sBuf[nPosition] != '\n'; sPasswd_Temp[ii++] = sBuf[nPosition++]);  /* Password */
     
-    /* FILE */
-    FILE * fRead = fopen("member_list", "rb");
-    FILE * fWrite = fopen("member_list", "ab");
-
+    pthread_mutex_lock(&pMutx);
+    
     /* Overlap ID Check */
+    FILE * fRead = fopen("member_list", "rb");
     if (fRead != NULL)
     {
-        /* Struct User */
-        USER * sCheck_Temp = MALLOC(USER, 1);
-        
         /* Read Struct */
         while (fread(sCheck_Temp, sizeof(USER), 1, fRead) > 0)
         {
             if (strcmp(sCheck_Temp->sID, sID_Temp) == 0)
             {
                 printf("Incorrect registration\n");
-                free(sCheck_Temp);  fclose(fRead);
-                
-                return "Incorrect registration";
+                sMessage = "Incorrect registration\n";
+                nChecking = FLAG_TRUE;
             }
         }
         
-        free(sCheck_Temp);  fclose(fRead);
+        /* Close File */
+        fclose(fRead);
     }
     
-    /* Not Overlap ID */
-    if (fWrite != NULL)
+    if (nChecking == FLAG_FALSE)
     {
-        /* Write Struct */
-        fwrite(insert_UserData(nSock, 0, sID_Temp, sPasswd_Temp), sizeof(USER), 1, fWrite);
-        
-        /* Register Print */
-        printf("%s is registered\n", sID_Temp);     fclose(fWrite);
+        /* Not Overlap ID */
+        FILE * fWrite = fopen("member_list", "wb");
+        if (fWrite != NULL)
+        {
+            /* Write Struct */
+            fwrite(insert_UserData(nSock, 0, sID_Temp, sPasswd_Temp), sizeof(USER), 1, fWrite);
+            
+            /* Register Print */
+            printf("%s is registered\n", sID_Temp);
+            
+            /* Close File */
+            fclose(fWrite);
+        }
     }
-
-    /* FILE Close */
-    free(sID_Temp);     free(sPasswd_Temp);
     
-    return "Registration success";
+    pthread_mutex_unlock(&pMutx);
+    
+    return sMessage;
 }
 char * login_Member(const char * sBuf, const int nSock)
 {
     /* String */
-    char * sID_Temp = MALLOC(char, BUFSIZ);
-    char * sPasswd_Temp = MALLOC(char, BUFSIZ);
+    char sID_Temp[BUF_REG];
+    char sPasswd_Temp[BUF_REG];
+    char * sMessage = "Login fail\n";
     
     /* Integer */
     size_t nPosition = 7;
     for (int ii = 0; sBuf[nPosition] != ' '; sID_Temp[ii++] = sBuf[nPosition++]);       /* ID */
     for (int ii = 0; sBuf[nPosition] != '\n'; sPasswd_Temp[ii++] = sBuf[nPosition++]);  /* Password */
+    
+    pthread_mutex_lock(&pMutx);
     
     /* FILE */
     FILE * fRead = fopen("member_list", "rb");
@@ -237,34 +313,28 @@ char * login_Member(const char * sBuf, const int nSock)
                     {
                         strcpy(asUser_Current[ii].sID, sID_Temp);           /* ID */
                         strcpy(asUser_Current[ii].sPassword, sPasswd_Temp); /* Password */
+                        asUser_Current[ii].sLoginState = FLAG_TRUE;
                         break;
                     }
                 }
-                
-                /* Memory Reset */
-                free(sUser_Temp);    fclose(fRead);
-                
-                return "Login successful";
+                sMessage = "Login successful\n";
             }
         }
         
-        /* Memory Reset */
-        free(sUser_Temp);    fclose(fRead);
+        /* File Close */
+        fclose(fRead);
     }
     
-    /* Memory Reset */
-    free(sID_Temp);     free(sPasswd_Temp);
+    pthread_mutex_unlock(&pMutx);
     
-    return "Login fail";
+    return sMessage;
 }
 USER * insert_UserData(const int nSocket, const int nVersion, const char * sID, const char * sPasswd)
 {
     /* Struct User */
     USER * sUser = (USER*)malloc(sizeof(USER));
     sUser->nVenID = 0;          sUser->nFileDiscript = nSocket;         sUser->nVersion = nVersion;
-    strcpy(sUser->sID, sID);    strcpy(sUser->sPassword, sPasswd);
+    strcpy(sUser->sID, sID);    strcpy(sUser->sPassword, sPasswd);      sUser->sLoginState = FLAG_FALSE;
     
     return sUser;
 }
-short send_Msg(const int nSocket, const char * sMsg)
-{ return write(nSocket, sMsg, strlen(sMsg)) != EOF ? FLAG_TRUE : FLAG_FALSE; }
