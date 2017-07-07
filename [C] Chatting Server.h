@@ -1,20 +1,8 @@
-//
-//  Header.h
-//  Algorithm
-//
-//  Created by 양창엽 on 2017. 6. 15..
-//  Copyright © 2017년 양창엽. All rights reserved.
-//
-
-#ifndef Header_h
-#define Header_h
-
 /* Include Header */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <signal.h>
 #include <pthread.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -35,20 +23,25 @@
 #define FLAG_FALSE 0
 #define FLAG_USER_NUM 6
 
+/* MEMORY Define */
+#define BUF_MSG 1024
+#define BUF_REG 255
+
 /* Typedef */
 typedef struct sockaddr_in SOCK_IN;
 
 /* Struct */
 typedef struct users
 {
+    /* Short */
+    short sLoginState;
+    
     /* Integer */
-    int nVenID;
+    int nVenID[FLAG_USER_NUM];
     int nVersion;
     int nFileDiscript;
     
     /* String */
-    char sID[BUFSIZ];
-    char sPassword[BUFSIZ];
+    char sID[BUF_REG];
+    char sPassword[BUF_REG];
 } USER;
-
-#endif /* Header_h */
