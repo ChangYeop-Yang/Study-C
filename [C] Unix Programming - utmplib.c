@@ -55,4 +55,4 @@ utmp_close()
 {
 	if ( fd_utmp != EOF)
 		close(fd_utmp);
-}
+};
