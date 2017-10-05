@@ -58,4 +58,4 @@ void showtime(long timeval)
 	cp = ctime(&timeval);
 	
 	printf("%12.12s", cp+4);
-}
+};
