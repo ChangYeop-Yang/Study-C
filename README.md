@@ -194,6 +194,43 @@ void TBox::print() const
 }
 ```
 
+## ★ Friend
+
+* 경우에 따라 개별 클래스의 모든 함수 또는 클래스의 멤버가 아닌 함수에 멤버 수준 액세스 권한을 부여 하는 것이 더 편리합니다. 클래스 구현자만 이 클래스의 friend를 선언할 수 있습니다. 함수 또는 클래스는 자신을 클래스의 friend로 선언할 수 없습니다. 클래스 선언에서 friend 키워드 및 비멤버 함수 또는 기타 클래스의 이름을 사용하여 클래스의 전용 멤버 및 보호된 멤버에 대한 액세스 권한을 부여합니다.
+
+* In principle, private and protected members of a class cannot be accessed from outside the same class in which they are declared. However, this rule does not apply to "friends".
+
+```C++
+// friend functions
+#include <iostream>
+using namespace std;
+
+class Rectangle {
+    int width, height;
+  public:
+    Rectangle() {}
+    Rectangle (int x, int y) : width(x), height(y) {}
+    int area() {return width * height;}
+    friend Rectangle duplicate (const Rectangle&);
+};
+
+Rectangle duplicate (const Rectangle& param)
+{
+  Rectangle res;
+  res.width = param.width*2;
+  res.height = param.height*2;
+  return res;
+}
+
+int main () {
+  Rectangle foo;
+  Rectangle bar (2,3);
+  foo = duplicate (bar);
+  cout << foo.area() << '\n';
+  return 0;
+}
+```
+
 ## ★ Virtual Functions & Pure Virtual Functions
 
 * 가상 함수는 파생 클래스가 안전하게 재정의할 수 있는 함수이다. 만약 상속 관계가 아니라면 가상 함수를 선언할 필요가 없으므로 가상 함수는 상속 계층내에서만 의미가 있으며 파생 클래스에게 재정의 기회를 주기 위해 존재하는 것이라고 할 수 있다. 그러나 가상 함수를 반드시 재정의해야만 하는 것은 아니다. 기반 클래스의 동작을 그대로 쓰고 싶으면 단순히 상속만 받고 변경할 필요가 있을 때만 재정의하면 된다. 기반 클래스가 가상 함수를 만드는 이유는 혹시라도 재정의하고 포인터로 호출할 때를 대비한 것이다. 가상 함수는 재정의해도 되는 함수이지 반드시 재정의해야 하는 함수는 아니다.
@@ -224,3 +261,4 @@ Derived d;
 * [Memory Layout of C Programs - ](https://www.geeksforgeeks.org/memory-layout-of-c-program/)
 * [순수 가상 함수 -C/C++ by WinAPI](http://soen.kr/lecture/ccpp/cpp3/30-3-1.htm)
 * [Difference between a virtual function and a pure virtual function [duplicate]](https://stackoverflow.com/questions/2652198/difference-between-a-virtual-function-and-a-pure-virtual-function)
+* [friend (C++) - MS](https://msdn.microsoft.com/ko-kr/library/465sdshe.aspx)
