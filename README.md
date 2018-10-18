@@ -1,2 +1,167 @@
-# Study-C
-Personal C/C++ Directory
+# Study-C Language
+
+# Study-C++ Language
+
+## [★ Method Overloading](https://www.tutorialspoint.com/cgi-bin/printpage.cgi)
+
+* You can have multiple definitions for the same function name in the same scope. The definition of the function must differ from each other by the types and/or the number of arguments in the argument list. You cannot overload function declarations that differ only by return type.
+
+```C++
+#include <iostream>
+using namespace std;
+ 
+class printData {
+   public:
+      void print(int i) {
+        cout << "Printing int: " << i << endl;
+      }
+      void print(double  f) {
+        cout << "Printing float: " << f << endl;
+      }
+      void print(char* c) {
+        cout << "Printing character: " << c << endl;
+      }
+};
+
+int main(void) {
+   printData pd;
+ 
+   // Call print to print integer
+   pd.print(5);
+   
+   // Call print to print float
+   pd.print(500.263);
+   
+   // Call print to print character
+   pd.print("Hello C++");
+ 
+   return 0;
+}
+```
+
+## ★ Operator Overrding
+
+* You can redefine or overload most of the built-in operators available in C++. Thus, a programmer can use operators with user-defined types as well.
+
+* Overloaded operators are functions with special names: the keyword "operator" followed by the symbol for the operator being defined. Like any other function, an overloaded operator has a return type and a parameter list.
+
+```C++
+#include <iostream>
+using namespace std;
+
+class Box {
+   public:
+      double getVolume(void) {
+         return length * breadth * height;
+      }
+      void setLength( double len ) {
+         length = len;
+      }
+      void setBreadth( double bre ) {
+         breadth = bre;
+      }
+      void setHeight( double hei ) {
+         height = hei;
+      }
+      
+      // Overload + operator to add two Box objects.
+      Box operator+(const Box& b) {
+         Box box;
+         box.length = this->length + b.length;
+         box.breadth = this->breadth + b.breadth;
+         box.height = this->height + b.height;
+         return box;
+      }
+      
+   private:
+      double length;      // Length of a box
+      double breadth;     // Breadth of a box
+      double height;      // Height of a box
+};
+
+// Main function for the program
+int main() {
+   Box Box1;                // Declare Box1 of type Box
+   Box Box2;                // Declare Box2 of type Box
+   Box Box3;                // Declare Box3 of type Box
+   double volume = 0.0;     // Store the volume of a box here
+ 
+   // box 1 specification
+   Box1.setLength(6.0); 
+   Box1.setBreadth(7.0); 
+   Box1.setHeight(5.0);
+ 
+   // box 2 specification
+   Box2.setLength(12.0); 
+   Box2.setBreadth(13.0); 
+   Box2.setHeight(10.0);
+ 
+   // volume of box 1
+   volume = Box1.getVolume();
+   cout << "Volume of Box1 : " << volume <<endl;
+ 
+   // volume of box 2
+   volume = Box2.getVolume();
+   cout << "Volume of Box2 : " << volume <<endl;
+
+   // Add two object as follows:
+   Box3 = Box1 + Box2;
+
+   // volume of box 3
+   volume = Box3.getVolume();
+   cout << "Volume of Box3 : " << volume <<endl;
+
+   return 0;
+}
+```
+
+## ★ Method Overriding
+
+* 메소드 오버라이딩,(method overriding)은 객체 지향 프로그래밍에서 서브클래스 또는 자식 클래스가 자신의 슈퍼클래스들 또는 부모 클래스들 중 하나에 의해 이미 제공된 메소드를 특정한 형태로 구현하는 것을 제공하는 언어의 특징이다. 서브클래스에서의 구현은 부모 클래스에서 같은 이름, 같은 파라미터 또는 시그니처 그리고 같은 반환형을 갖는 메소드를 제공함으로써 슈퍼클래스에서의 구현을 오버라이드한다.
+
+```C++
+#include <iostream>
+
+//---------------------------------------------------------------------------
+class TRectangle
+{
+public:
+    TRectangle(double l, double w) : length(l), width(w) {}
+    virtual void print() const;
+
+private:
+    double length;
+    double width;
+};
+
+//---------------------------------------------------------------------------
+void TRectangle::print() const
+{
+   // print() method of base class.
+   std::cout << "Length = " << this->length << "; Width = " << this->width;
+}
+
+//---------------------------------------------------------------------------
+class TBox : public TRectangle
+{
+public:
+    TBox(double l, double w, double h) : TRectangle(l, w), height(h) {}
+    // virtual is optional here, but it is a good practice to remind it to the developer.
+    virtual void print() const;
+private:
+    double height;
+};
+
+//---------------------------------------------------------------------------
+// print() method of derived class.
+void TBox::print() const
+{
+   // Invoke parent print() method.
+   TRectangle::print();
+   std::cout << "; Height = " << this->height;
+}
+```
+
+## ★ REFERENCE
+* [메소드 오버라이딩,(method overriding) - 위키백과](https://ko.wikipedia.org/wiki/%EB%A9%94%EC%86%8C%EB%93%9C_%EC%98%A4%EB%B2%84%EB%9D%BC%EC%9D%B4%EB%94%A9)
+* [C++ Overloading (Operator and Function)](https://www.tutorialspoint.com/cplusplus/cpp_overloading.htm)
