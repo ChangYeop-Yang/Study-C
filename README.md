@@ -1,5 +1,35 @@
 # Study-C Language
 
+## ★ Memory Layout
+
+<p align="center">
+ <img src="https://cdncontribute.geeksforgeeks.org/wp-content/uploads/memoryLayoutC.jpg" />
+</p>
+
+###### § Code Area (코드 영역)
+
+* 실행할 프로그램의 코드가 저장되는 메모리 공간이다. 따라서 CPU는 코드 영역에 저장 된 명령문들을 하나씩 가져가서 실행을 한다.
+
+###### § Data Area (데이터 영역)
+
+* 전역변수와 Static으로 선언되는 static 변수가 할당된다. 즉, 이 영역에 할당되는 변수들은 프로그램의 시작과 동시에 메모리 공간에 할당되어 프로그램 종료 시까지 남아있게 된다는 특징이 있다.
+
+###### § Stack Area (스택 영역)
+
+* 지역변수와 매개변수가 할당된다. 이렇듯 이 영역에 할당되는 변수들은 선언된 함수를 빠져나가면 소멸된다는 특징이 있다.
+
+* The stack area contains the program stack, a LIFO structure, typically located in the higher parts of memory. On the standard PC x86 computer architecture it grows toward address zero; on some other architectures it grows the opposite direction. A “stack pointer” register tracks the top of the stack; it is adjusted each time a value is “pushed” onto the stack. The set of values pushed for one function call is termed a “stack frame”; A stack frame consists at minimum of a return address.
+
+* Stack, where automatic variables are stored, along with information that is saved each time a function is called. Each time a function is called, the address of where to return to and certain information about the caller’s environment, such as some of the machine registers, are saved on the stack. The newly called function then allocates room on the stack for its automatic and temporary variables. This is how recursive functions in C can work. Each time a recursive function calls itself, a new stack frame is used, so one set of variables doesn’t interfere with the variables from another instance of the function.
+
+###### § Heap Area (힙 영역)
+
+* 프로그래머가 원하는 시점에 변수를 할당하고 또 소멸하도록 지원하는 메모리 영역이다.
+
+* Heap is the segment where dynamic memory allocation usually takes place.
+
+* The heap area begins at the end of the BSS segment and grows to larger addresses from there.The Heap area is managed by malloc, realloc, and free, which may use the brk and sbrk system calls to adjust its size (note that the use of brk/sbrk and a single “heap area” is not required to fulfill the contract of malloc/realloc/free; they may also be implemented using mmap to reserve potentially non-contiguous regions of virtual memory into the process’ virtual address space). The Heap area is shared by all shared libraries and dynamically loaded modules in a process.
+
 # Study-C++ Language
 
 ## [★ Method Overloading](https://www.tutorialspoint.com/cgi-bin/printpage.cgi)
@@ -165,3 +195,4 @@ void TBox::print() const
 ## ★ REFERENCE
 * [메소드 오버라이딩,(method overriding) - 위키백과](https://ko.wikipedia.org/wiki/%EB%A9%94%EC%86%8C%EB%93%9C_%EC%98%A4%EB%B2%84%EB%9D%BC%EC%9D%B4%EB%94%A9)
 * [C++ Overloading (Operator and Function)](https://www.tutorialspoint.com/cplusplus/cpp_overloading.htm)
+* [Memory Layout of C Programs - ](https://www.geeksforgeeks.org/memory-layout-of-c-program/)
