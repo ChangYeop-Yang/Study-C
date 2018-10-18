@@ -1,4 +1,4 @@
-# Study-C Language
+# ● Study-C Language
 C는 1972년 켄 톰슨과 데니스 리치가 벨 연구소에서 일할 당시 새로 개발된 유닉스 운영 체제에서 사용하기 위해 개발한 프로그래밍 언어이다.
 
 ## ★ Memory Layout
@@ -31,7 +31,7 @@ C는 1972년 켄 톰슨과 데니스 리치가 벨 연구소에서 일할 당시
 
 * The heap area begins at the end of the BSS segment and grows to larger addresses from there.The Heap area is managed by malloc, realloc, and free, which may use the brk and sbrk system calls to adjust its size (note that the use of brk/sbrk and a single “heap area” is not required to fulfill the contract of malloc/realloc/free; they may also be implemented using mmap to reserve potentially non-contiguous regions of virtual memory into the process’ virtual address space). The Heap area is shared by all shared libraries and dynamically loaded modules in a process.
 
-# Study-C++ Language
+# ● Study-C++ Language
 C++는 AT&T 벨 연구소의 비야네 스트롭스트룹이 1983년 발표하여 발전한 프로그래밍 언어이다.
 
 ## [★ Method Overloading](https://www.tutorialspoint.com/cgi-bin/printpage.cgi)
@@ -194,7 +194,33 @@ void TBox::print() const
 }
 ```
 
+## ★ Virtual Functions & Pure Virtual Functions
+
+* 가상 함수는 파생 클래스가 안전하게 재정의할 수 있는 함수이다. 만약 상속 관계가 아니라면 가상 함수를 선언할 필요가 없으므로 가상 함수는 상속 계층내에서만 의미가 있으며 파생 클래스에게 재정의 기회를 주기 위해 존재하는 것이라고 할 수 있다. 그러나 가상 함수를 반드시 재정의해야만 하는 것은 아니다. 기반 클래스의 동작을 그대로 쓰고 싶으면 단순히 상속만 받고 변경할 필요가 있을 때만 재정의하면 된다. 기반 클래스가 가상 함수를 만드는 이유는 혹시라도 재정의하고 포인터로 호출할 때를 대비한 것이다. 가상 함수는 재정의해도 되는 함수이지 반드시 재정의해야 하는 함수는 아니다.
+
+* 순수 가상 함수(Pure Virtual Function)는 파생 클래스에서 반드시 재정의해야 하는 함수이다. 순수 가상 함수는 일반적으로 함수의 동작을 정의하는 본체를 가지지 않으며 따라서 이 상태에서는 호출할 수 없다. 본체가 없다는 뜻으로 함수 선언부의 끝에 =0이라는 표기를 하는데 이는 함수만 있고 코드는 비어 있다는 뜻이다.
+
+#### ※ Difference Virtual Functions and Pure Virtual Functions
+
+* A virtual function makes its class a polymorphic base class. Derived classes can override virtual functions. Virtual functions called through base class pointers/references will be resolved at run-time.
+
+```C++
+class Base {
+  // ...
+  virtual void f() = 0;
+  // ...
+
+Derived d;
+ Base& rb = d;
+ // if Base::f() is virtual and Derived overrides it, Derived::f() will be called
+ rb.f();  
+```
+
+* A pure virtual function implicitly makes the class it is defined for abstract (unlike in Java where you have a keyword to explicitly declare the class abstract). Abstract classes cannot be instantiated. Derived classes need to override/implement all inherited pure virtual functions. If they do not, they too will become abstract.
+
 ## ★ REFERENCE
 * [메소드 오버라이딩,(method overriding) - 위키백과](https://ko.wikipedia.org/wiki/%EB%A9%94%EC%86%8C%EB%93%9C_%EC%98%A4%EB%B2%84%EB%9D%BC%EC%9D%B4%EB%94%A9)
 * [C++ Overloading (Operator and Function)](https://www.tutorialspoint.com/cplusplus/cpp_overloading.htm)
 * [Memory Layout of C Programs - ](https://www.geeksforgeeks.org/memory-layout-of-c-program/)
+* [순수 가상 함수 -C/C++ by WinAPI](http://soen.kr/lecture/ccpp/cpp3/30-3-1.htm)
+* [Difference between a virtual function and a pure virtual function [duplicate]](https://stackoverflow.com/questions/2652198/difference-between-a-virtual-function-and-a-pure-virtual-function)
