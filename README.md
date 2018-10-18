@@ -262,3 +262,4 @@ Derived d;
 * [순수 가상 함수 -C/C++ by WinAPI](http://soen.kr/lecture/ccpp/cpp3/30-3-1.htm)
 * [Difference between a virtual function and a pure virtual function [duplicate]](https://stackoverflow.com/questions/2652198/difference-between-a-virtual-function-and-a-pure-virtual-function)
 * [friend (C++) - MS](https://msdn.microsoft.com/ko-kr/library/465sdshe.aspx)
+* [Friendship and inheritance - cplusplus](http://www.cplusplus.com/doc/tutorial/inheritance/)
