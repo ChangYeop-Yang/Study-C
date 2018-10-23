@@ -231,6 +231,48 @@ int main () {
 }
 ```
 
+## ★ Pointer and Reference
+
+#### ＃ Pointer
+
+* In computer science, a pointer is a programming language object that stores the memory address of another value located in computer memory. A pointer references a location in memory, and obtaining the value stored at that location is known as dereferencing the pointer. As an analogy, a page number in a book's index could be considered a pointer to the corresponding page; dereferencing such a pointer would be done by flipping to the page with the given page number and reading the text found on that page. The actual format and content of a pointer variable is dependent on the underlying computer architecture.
+
+#### # Reference
+* In the C++ programming language, a reference is a simple reference datatype that is less powerful but safer than the pointer type inherited from C. The name C++ reference may cause confusion, as in computer science a reference is a general concept datatype, with pointers and C++ references being specific reference datatype implementations. The definition of a reference in C++ is such that it does not need to exist. **It can be implemented as a new name for an existing object** (similar to rename keyword in Ada).
+
+###### § Reference Features
+
+* It is not possible to refer directly to a reference object after it is defined; any occurrence of its name refers directly to the object it references.
+
+* Once a reference is created, it cannot be later made to reference another object; it cannot be reseated. This is often done with pointers.
+
+* References cannot be null, whereas pointers can; every reference refers to some object, although it may or may not be valid. Note that for this reason, containers of references are not allowed.
+
+* References cannot be uninitialized. Because it is impossible to reinitialize a reference, they must be initialized as soon as they are created. In particular, local and global variables must be initialized where they are defined, and references which are data members of class instances must be initialized in the initializer list of the class's constructor. For example:
+
+* * *
+
+#### [※ Difference Pointer and Reference](https://www.geeksforgeeks.org/references-in-c/)
+
+<p align="center">
+ <img src="https://user-images.githubusercontent.com/20036523/47368932-8f1f0b80-d71d-11e8-9a53-3e2f72aa85d7.jpg" />
+</p>
+
+* References are less powerful than pointers
+
+1) Once a reference is created, it cannot be later made to reference another object; it cannot be reseated. This is often done with pointers.
+2) References cannot be NULL. Pointers are often made NULL to indicate that they are not pointing to any valid thing.
+3) A reference must be initialized when declared. There is no such restriction with pointers
+
+* Due to the above limitations, references in C++ cannot be used for implementing data structures like Linked List, Tree, etc. In Java, references don’t have above restrictions, and can be used to implement all data structures. References being more powerful in Java, is the main reason Java doesn’t need pointers.
+
+* References are safer and easier to use:
+
+1) Safer: Since references must be initialized, wild references like wild pointers are unlikely to exist. It is still possible to have references that don’t refer to a valid location (See questions 5 and 6 in the below exercise )
+2) Easier to use: References don’t need dereferencing operator to access the value. They can be used like normal variables. ‘&’ operator is needed only at the time of declaration. Also, members of an object reference can be accessed with dot operator (‘.’), unlike pointers where arrow operator (->) is needed to access members.
+
+* Together with the above reasons, there are few places like copy constructor argument where pointer cannot be used. Reference must be used pass the argument in copy constructor. Similarly references must be used for overloading some operators like ++.
+
 ## ★ Virtual Functions & Pure Virtual Functions
 
 * 가상 함수는 파생 클래스가 안전하게 재정의할 수 있는 함수이다. 만약 상속 관계가 아니라면 가상 함수를 선언할 필요가 없으므로 가상 함수는 상속 계층내에서만 의미가 있으며 파생 클래스에게 재정의 기회를 주기 위해 존재하는 것이라고 할 수 있다. 그러나 가상 함수를 반드시 재정의해야만 하는 것은 아니다. 기반 클래스의 동작을 그대로 쓰고 싶으면 단순히 상속만 받고 변경할 필요가 있을 때만 재정의하면 된다. 기반 클래스가 가상 함수를 만드는 이유는 혹시라도 재정의하고 포인터로 호출할 때를 대비한 것이다. 가상 함수는 재정의해도 되는 함수이지 반드시 재정의해야 하는 함수는 아니다.
@@ -263,3 +305,6 @@ Derived d;
 * [Difference between a virtual function and a pure virtual function [duplicate]](https://stackoverflow.com/questions/2652198/difference-between-a-virtual-function-and-a-pure-virtual-function)
 * [friend (C++) - MS](https://msdn.microsoft.com/ko-kr/library/465sdshe.aspx)
 * [Friendship and inheritance - cplusplus](http://www.cplusplus.com/doc/tutorial/inheritance/)
+* [References in C++ - GeeksforGeeks](https://www.geeksforgeeks.org/references-in-c/)
+* [Pointer (computer programming) - 위키백과](https://en.wikipedia.org/wiki/Pointer_(computer_programming))
+* [Difference between Reference and Pointer in C++](https://www.thecrazyprogrammer.com/2016/12/difference-between-reference-and-pointer.html)
