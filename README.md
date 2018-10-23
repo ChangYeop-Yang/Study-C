@@ -261,7 +261,9 @@ int main () {
 **◆ References are less powerful than pointers**
 
 1) Once a reference is created, it cannot be later made to reference another object; it cannot be reseated. This is often done with pointers.
+
 2) References cannot be NULL. Pointers are often made NULL to indicate that they are not pointing to any valid thing.
+
 3) A reference must be initialized when declared. There is no such restriction with pointers
 
 * Due to the above limitations, references in C++ cannot be used for implementing data structures like Linked List, Tree, etc. In Java, references don’t have above restrictions, and can be used to implement all data structures. References being more powerful in Java, is the main reason Java doesn’t need pointers.
@@ -269,6 +271,7 @@ int main () {
 **◆ References are safer and easier to use:**
 
 1) Safer: Since references must be initialized, wild references like wild pointers are unlikely to exist. It is still possible to have references that don’t refer to a valid location (See questions 5 and 6 in the below exercise )
+
 2) Easier to use: References don’t need dereferencing operator to access the value. They can be used like normal variables. ‘&’ operator is needed only at the time of declaration. Also, members of an object reference can be accessed with dot operator (‘.’), unlike pointers where arrow operator (->) is needed to access members.
 
 * Together with the above reasons, there are few places like copy constructor argument where pointer cannot be used. Reference must be used pass the argument in copy constructor. Similarly references must be used for overloading some operators like ++.
