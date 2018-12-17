@@ -1,4 +1,4 @@
-# ● Study-C Language
+# ■ Study-C Language
 
 * C는 1972년 켄 톰슨과 데니스 리치가 벨 연구소에서 일할 당시 새로 개발된 유닉스 운영 체제에서 사용하기 위해 개발한 프로그래밍 언어이다.
 
@@ -305,16 +305,26 @@ Derived d;
 ## ■ Smart Functor
 
 ## ★ REFERENCE
-* [메소드 오버라이딩,(method overriding) - 위키백과](https://ko.wikipedia.org/wiki/%EB%A9%94%EC%86%8C%EB%93%9C_%EC%98%A4%EB%B2%84%EB%9D%BC%EC%9D%B4%EB%94%A9)
-* [C++ Overloading (Operator and Function)](https://www.tutorialspoint.com/cplusplus/cpp_overloading.htm)
-* [Memory Layout of C Programs - ](https://www.geeksforgeeks.org/memory-layout-of-c-program/)
-* [순수 가상 함수 -C/C++ by WinAPI](http://soen.kr/lecture/ccpp/cpp3/30-3-1.htm)
-* [Difference between a virtual function and a pure virtual function [duplicate]](https://stackoverflow.com/questions/2652198/difference-between-a-virtual-function-and-a-pure-virtual-function)
-* [friend (C++) - MS](https://msdn.microsoft.com/ko-kr/library/465sdshe.aspx)
-* [Friendship and inheritance - cplusplus](http://www.cplusplus.com/doc/tutorial/inheritance/)
-* [References in C++ - GeeksforGeeks](https://www.geeksforgeeks.org/references-in-c/)
-* [Pointer (computer programming) - 위키백과](https://en.wikipedia.org/wiki/Pointer_(computer_programming))
-* [Difference between Reference and Pointer in C++](https://www.thecrazyprogrammer.com/2016/12/difference-between-reference-and-pointer.html)
+
+:airplane: [메소드 오버라이딩,(method overriding) - 위키백과](https://ko.wikipedia.org/wiki/%EB%A9%94%EC%86%8C%EB%93%9C_%EC%98%A4%EB%B2%84%EB%9D%BC%EC%9D%B4%EB%94%A9)
+
+:airplane: [C++ Overloading (Operator and Function)](https://www.tutorialspoint.com/cplusplus/cpp_overloading.htm)
+
+:airplane: [Memory Layout of C Programs - ](https://www.geeksforgeeks.org/memory-layout-of-c-program/)
+
+:airplane: [순수 가상 함수 -C/C++ by WinAPI](http://soen.kr/lecture/ccpp/cpp3/30-3-1.htm)
+
+:airplane: [Difference between a virtual function and a pure virtual function [duplicate]](https://stackoverflow.com/questions/2652198/difference-between-a-virtual-function-and-a-pure-virtual-function)
+
+:airplane: [friend (C++) - MS](https://msdn.microsoft.com/ko-kr/library/465sdshe.aspx)
+
+:airplane: [Friendship and inheritance - cplusplus](http://www.cplusplus.com/doc/tutorial/inheritance/)
+
+:airplane: [References in C++ - GeeksforGeeks](https://www.geeksforgeeks.org/references-in-c/)
+
+:airplane: [Pointer (computer programming) - 위키백과](https://en.wikipedia.org/wiki/Pointer_(computer_programming))
+
+:airplane: [Difference between Reference and Pointer in C++](https://www.thecrazyprogrammer.com/2016/12/difference-between-reference-and-pointer.html)
 
 ## ★ Developer Information
 
