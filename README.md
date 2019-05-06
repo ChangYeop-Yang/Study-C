@@ -1,22 +1,20 @@
-# ■ Study-C Language
+# ■ Study - C/C++ Language
 
-* C는 1972년 켄 톰슨과 데니스 리치가 벨 연구소에서 일할 당시 새로 개발된 유닉스 운영 체제에서 사용하기 위해 개발한 프로그래밍 언어이다.
-
-## ★ Memory Layout
+## 📣 Memory Layout
 
 <p align="center">
  <img src="https://cdncontribute.geeksforgeeks.org/wp-content/uploads/memoryLayoutC.jpg" />
 </p>
 
-###### § Code Area (코드 영역)
+###### 🔑 코드 영역 (Code Area)
 
 * 실행할 프로그램의 코드가 저장되는 메모리 공간이다. 따라서 CPU는 코드 영역에 저장 된 명령문들을 하나씩 가져가서 실행을 한다.
 
-###### § Data Area (데이터 영역)
+###### 🔑 데이터 영역 (Data Area)
 
 * 전역변수와 Static으로 선언되는 static 변수가 할당된다. 즉, 이 영역에 할당되는 변수들은 프로그램의 시작과 동시에 메모리 공간에 할당되어 프로그램 종료 시까지 남아있게 된다는 특징이 있다.
 
-###### § Stack Area (스택 영역)
+###### 🔑 스택 영역 (Stack Area)
 
 * 지역변수와 매개변수가 할당된다. 이렇듯 이 영역에 할당되는 변수들은 선언된 함수를 빠져나가면 소멸된다는 특징이 있다.
 
@@ -24,17 +22,13 @@
 
 * Stack, where automatic variables are stored, along with information that is saved each time a function is called. Each time a function is called, the address of where to return to and certain information about the caller’s environment, such as some of the machine registers, are saved on the stack. The newly called function then allocates room on the stack for its automatic and temporary variables. This is how recursive functions in C can work. Each time a recursive function calls itself, a new stack frame is used, so one set of variables doesn’t interfere with the variables from another instance of the function.
 
-###### § Heap Area (힙 영역)
+###### 🔑 힙 영역 (Heap Area)
 
 * 프로그래머가 원하는 시점에 변수를 할당하고 또 소멸하도록 지원하는 메모리 영역이다.
 
 * Heap is the segment where dynamic memory allocation usually takes place.
 
 * The heap area begins at the end of the BSS segment and grows to larger addresses from there.The Heap area is managed by malloc, realloc, and free, which may use the brk and sbrk system calls to adjust its size (note that the use of brk/sbrk and a single “heap area” is not required to fulfill the contract of malloc/realloc/free; they may also be implemented using mmap to reserve potentially non-contiguous regions of virtual memory into the process’ virtual address space). The Heap area is shared by all shared libraries and dynamically loaded modules in a process.
-
-# ● Study-C++ Language
-
-* C++는 AT&T 벨 연구소의 비야네 스트롭스트룹이 1983년 발표하여 발전한 프로그래밍 언어이다.
 
 ## 📣 [함수 오버로드 (Method Overloading)](https://www.tutorialspoint.com/cgi-bin/printpage.cgi)
 
