@@ -407,7 +407,7 @@ p1.reset(); //Does nothing.
 
 * A shared_ptr is a container for a raw pointer. **It maintains reference counting ownership of its contained pointer in cooperation with all copies of the shared_ptr.** An object referenced by the contained raw pointer will be destroyed when and only when all copies of the shared_ptr have been destroyed. (참조 횟수가 0이 되면 delete 키워드를 사용하여 메모리를 자동으로 해제합니다.)
 
-###### 📃 shared_ptr Source Code
+###### 📃 shared_ptr Source Code ①
 
 ```C++
 std::shared_ptr<int> p0(new int(5));        // valid, allocates 1 integer and initialize it with value 5
@@ -418,6 +418,8 @@ p1.reset(); //Memory still exists, due to p2.
 p2.reset(); //Deletes the memory, since no one else owns the memory.
 ```
 
+###### 📃 shared_ptr Source Code ②
+
 ``` C++
 shared_ptr<int> ptr01(new int(5)); // int형 shared_ptr인 ptr01을 선언하고 초기화함.
 cout << ptr01.use_count() << endl; // 1
@@ -426,7 +428,40 @@ auto ptr02(ptr01);                 // 복사 생성자를 이용한 초기화
 cout << ptr01.use_count() << endl; // 2
 auto ptr03 = ptr01;                // 대입을 통한 초기화
 
-cout << ptr01.use_count() << endl; // 3  
+cout << ptr01.use_count() << endl; // 3
+```
+
+#### 💊 weak_ptr
+
+* weak_ptr은 하나 이상의 shared_ptr 인스턴스가 소유하는 객체에 대한 접근을 제공하지만, 소유자의 수에는 포함되지 않는 스마트 포인터입니다. 즉, weak_ptr은 shared_ptr 인스턴스 사이의 순환 참조를 제거하기 위해서 사용됩니다.
+
+* A weak_ptr is a container for a raw pointer. It is created as a copy of a shared_ptr. The existence or destruction of weak_ptr copies of a shared_ptr have no effect on the shared_ptr or its other copies. After all copies of a shared_ptr have been destroyed, all weak_ptr copies become empty.
+
+* Because the implementation of shared_ptr uses reference counting, circular references are potentially a problem. A circular shared_ptr chain can be broken by changing the code so that one of the references is a weak_ptr.
+
+###### 📃 weak_ptr Source Code
+
+```C++
+std::shared_ptr<int> p1 = std::make_shared<int>(5);
+std::weak_ptr<int> wp1 {p1}; //p1 owns the memory.
+
+{
+    std::shared_ptr<int> p2 = wp1.lock(); //Now p1 and p2 own the memory.
+    // p2 is initialized from a weak pointer, so 
+    // you have to check if the memory still exists!
+    if (p2) {
+        do_something_with(p2);
+    }
+}
+//p2 is destroyed. Memory is owned by p1.
+
+p1.reset(); // Delete the memory.
+
+std::shared_ptr<int> p3 = wp1.lock(); 
+//Memory is gone, so we get an empty shared_ptr.
+if (p3) { // code will not execute
+    action_that_needs_a_live_pointer(p3);
+}
 ```
 
 ## 📣 [Const](https://docs.microsoft.com/en-us/cpp/cpp/const-cpp?view=vs-2019)
