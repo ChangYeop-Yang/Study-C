@@ -321,7 +321,7 @@ int main() {
 }
 ```
 
-###### 🔑 Const Function
+###### 🔑 Const member functions
 
 * Declaring a member function with the const keyword specifies that the function is a "read-only" function that does not modify the object for which it is called. A constant member function cannot modify any non-static data members or call any member functions that aren't constant.To declare a constant member function, place the const keyword after the closing parenthesis of the argument list. The const keyword is required in both the declaration and the definition.
 
@@ -331,12 +331,12 @@ int main() {
 // constant_member_function.cpp
 class Date
 {
-public:
-   Date( int mn, int dy, int yr );
-   int getMonth() const;     // A read-only function
-   void setMonth( int mn );   // A write function; can't be const
-private:
-   int month;
+      public:
+          Date( int mn, int dy, int yr );
+          int getMonth() const;     // A read-only function
+          void setMonth( int mn );   // A write function; can't be const
+       private:
+          int mon th;
 };
 
 int Date::getMonth() const
