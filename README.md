@@ -598,7 +598,7 @@ int main()
 
 * The most relevant difference is that the `new` operator allocates memory then calls the constructor, and `delete` calls the destructor then deallocates the memory.
 
-* * `new` 연산자는 자유 기억 공간(free store)이라고 불리는 메모리 공간(memory pool)에 객체를 위한 메모리를 할당받습니다. 또한, `new` 연산자를 통해 할당받은 메모리는 따로 이름이 없으므로 해당 포인터로만 접근할 수 있게 됩니다.
+* `new` 연산자는 자유 기억 공간(free store)이라고 불리는 메모리 공간(memory pool)에 객체를 위한 메모리를 할당받습니다. 또한, `new` 연산자를 통해 할당받은 메모리는 따로 이름이 없으므로 해당 포인터로만 접근할 수 있게 됩니다.
 
 ###### 🔑 New/Delete
 
