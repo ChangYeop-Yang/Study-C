@@ -347,7 +347,7 @@ Derived d;
 
 * 표준 C++이 C 표준 라이브러리를 포함하기 때문에, C 동적 메모리 할당 루틴들인 malloc, realloc 그리고 free도 C++ 프로그래머에게 사용될 수 있다. 이것들은 객체 초기화와 소멸을 수행하지 않기 때문에 이러한 루틴들의 사용은 대부분의 경우에 추천되지 않는다. 사실 new와 delete는 객체 초기화를 직접 수행하는 것을 피하기 위해 C++의 첫 번째 버전에서 도입되었다. </br></br>realloc으로 할당된 배열을 키우거나 줄이는 C 루틴들과 대조적으로, new[]에 의해 할당된 메모리 버퍼의 크기를 변경하는 것은 불가능하다. C++ 표준 라이브러리는 대신 자신의 std::vector 템플릿 클래스에서 확장되거나 줄여질 수 있는 동적 배열을 제공한다. </br></br>C++ 표준은 new/delete와 C 메모리 할당 루틴들 사이에서 특정한 관계를 명시하지 않지만, new와 delete는 일반적으로 malloc과 free의 래퍼로서 구현된다. 두 집단의 연산자들을 혼합하는 것은 정의되지 않은 행동을 유발하며 실제로 락의 릴리즈의 실패로 인한 데드락 같은 비극적인 결과를 초래한다.
 
-## ★ REFERENCE
+## 🚀 REFERENCE
 
 :airplane: [메소드 오버라이딩,(method overriding) - 위키백과](https://ko.wikipedia.org/wiki/%EB%A9%94%EC%86%8C%EB%93%9C_%EC%98%A4%EB%B2%84%EB%9D%BC%EC%9D%B4%EB%94%A9)
 
@@ -368,6 +368,10 @@ Derived d;
 :airplane: [Pointer (computer programming) - 위키백과](https://en.wikipedia.org/wiki/Pointer_(computer_programming))
 
 :airplane: [Difference between Reference and Pointer in C++](https://www.thecrazyprogrammer.com/2016/12/difference-between-reference-and-pointer.html)
+
+:airplane: [What is the difference between new/delete and malloc/free? - StackOverFlow](https://stackoverflow.com/questions/240212/what-is-the-difference-between-new-delete-and-malloc-free)
+
+:airplane: [struct vs class in C++ - Mentor](https://blogs.mentor.com/colinwalls/blog/2014/06/02/struct-vs-class-in-c/)
 
 ## ★ Developer Information
 
