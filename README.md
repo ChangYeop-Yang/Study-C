@@ -304,7 +304,7 @@ Derived d;
 
 ## ■ Smart Functor
 
-## ★ Difference Between new/delete and malloc/free
+## ★ [Difference Between new/delete and malloc/free](https://stackoverflow.com/questions/240212/what-is-the-difference-between-new-delete-and-malloc-free)
 
 ###### 🔑 New/Delete
 
