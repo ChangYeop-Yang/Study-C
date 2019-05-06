@@ -631,6 +631,26 @@ int main()
 
 * 표준 C++이 C 표준 라이브러리를 포함하기 때문에, C 동적 메모리 할당 루틴들인 malloc, realloc 그리고 free도 C++ 프로그래머에게 사용될 수 있다. 이것들은 객체 초기화와 소멸을 수행하지 않기 때문에 이러한 루틴들의 사용은 대부분의 경우에 추천되지 않는다. 사실 new와 delete는 객체 초기화를 직접 수행하는 것을 피하기 위해 C++의 첫 번째 버전에서 도입되었다. </br></br>realloc으로 할당된 배열을 키우거나 줄이는 C 루틴들과 대조적으로, new[]에 의해 할당된 메모리 버퍼의 크기를 변경하는 것은 불가능하다. C++ 표준 라이브러리는 대신 자신의 std::vector 템플릿 클래스에서 확장되거나 줄여질 수 있는 동적 배열을 제공한다. </br></br>C++ 표준은 new/delete와 C 메모리 할당 루틴들 사이에서 특정한 관계를 명시하지 않지만, new와 delete는 일반적으로 malloc과 free의 래퍼로서 구현된다. 두 집단의 연산자들을 혼합하는 것은 정의되지 않은 행동을 유발하며 실제로 락의 릴리즈의 실패로 인한 데드락 같은 비극적인 결과를 초래한다.
 
+## 📣 STL (Standard Template Library)
+
+* STL은 표준 C++ 라이브러리의 일부분으로 Standard Template Library의 약자이다. STL은 프로그램에 필요한 자료구조와 알고리즘을 탬플릿으로 제공하는 라이브러리이기도 하다.
+
+* The Standard Template Library (STL) is a set of C++ template classes to provide common programming data structures and functions such as lists, stacks, arrays, etc. It is a library of container classes, algorithms, and iterators. It is a generalized library and so, its components are parameterized.
+
+###### 🔑 STL (Standard Template Library) 
+
+* 컨테이너 (Container) - 객체를 저장하는 객체로 컬렉션 혹은 자료구조라고 한다.
+
+* 반복자 (Iterator) - 포인터와 비슷한 개념으로 컨테이너의 원소를 가리키고, 가리키는 원소에 접근하여 다음 원소를 가리키게 하는 기능을 수행한다.
+
+* 알고리즘 (Algorithm) - 정렬, 삭제, 검색, 연산 등을 해결하는 일반화된 방법을 제공하는 함수 템플릿이다.
+
+* 함수 객체 (Function Object) - 함수처럼 동작하는 객체로 `operator()` 연산자를 오버로딩한 객체이다. 컨테이너와 알고리즘 등에 클라이언트 정책을 반영하게 한다.
+
+* 어댑터 (Adaptor) - 구성 요소의 인터페이스를 변경하여 새로운 인터페이스를 갖는 구성 요소로 변경한다.
+
+* 할당기 (Allocator) - 컨테이너의 메모리 할당 정책을 캡슐화한 클래스 객체로 모든 컨테이너는 자신만의 기본 할당기를 가지고 있다.
+
 ## 🚀 REFERENCE
 
 ✈️ [C/C++ REFERENCE URL](https://github.com/ChangYeop-Yang/Study-C/issues/2)
