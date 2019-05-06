@@ -2,7 +2,7 @@
 
 * C++는 AT&T 벨 연구소의 비야네 스트롭스트룹이 1983년 발표하여 발전한 프로그래밍 언어이다.
 
-## 📣 Memory Layout
+## 📣 메모리 계층 (Memory Layout)
 
 <p align="center">
  <img src="https://cdncontribute.geeksforgeeks.org/wp-content/uploads/memoryLayoutC.jpg" />
@@ -31,6 +31,58 @@
 * Heap is the segment where dynamic memory allocation usually takes place.
 
 * The heap area begins at the end of the BSS segment and grows to larger addresses from there.The Heap area is managed by malloc, realloc, and free, which may use the brk and sbrk system calls to adjust its size (note that the use of brk/sbrk and a single “heap area” is not required to fulfill the contract of malloc/realloc/free; they may also be implemented using mmap to reserve potentially non-contiguous regions of virtual memory into the process’ virtual address space). The Heap area is shared by all shared libraries and dynamically loaded modules in a process.
+
+## 📣 [접근제어 지시자 (Access Modifier)](https://www.geeksforgeeks.org/access-modifiers-in-c/)
+
+#### 💊 Private
+
+* 자기 클래스 내부의 메서드에서만 접근 허용한다.
+
+* The class members declared as private can be accessed only by the functions inside the class. They are not allowed to be accessed directly by any object or function outside the class. Only the member functions or the friend functions are allowed to access the private data members of a class.
+
+#### 💊 Protected 
+
+* 자기 클래스 내부 또는 상속받은 자식 클래스에서 접근 허용한다.
+
+* Protected access modifier is similar to that of private access modifiers, the difference is that the class member declared as Protected are inaccessible outside the class but they can be accessed by any subclass(derived class) of that class.
+
+#### 💊 Public 
+
+* 모든 접근을 허용한다.
+
+* All the class members declared under public will be available to everyone. The data members and member functions declared public can be accessed by other classes too. The public members of a class can be accessed from anywhere in the program using the direct member access operator (.) with the object of that class.
+
+###### 📃 접근제어 지시자 (Access Modifier) Source Code
+
+```C++
+class Car {
+// Data Fields ///////////////
+public: // 지금부터 선언되는 멤버변수와 함수는 모두 접근 허용.
+   int  year;
+   char maker[50];
+
+protected: // 지금부터 선언되는 멤버변수와 함수는 자기 클래스와 상속 클래스에서만 접근 허용.
+   int  capEngine;
+
+private: // 지금부터 선언되는 멤버변수와 함수는 자기 클래스에서만 접근 허용.
+   char ecu[20];
+   char colorCode[30];
+
+/// Methods ///////////////////////////////////
+public:
+   Car() {  }  // 생성자는 외부에서 접근 허용이 되어야 한다.
+   ~Car() {  }  // 소멸자
+
+   int getMkYear() { return year; }
+   int getCapEngine() { return capEngine; }
+
+protected: // 자기 클래스 내부와 상속클래스에서 접근 허용한다.
+   char* getEcuType() { return ecu; }
+   char* getColorCode() { return colorCode; }
+
+// ....
+};
+```
 
 ## 📣 [함수 오버로드 (Method Overloading)](https://www.tutorialspoint.com/cgi-bin/printpage.cgi)
 
