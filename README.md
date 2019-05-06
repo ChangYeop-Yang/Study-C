@@ -259,7 +259,7 @@ int main () {
  <img src="https://user-images.githubusercontent.com/20036523/47368932-8f1f0b80-d71d-11e8-9a53-3e2f72aa85d7.jpg" />
 </p>
 
-**◆ References are less powerful than pointers**
+** ◆ References are less powerful than pointers**
 
 1) Once a reference is created, it cannot be later made to reference another object; it cannot be reseated. This is often done with pointers.
 
@@ -269,7 +269,7 @@ int main () {
 
 * Due to the above limitations, references in C++ cannot be used for implementing data structures like Linked List, Tree, etc. In Java, references don’t have above restrictions, and can be used to implement all data structures. References being more powerful in Java, is the main reason Java doesn’t need pointers.
 
-**◆ References are safer and easier to use:**
+** ◆ References are safer and easier to use:**
 
 1) Safer: Since references must be initialized, wild references like wild pointers are unlikely to exist. It is still possible to have references that don’t refer to a valid location (See questions 5 and 6 in the below exercise )
 
@@ -303,6 +303,39 @@ Derived d;
 * A pure virtual function implicitly makes the class it is defined for abstract (unlike in Java where you have a keyword to explicitly declare the class abstract). Abstract classes cannot be instantiated. Derived classes need to override/implement all inherited pure virtual functions. If they do not, they too will become abstract.
 
 ## ■ Smart Functor
+
+## ★ Difference Between new/delete and malloc/free
+
+###### 🔑 New/Delete
+
+* Allocate/release memory
+* Memory allocated from 'Free Store'
+* Returns a fully typed pointer.
+* new (standard version) never returns a NULL (will throw on failure)
+* Are called with Type-ID (compiler calculates the size)
+* Has a version explicitly to handle arrays.
+* Reallocating (to get more space) not handled intuitively (because of copy constructor).
+* Whether they call malloc/free is implementation defined.
+* Can add a new memory allocator to deal with low memory (set_new_handler)
+* operator new/delete can be overridden legally
+* constructor/destructor used to initialize/destroy the object
+
+###### 🔑 Malloc/Free
+
+* Allocates/release memory
+* Memory allocated from 'Heap'
+* Returns a void*
+* Returns NULL on failure
+* Must specify the size required in bytes.
+* Allocating array requires manual calculation of space.
+* Reallocating larger chunk of memory simple (No copy constructor to worry about)
+* They will NOT call new/delete
+* No way to splice user code into the allocation sequence to help with low memory.
+* malloc/free can NOT be overridden legally
+
+###### 🔑 Malloc과 Free와의 관계
+
+* 표준 C++이 C 표준 라이브러리를 포함하기 때문에, C 동적 메모리 할당 루틴들인 malloc, realloc 그리고 free도 C++ 프로그래머에게 사용될 수 있다. 이것들은 객체 초기화와 소멸을 수행하지 않기 때문에 이러한 루틴들의 사용은 대부분의 경우에 추천되지 않는다. 사실 new와 delete는 객체 초기화를 직접 수행하는 것을 피하기 위해 C++의 첫 번째 버전에서 도입되었다. </br></br>realloc으로 할당된 배열을 키우거나 줄이는 C 루틴들과 대조적으로, new[]에 의해 할당된 메모리 버퍼의 크기를 변경하는 것은 불가능하다. C++ 표준 라이브러리는 대신 자신의 std::vector 템플릿 클래스에서 확장되거나 줄여질 수 있는 동적 배열을 제공한다. </br></br>C++ 표준은 new/delete와 C 메모리 할당 루틴들 사이에서 특정한 관계를 명시하지 않지만, new와 delete는 일반적으로 malloc과 free의 래퍼로서 구현된다. 두 집단의 연산자들을 혼합하는 것은 정의되지 않은 행동을 유발하며 실제로 락의 릴리즈의 실패로 인한 데드락 같은 비극적인 결과를 초래한다.
 
 ## ★ REFERENCE
 
