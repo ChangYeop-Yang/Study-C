@@ -304,6 +304,55 @@ Derived d;
 
 ## ■ Smart Functor
 
+## 📣 [Const](https://docs.microsoft.com/en-us/cpp/cpp/const-cpp?view=vs-2019)
+
+* Const는 C, C++에서 변수의 값이 바뀌는 것을 방지하기 위한 한정사이다. 즉, 이 한정사가 붙은 변수는 상수로 취급된다.
+
+###### 🔑 Const Value
+
+* The const keyword specifies that a variable's value is constant and tells the compiler to prevent the programmer from modifying it.
+
+```C++
+// constant_values1.cpp
+int main() {
+   const int i = 5;
+   i = 10;   // C3892
+   i++;   // C2105
+}
+```
+
+###### 🔑 Const Function
+
+```C++
+// constant_member_function.cpp
+class Date
+{
+public:
+   Date( int mn, int dy, int yr );
+   int getMonth() const;     // A read-only function
+   void setMonth( int mn );   // A write function; can't be const
+private:
+   int month;
+};
+
+int Date::getMonth() const
+{
+   return month;        // Doesn't modify anything
+}
+void Date::setMonth( int mn )
+{
+   month = mn;          // Modifies data member
+}
+int main()
+{
+   Date MyDate( 7, 4, 1998 );
+   const Date BirthDate( 1, 18, 1953 );
+   MyDate.setMonth( 4 );    // Okay
+   BirthDate.getMonth();    // Okay
+   BirthDate.setMonth( 4 ); // C2662 Error
+}
+```
+
 ## 📣 [Difference Between Class and Struct in C++](https://blogs.mentor.com/colinwalls/blog/2014/06/02/struct-vs-class-in-c/)
 
 * The only difference between a struct and class in C++ is the default accessibility of member variables and methods. In a struct they are public; in a class they are private.
