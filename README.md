@@ -1,5 +1,7 @@
 # ■ Study - C/C++ Language
 
+* C++는 AT&T 벨 연구소의 비야네 스트롭스트룹이 1983년 발표하여 발전한 프로그래밍 언어이다.
+
 ## 📣 Memory Layout
 
 <p align="center">
