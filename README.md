@@ -35,9 +35,11 @@
 # ● Study-C++ Language
 C++는 AT&T 벨 연구소의 비야네 스트롭스트룹이 1983년 발표하여 발전한 프로그래밍 언어이다.
 
-## [★ Method Overloading](https://www.tutorialspoint.com/cgi-bin/printpage.cgi)
+## 📣 [함수 오버로드 (Method Overloading)](https://www.tutorialspoint.com/cgi-bin/printpage.cgi)
 
 * You can have multiple definitions for the same function name in the same scope. The definition of the function must differ from each other by the types and/or the number of arguments in the argument list. You cannot overload function declarations that differ only by return type.
+
+###### 📃 함수 오버로드 (Method Overloading)
 
 ```C++
 #include <iostream>
@@ -72,11 +74,13 @@ int main(void) {
 }
 ```
 
-## ★ Operator Overrding
+## 📣 연산자 오버라이딩 (Operator Overrding)
 
 * You can redefine or overload most of the built-in operators available in C++. Thus, a programmer can use operators with user-defined types as well.
 
 * Overloaded operators are functions with special names: the keyword "operator" followed by the symbol for the operator being defined. Like any other function, an overloaded operator has a return type and a parameter list.
+
+###### 📃 연산자 오버라이딩 (Operator Overrding)
 
 ```C++
 #include <iostream>
@@ -148,9 +152,11 @@ int main() {
 }
 ```
 
-## ★ Method Overriding
+## 📣 함수 오버라이딩 (Method Overriding)
 
 * 메소드 오버라이딩,(method overriding)은 객체 지향 프로그래밍에서 서브클래스 또는 자식 클래스가 자신의 슈퍼클래스들 또는 부모 클래스들 중 하나에 의해 이미 제공된 메소드를 특정한 형태로 구현하는 것을 제공하는 언어의 특징이다. 서브클래스에서의 구현은 부모 클래스에서 같은 이름, 같은 파라미터 또는 시그니처 그리고 같은 반환형을 갖는 메소드를 제공함으로써 슈퍼클래스에서의 구현을 오버라이드한다.
+
+###### 📃 함수 오버라이딩 (Method Overrding)
 
 ```C++
 #include <iostream>
@@ -234,11 +240,11 @@ int main () {
 
 ## ★ Pointer and Reference
 
-#### ＃ Pointer
+###### 🔑 Pointer
 
 * In computer science, a pointer is a programming language object that stores the memory address of another value located in computer memory. A pointer references a location in memory, and obtaining the value stored at that location is known as dereferencing the pointer. As an analogy, a page number in a book's index could be considered a pointer to the corresponding page; dereferencing such a pointer would be done by flipping to the page with the given page number and reading the text found on that page. The actual format and content of a pointer variable is dependent on the underlying computer architecture.
 
-#### # Reference
+###### 🔑 Reference
 * In the C++ programming language, a reference is a simple reference datatype that is less powerful but safer than the pointer type inherited from C. The name C++ reference may cause confusion, as in computer science a reference is a general concept datatype, with pointers and C++ references being specific reference datatype implementations. The definition of a reference in C++ is such that it does not need to exist. **It can be implemented as a new name for an existing object** (similar to rename keyword in Ada).
 
 ###### § Reference Features
@@ -277,9 +283,11 @@ int main () {
 
 * Together with the above reasons, there are few places like copy constructor argument where pointer cannot be used. Reference must be used pass the argument in copy constructor. Similarly references must be used for overloading some operators like ++.
 
-## 📣 [Virtual Functions](https://docs.microsoft.com/en-us/cpp/cpp/virtual-functions?view=vs-2019)
+## 📣 [가상 함수 (Virtual Functions)](https://docs.microsoft.com/en-us/cpp/cpp/virtual-functions?view=vs-2019)
 
 * 가상 함수는 파생 클래스가 안전하게 재정의할 수 있는 함수이다. 만약 상속 관계가 아니라면 가상 함수를 선언할 필요가 없으므로 가상 함수는 상속 계층내에서만 의미가 있으며 파생 클래스에게 재정의 기회를 주기 위해 존재하는 것이라고 할 수 있다. 그러나 **가상 함수를 반드시 재정의해야만 하는 것은 아니다. 기반 클래스의 동작을 그대로 쓰고 싶으면 단순히 상속만 받고 변경할 필요가 있을 때만 재정의하면 된다.** 기반 클래스가 가상 함수를 만드는 이유는 혹시라도 재정의하고 포인터로 호출할 때를 대비한 것이다. **가상 함수는 재정의해도 되는 함수이지 반드시 재정의해야 하는 함수는 아니다.**
+
+###### 📃 가상 함수 (Virtual Functions) Source Code
 
 ```C++
 // deriv_VirtualFunctions2.cpp
@@ -334,9 +342,11 @@ int main() {
 }
 ```
 
-## 📣 [Pure Virtual Functions](https://www.geeksforgeeks.org/pure-virtual-functions-and-abstract-classes/)
+## 📣 [순수 가상 함수 (Pure Virtual Functions)](https://www.geeksforgeeks.org/pure-virtual-functions-and-abstract-classes/)
 
 * 순수 가상 함수(Pure Virtual Function)는 **파생 클래스에서 반드시 재정의해야 하는 함수**이다. 순수 가상 함수는 일반적으로 함수의 동작을 정의하는 본체를 가지지 않으며 따라서 이 상태에서는 호출할 수 없다. 본체가 없다는 뜻으로 함수 선언부의 끝에 `= 0`이라는 표기를 하는데 이는 함수만 있고 코드는 비어 있다는 뜻이다.
+
+###### 📃 순수 가상 함수 (Pure Virtual Functions) Source Code
 
 ```C++
 #include<iostream> 
@@ -366,7 +376,58 @@ int main(void)
 } 
 
 ```
-## ■ Smart Functor
+## 📣 [스마트 포인터 (Smart Functor)](http://tcpschool.com/cpp/cpp_template_smartPointer)
+
+* 스마트 포인터(smart pointer)란 포인터처럼 동작하는 클래스 템플릿으로, 사용이 끝난 메모리를 자동으로 해제해 줍니다.
+
+* In computer science, a smart pointer is an abstract data type that simulates a pointer while providing added features, such as automatic memory management or bounds checking. Such features are intended to reduce bugs caused by the misuse of pointers, while retaining efficiency. Smart pointers typically keep track of the memory they point to, and may also be used to manage other resources, such as network connections and file handles. Smart pointers were first popularized in the programming language C++ during the first half of the 1990s as rebuttal to criticisms of C++'s lack of automatic garbage collection.
+
+* Pointer misuse can be a major source of bugs. **Smart pointers prevent most situations of memory leaks by making the memory deallocation automatic.** More generally, they make object destruction automatic: an object controlled by a smart pointer is automatically destroyed (finalized and then deallocated) when the last (or only) owner of an object is destroyed, for example because the owner is a local variable, and execution leaves the variable's scope. Smart pointers also eliminate dangling pointers by postponing destruction until an object is no longer in use.
+
+#### 💊 unique_ptr
+
+* A unique_ptr is a container for a raw pointer, which the unique_ptr is said to own. A unique_ptr explicitly prevents copying of its contained pointer (as would happen with normal assignment), but the ``std::move`` function can be used to transfer ownership of the contained pointer to another unique_ptr. **A unique_ptr cannot be copied because its copy constructor and assignment operators are explicitly deleted.**
+
+* unique_ptr은 하나의 스마트 포인터만이 특정 객체를 소유할 수 있도록, 객체에 소유권 개념을 도입한 스마트 포인터입니다. 또한 이 스마트 포인터는 해당 객체의 소유권을 가지고 있을 때만, 소멸자가 해당 객체를 삭제할 수 있습니다.
+
+###### 📃 unique_ptr Source Code
+
+```C++
+std::unique_ptr<int> p1(new int(5));
+std::unique_ptr<int> p2 = p1; //Compile error.
+std::unique_ptr<int> p3 = std::move(p1); //Transfers ownership. p3 now owns the memory and p1 is set to nullptr.
+
+// unique_ptr<int> ptr03 = ptr01;  // 대입 연산자를 이용한 복사는 오류를 발생시킴.
+
+p3.reset(); //Deletes the memory.
+p1.reset(); //Does nothing.
+```
+
+#### 💊 shared_ptr
+
+* A shared_ptr is a container for a raw pointer. **It maintains reference counting ownership of its contained pointer in cooperation with all copies of the shared_ptr.** An object referenced by the contained raw pointer will be destroyed when and only when all copies of the shared_ptr have been destroyed. (참조 횟수가 0이 되면 delete 키워드를 사용하여 메모리를 자동으로 해제합니다.)
+
+###### 📃 shared_ptr Source Code
+
+```C++
+std::shared_ptr<int> p0(new int(5));        // valid, allocates 1 integer and initialize it with value 5
+std::shared_ptr<int[]> p1(new int[5]);      // valid, allocates 5 integers
+std::shared_ptr<int[]> p2 = p1; //Both now own the memory.
+
+p1.reset(); //Memory still exists, due to p2.
+p2.reset(); //Deletes the memory, since no one else owns the memory.
+```
+
+``` C++
+shared_ptr<int> ptr01(new int(5)); // int형 shared_ptr인 ptr01을 선언하고 초기화함.
+cout << ptr01.use_count() << endl; // 1
+auto ptr02(ptr01);                 // 복사 생성자를 이용한 초기화
+
+cout << ptr01.use_count() << endl; // 2
+auto ptr03 = ptr01;                // 대입을 통한 초기화
+
+cout << ptr01.use_count() << endl; // 3  
+```
 
 ## 📣 [Const](https://docs.microsoft.com/en-us/cpp/cpp/const-cpp?view=vs-2019)
 
