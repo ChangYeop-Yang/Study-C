@@ -238,16 +238,17 @@ int main () {
 }
 ```
 
-## ★ Pointer and Reference
+## 📣 포인터와 참조자 (Pointer and Reference)
 
-###### 🔑 Pointer
+#### 💊 포인터 (Pointer)
 
 * In computer science, a pointer is a programming language object that stores the memory address of another value located in computer memory. A pointer references a location in memory, and obtaining the value stored at that location is known as dereferencing the pointer. As an analogy, a page number in a book's index could be considered a pointer to the corresponding page; dereferencing such a pointer would be done by flipping to the page with the given page number and reading the text found on that page. The actual format and content of a pointer variable is dependent on the underlying computer architecture.
 
-###### 🔑 Reference
+#### 💊 참조자 (Reference)
+
 * In the C++ programming language, a reference is a simple reference datatype that is less powerful but safer than the pointer type inherited from C. The name C++ reference may cause confusion, as in computer science a reference is a general concept datatype, with pointers and C++ references being specific reference datatype implementations. The definition of a reference in C++ is such that it does not need to exist. **It can be implemented as a new name for an existing object** (similar to rename keyword in Ada).
 
-###### § Reference Features
+###### 🔑 참조자 특징 (Reference Features)
 
 * It is not possible to refer directly to a reference object after it is defined; any occurrence of its name refers directly to the object it references.
 
@@ -255,17 +256,40 @@ int main () {
 
 * References cannot be null, whereas pointers can; every reference refers to some object, although it may or may not be valid. Note that for this reason, containers of references are not allowed.
 
-* References cannot be uninitialized. Because it is impossible to reinitialize a reference, they must be initialized as soon as they are created. In particular, local and global variables must be initialized where they are defined, and references which are data members of class instances must be initialized in the initializer list of the class's constructor. For example:
+* References cannot be uninitialized. Because it is impossible to reinitialize a reference, they must be initialized as soon as they are created. In particular, local and global variables must be initialized where they are defined, and references which are data members of class instances must be initialized in the initializer list of the class's constructor.
 
-* * *
+###### 📃 참조자 (Reference) Source Code
 
-#### [※ Difference Pointer and Reference](https://www.geeksforgeeks.org/references-in-c/)
+```C++
+#include<iostream> 
+using namespace std; 
+
+int main() 
+{ 
+int x = 10; 
+
+// ref is a reference to x. 
+int& ref = x; 
+
+// Value of x is now changed to 20 
+ref = 20; 
+cout << "x = " << x << endl ; 
+
+// Value of x is now changed to 30 
+x = 30; 
+cout << "ref = " << ref << endl ; 
+
+return 0; 
+} 
+```
+
+#### 💊 [참조자와 포인터의 차이점 (Difference Pointer and Reference)](https://www.geeksforgeeks.org/references-in-c/)
 
 <p align="center">
  <img src="https://user-images.githubusercontent.com/20036523/47368932-8f1f0b80-d71d-11e8-9a53-3e2f72aa85d7.jpg" />
 </p>
 
-** ◆ References are less powerful than pointers**
+###### 💡 References are less powerful than pointers
 
 1) Once a reference is created, it cannot be later made to reference another object; it cannot be reseated. This is often done with pointers.
 
@@ -274,14 +298,6 @@ int main () {
 3) A reference must be initialized when declared. There is no such restriction with pointers
 
 * Due to the above limitations, references in C++ cannot be used for implementing data structures like Linked List, Tree, etc. In Java, references don’t have above restrictions, and can be used to implement all data structures. References being more powerful in Java, is the main reason Java doesn’t need pointers.
-
-** ◆ References are safer and easier to use:**
-
-1) Safer: Since references must be initialized, wild references like wild pointers are unlikely to exist. It is still possible to have references that don’t refer to a valid location (See questions 5 and 6 in the below exercise )
-
-2) Easier to use: References don’t need dereferencing operator to access the value. They can be used like normal variables. ‘&’ operator is needed only at the time of declaration. Also, members of an object reference can be accessed with dot operator (‘.’), unlike pointers where arrow operator (->) is needed to access members.
-
-* Together with the above reasons, there are few places like copy constructor argument where pointer cannot be used. Reference must be used pass the argument in copy constructor. Similarly references must be used for overloading some operators like ++.
 
 ## 📣 [가상 함수 (Virtual Functions)](https://docs.microsoft.com/en-us/cpp/cpp/virtual-functions?view=vs-2019)
 
@@ -481,7 +497,7 @@ int main() {
 }
 ```
 
-###### 🔑 Const member functions
+###### 🔑 Const Member Functions
 
 * Declaring a member function with the const keyword specifies that the function is a "read-only" function that does not modify the object for which it is called. A constant member function cannot modify any non-static data members or call any member functions that aren't constant.To declare a constant member function, place the const keyword after the closing parenthesis of the argument list. The const keyword is required in both the declaration and the definition.
 
@@ -530,6 +546,8 @@ int main()
 ## 📣 [Difference Between new/delete and malloc/free in C++](https://stackoverflow.com/questions/240212/what-is-the-difference-between-new-delete-and-malloc-free)
 
 * The most relevant difference is that the `new` operator allocates memory then calls the constructor, and `delete` calls the destructor then deallocates the memory.
+
+* * `new` 연산자는 자유 기억 공간(free store)이라고 불리는 메모리 공간(memory pool)에 객체를 위한 메모리를 할당받습니다. 또한, `new` 연산자를 통해 할당받은 메모리는 따로 이름이 없으므로 해당 포인터로만 접근할 수 있게 됩니다.
 
 ###### 🔑 New/Delete
 
