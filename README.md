@@ -277,31 +277,95 @@ int main () {
 
 * Together with the above reasons, there are few places like copy constructor argument where pointer cannot be used. Reference must be used pass the argument in copy constructor. Similarly references must be used for overloading some operators like ++.
 
-## ★ Virtual Functions & Pure Virtual Functions
+## 📣 [Virtual Functions](https://docs.microsoft.com/en-us/cpp/cpp/virtual-functions?view=vs-2019)
 
-* 가상 함수는 파생 클래스가 안전하게 재정의할 수 있는 함수이다. 만약 상속 관계가 아니라면 가상 함수를 선언할 필요가 없으므로 가상 함수는 상속 계층내에서만 의미가 있으며 파생 클래스에게 재정의 기회를 주기 위해 존재하는 것이라고 할 수 있다. 그러나 가상 함수를 반드시 재정의해야만 하는 것은 아니다. 기반 클래스의 동작을 그대로 쓰고 싶으면 단순히 상속만 받고 변경할 필요가 있을 때만 재정의하면 된다. 기반 클래스가 가상 함수를 만드는 이유는 혹시라도 재정의하고 포인터로 호출할 때를 대비한 것이다. 가상 함수는 재정의해도 되는 함수이지 반드시 재정의해야 하는 함수는 아니다.
-
-
-* 순수 가상 함수(Pure Virtual Function)는 파생 클래스에서 반드시 재정의해야 하는 함수이다. 순수 가상 함수는 일반적으로 함수의 동작을 정의하는 본체를 가지지 않으며 따라서 이 상태에서는 호출할 수 없다. 본체가 없다는 뜻으로 함수 선언부의 끝에 =0이라는 표기를 하는데 이는 함수만 있고 코드는 비어 있다는 뜻이다.
-
-#### ※ Difference Virtual Functions and Pure Virtual Functions
-
-* A virtual function makes its class a polymorphic base class. Derived classes can override virtual functions. Virtual functions called through base class pointers/references will be resolved at run-time.
+* 가상 함수는 파생 클래스가 안전하게 재정의할 수 있는 함수이다. 만약 상속 관계가 아니라면 가상 함수를 선언할 필요가 없으므로 가상 함수는 상속 계층내에서만 의미가 있으며 파생 클래스에게 재정의 기회를 주기 위해 존재하는 것이라고 할 수 있다. 그러나 **가상 함수를 반드시 재정의해야만 하는 것은 아니다. 기반 클래스의 동작을 그대로 쓰고 싶으면 단순히 상속만 받고 변경할 필요가 있을 때만 재정의하면 된다.** 기반 클래스가 가상 함수를 만드는 이유는 혹시라도 재정의하고 포인터로 호출할 때를 대비한 것이다. **가상 함수는 재정의해도 되는 함수이지 반드시 재정의해야 하는 함수는 아니다.**
 
 ```C++
-class Base {
-  // ...
-  virtual void f() = 0;
-  // ...
+// deriv_VirtualFunctions2.cpp
+// compile with: /EHsc
+#include <iostream>
+using namespace std;
 
-Derived d;
- Base& rb = d;
- // if Base::f() is virtual and Derived overrides it, Derived::f() will be called
- rb.f();  
+class Base {
+public:
+   virtual void NameOf();   // Virtual function.
+   void InvokingClass();   // Nonvirtual function.
+};
+
+// Implement the two functions.
+void Base::NameOf() {
+   cout << "Base::NameOf\n";
+}
+
+void Base::InvokingClass() {
+   cout << "Invoked by Base\n";
+}
+
+class Derived : public Base {
+public:
+   void NameOf();   // Virtual function.
+   void InvokingClass();   // Nonvirtual function.
+};
+
+// Implement the two functions.
+void Derived::NameOf() {
+   cout << "Derived::NameOf\n";
+}
+
+void Derived::InvokingClass() {
+   cout << "Invoked by Derived\n";
+}
+
+int main() {
+   // Declare an object of type Derived.
+   Derived aDerived;
+
+   // Declare two pointers, one of type Derived * and the other
+   //  of type Base *, and initialize them to point to aDerived.
+   Derived *pDerived = &aDerived;
+   Base    *pBase    = &aDerived;
+
+   // Call the functions.
+   pBase->NameOf();           // Call virtual function.
+   pBase->InvokingClass();    // Call nonvirtual function.
+   pDerived->NameOf();        // Call virtual function.
+   pDerived->InvokingClass(); // Call nonvirtual function.
+}
 ```
 
-* A pure virtual function implicitly makes the class it is defined for abstract (unlike in Java where you have a keyword to explicitly declare the class abstract). Abstract classes cannot be instantiated. Derived classes need to override/implement all inherited pure virtual functions. If they do not, they too will become abstract.
+## 📣 [Pure Virtual Functions](https://www.geeksforgeeks.org/pure-virtual-functions-and-abstract-classes/)
 
+* 순수 가상 함수(Pure Virtual Function)는 **파생 클래스에서 반드시 재정의해야 하는 함수**이다. 순수 가상 함수는 일반적으로 함수의 동작을 정의하는 본체를 가지지 않으며 따라서 이 상태에서는 호출할 수 없다. 본체가 없다는 뜻으로 함수 선언부의 끝에 `= 0`이라는 표기를 하는데 이는 함수만 있고 코드는 비어 있다는 뜻이다.
+
+```C++
+#include<iostream> 
+using namespace std; 
+
+class Base 
+{ 
+int x; 
+public: 
+	virtual void fun() = 0; 
+	int getX() { return x; } 
+}; 
+
+// This class inherits from Base and implements fun() 
+class Derived: public Base 
+{ 
+	int y; 
+public: 
+	void fun() { cout << "fun() called"; } 
+}; 
+
+int main(void) 
+{ 
+	Derived d; 
+	d.fun(); 
+	return 0; 
+} 
+
+```
 ## ■ Smart Functor
 
 ## 📣 [Const](https://docs.microsoft.com/en-us/cpp/cpp/const-cpp?view=vs-2019)
@@ -404,29 +468,7 @@ int main()
 
 ## 🚀 REFERENCE
 
-:airplane: [메소드 오버라이딩,(method overriding) - 위키백과](https://ko.wikipedia.org/wiki/%EB%A9%94%EC%86%8C%EB%93%9C_%EC%98%A4%EB%B2%84%EB%9D%BC%EC%9D%B4%EB%94%A9)
-
-:airplane: [C++ Overloading (Operator and Function)](https://www.tutorialspoint.com/cplusplus/cpp_overloading.htm)
-
-:airplane: [Memory Layout of C Programs - ](https://www.geeksforgeeks.org/memory-layout-of-c-program/)
-
-:airplane: [순수 가상 함수 -C/C++ by WinAPI](http://soen.kr/lecture/ccpp/cpp3/30-3-1.htm)
-
-:airplane: [Difference between a virtual function and a pure virtual function [duplicate]](https://stackoverflow.com/questions/2652198/difference-between-a-virtual-function-and-a-pure-virtual-function)
-
-:airplane: [friend (C++) - MS](https://msdn.microsoft.com/ko-kr/library/465sdshe.aspx)
-
-:airplane: [Friendship and inheritance - cplusplus](http://www.cplusplus.com/doc/tutorial/inheritance/)
-
-:airplane: [References in C++ - GeeksforGeeks](https://www.geeksforgeeks.org/references-in-c/)
-
-:airplane: [Pointer (computer programming) - 위키백과](https://en.wikipedia.org/wiki/Pointer_(computer_programming))
-
-:airplane: [Difference between Reference and Pointer in C++](https://www.thecrazyprogrammer.com/2016/12/difference-between-reference-and-pointer.html)
-
-:airplane: [What is the difference between new/delete and malloc/free? - StackOverFlow](https://stackoverflow.com/questions/240212/what-is-the-difference-between-new-delete-and-malloc-free)
-
-:airplane: [struct vs class in C++ - Mentor](https://blogs.mentor.com/colinwalls/blog/2014/06/02/struct-vs-class-in-c/)
+✈️ [C/C++ REFERENCE URL](https://github.com/ChangYeop-Yang/Study-C/issues/2)
 
 ## ★ Developer Information
 
