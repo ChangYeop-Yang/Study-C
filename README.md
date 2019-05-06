@@ -637,7 +637,7 @@ int main()
 
 * The Standard Template Library (STL) is a set of C++ template classes to provide common programming data structures and functions such as lists, stacks, arrays, etc. It is a library of container classes, algorithms, and iterators. It is a generalized library and so, its components are parameterized.
 
-###### 🔑 STL (Standard Template Library) 
+###### 🔑 STL (Standard Template Library) Types
 
 * 컨테이너 (Container) - 객체를 저장하는 객체로 컬렉션 혹은 자료구조라고 한다.
 
