@@ -316,6 +316,8 @@ Derived d;
 
 ## 📣 [Difference Between new/delete and malloc/free in C++](https://stackoverflow.com/questions/240212/what-is-the-difference-between-new-delete-and-malloc-free)
 
+* The most relevant difference is that the `new` operator allocates memory then calls the constructor, and `delete` calls the destructor then deallocates the memory.
+
 ###### 🔑 New/Delete
 
 * Allocate/release memory
