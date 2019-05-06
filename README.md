@@ -33,7 +33,8 @@
 * The heap area begins at the end of the BSS segment and grows to larger addresses from there.The Heap area is managed by malloc, realloc, and free, which may use the brk and sbrk system calls to adjust its size (note that the use of brk/sbrk and a single “heap area” is not required to fulfill the contract of malloc/realloc/free; they may also be implemented using mmap to reserve potentially non-contiguous regions of virtual memory into the process’ virtual address space). The Heap area is shared by all shared libraries and dynamically loaded modules in a process.
 
 # ● Study-C++ Language
-C++는 AT&T 벨 연구소의 비야네 스트롭스트룹이 1983년 발표하여 발전한 프로그래밍 언어이다.
+
+* C++는 AT&T 벨 연구소의 비야네 스트롭스트룹이 1983년 발표하여 발전한 프로그래밍 언어이다.
 
 ## 📣 [함수 오버로드 (Method Overloading)](https://www.tutorialspoint.com/cgi-bin/printpage.cgi)
 
@@ -201,40 +202,42 @@ void TBox::print() const
 }
 ```
 
-## ★ Friend
+## 📣 Friend
 
-* 경우에 따라 개별 클래스의 모든 함수 또는 클래스의 멤버가 아닌 함수에 멤버 수준 액세스 권한을 부여 하는 것이 더 편리합니다. 클래스 구현자만 이 클래스의 friend를 선언할 수 있습니다. 함수 또는 클래스는 자신을 클래스의 friend로 선언할 수 없습니다. 클래스 선언에서 friend 키워드 및 비멤버 함수 또는 기타 클래스의 이름을 사용하여 클래스의 전용 멤버 및 보호된 멤버에 대한 액세스 권한을 부여합니다.
+* 프렌드는 지정한 대상에 한해 해당 객체의 모든 멤버에 접근할 수 있는 권한을 부여해 줍니다. 이러한 friend 키워드는 전역 함수, 클래스, 멤버 함수의 세 가지 형태로 사용할 수 있습니다.
 
 * In principle, private and protected members of a class cannot be accessed from outside the same class in which they are declared. However, this rule does not apply to "friends".
 
-```C++
-// friend functions
-#include <iostream>
-using namespace std;
+###### 📃  Friend Source Code
 
-class Rectangle {
-    int width, height;
-  public:
-    Rectangle() {}
-    Rectangle (int x, int y) : width(x), height(y) {}
-    int area() {return width * height;}
-    friend Rectangle duplicate (const Rectangle&);
+* 클래스의 friend 선언을 하면 직접 private 멤버 접근 가능하다.
+
+```C++
+// classes_as_friends2.cpp
+// compile with: /EHsc
+#include <iostream>
+
+using namespace std;
+class YourClass {
+friend class YourOtherClass;  // Declare a friend class
+public:
+   YourClass() : topSecret(0){}
+   void printMember() { cout << topSecret << endl; }
+private:
+   int topSecret;
 };
 
-Rectangle duplicate (const Rectangle& param)
-{
-  Rectangle res;
-  res.width = param.width*2;
-  res.height = param.height*2;
-  return res;
-}
+class YourOtherClass {
+public:
+   void change( YourClass& yc, int x ){yc.topSecret = x;}
+};
 
-int main () {
-  Rectangle foo;
-  Rectangle bar (2,3);
-  foo = duplicate (bar);
-  cout << foo.area() << '\n';
-  return 0;
+int main() {
+   YourClass yc1;
+   YourOtherClass yoc1;
+   yc1.printMember();
+   yoc1.change( yc1, 5 );
+   yc1.printMember();
 }
 ```
 
