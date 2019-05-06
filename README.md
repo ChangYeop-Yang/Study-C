@@ -129,7 +129,7 @@ int main(void) {
 
 * Overloaded operators are functions with special names: the keyword "operator" followed by the symbol for the operator being defined. Like any other function, an overloaded operator has a return type and a parameter list.
 
-###### 📃 연산자 오버라이딩 (Operator Overrding)
+###### 📃 연산자 오버라이딩 (Operator Overrding) Source Code
 
 ```C++
 #include <iostream>
@@ -205,7 +205,7 @@ int main() {
 
 * 메소드 오버라이딩,(method overriding)은 객체 지향 프로그래밍에서 서브클래스 또는 자식 클래스가 자신의 슈퍼클래스들 또는 부모 클래스들 중 하나에 의해 이미 제공된 메소드를 특정한 형태로 구현하는 것을 제공하는 언어의 특징이다. 서브클래스에서의 구현은 부모 클래스에서 같은 이름, 같은 파라미터 또는 시그니처 그리고 같은 반환형을 갖는 메소드를 제공함으로써 슈퍼클래스에서의 구현을 오버라이드한다.
 
-###### 📃 함수 오버라이딩 (Method Overrding)
+###### 📃 함수 오버라이딩 (Method Overrding) Source Code
 
 ```C++
 #include <iostream>
