@@ -304,7 +304,13 @@ Derived d;
 
 ## ■ Smart Functor
 
-## 📣 [Difference Between new/delete and malloc/free](https://stackoverflow.com/questions/240212/what-is-the-difference-between-new-delete-and-malloc-free)
+## 📣 [Difference Between Class and Struct in C++](https://blogs.mentor.com/colinwalls/blog/2014/06/02/struct-vs-class-in-c/)
+
+* The only difference between a struct and class in C++ is the default accessibility of member variables and methods. In a struct they are public; in a class they are private.
+
+* C++에서의 Struct와 Class의 유일한 차이점은 접근 제어 지시자 (Access Modifier)를 선언하지 않을 때 Class는 `Private`으로 Struct는 `Public`으로 선언된다.
+
+## 📣 [Difference Between new/delete and malloc/free in C++](https://stackoverflow.com/questions/240212/what-is-the-difference-between-new-delete-and-malloc-free)
 
 ###### 🔑 New/Delete
 
