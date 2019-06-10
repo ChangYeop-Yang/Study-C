@@ -21,6 +21,9 @@ using std::endl;
 
 class WinSocket
 {
+	// MARK: - Typedef
+	typedef std::pair<std::string, SOCKADDR_IN> User;
+
 	// MARK: - System Methods
 	public:
 		~WinSocket();
@@ -30,12 +33,14 @@ class WinSocket
 		void openTCPSocketServer(const int port, HWND hDig);
 		void closeTCPSocketServer();
 		void OnSocketEvent(HWND hWnd, SOCKET sock, WORD eid, WORD err);
+		const CString GetCurrentTimeAndMessage(const CString message);
 		const bool OnSendMessage(const SOCKET sock, const std::string message);
 
 	private:
 		void OnAccept(HWND hDig, WORD eid, WORD error);
 		void OnReceiveMessage(SOCKET sock, HWND hDig, WORD eid, WORD error);
 		void OnCloseClientSocket(SOCKET sock, HWND hDig, WORD eid, WORD error);
+		void OnAllSendClientMessage(const std::string message);
 
 	// MARK: - Object Methods
 	public:
@@ -44,10 +49,11 @@ class WinSocket
 	private:		
 		int szClntAddr;
 		char message[BUFSIZ];
+		std::unordered_map<SOCKET, User> clients;
 
 		WSADATA wasData;
-		SOCKET hServSock, hClntSock;
-		SOCKADDR_IN servAddr, clntAddr;
+		SOCKET hServSock;
+		SOCKADDR_IN servAddr;
 };
 
 #endif

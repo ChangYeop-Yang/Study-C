@@ -49,12 +49,13 @@ class CChatMFCApplicationDlg : public CDialogEx
 
 	// MARK: - Object Variables
 	private:
-		WinTime * winTime;
+		//WinTime * winTime;
 		std::unique_ptr<WinSocket>	socket;
 
 	// MARK: - Event Methods
 	private:
 		afx_msg void OnClickedTCPbuttons(const UINT id);
+		afx_msg void OnClickedRadioButtons(const UINT id);
 
 	// MARK: - User Methods
 	private:

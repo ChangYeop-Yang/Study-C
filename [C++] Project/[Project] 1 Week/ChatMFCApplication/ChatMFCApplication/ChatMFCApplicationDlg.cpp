@@ -35,6 +35,7 @@ void CChatMFCApplicationDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CChatMFCApplicationDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_COMMAND_RANGE( IDC_RADIO_01, IDC_RADIO_02, CChatMFCApplicationDlg::OnClickedRadioButtons )
 	ON_COMMAND_RANGE( IDC_MFCBUTTON_2, IDC_MFCBUTTON_1, CChatMFCApplicationDlg::OnClickedTCPbuttons )
 END_MESSAGE_MAP()
 
@@ -56,8 +57,6 @@ BOOL CChatMFCApplicationDlg::OnInitDialog()
 
 	this->socket = unique_ptr<WinSocket>(new WinSocket());
 	this->socket->eventListBox = &this->IDC_EVENT_MESSAGE_LIST;
-	
-	this->winTime = WinTime::getInstance();
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -113,15 +112,28 @@ void CChatMFCApplicationDlg::OnClickedTCPbuttons(const UINT id) {
 
 }
 
+void CChatMFCApplicationDlg::OnClickedRadioButtons(const UINT id) {
+
+	switch (id) {
+		case IDC_RADIO_01: {
+			break;
+		}
+		case IDC_RADIO_02: {
+			break;
+		}
+	}
+
+}
+
 void CChatMFCApplicationDlg::OpenTCPServer() {
 
 	if (const int length = this->IDC_INPUT_PORT_EDIT.GetWindowTextLength()) {
 
 		CString port_string;
 		this->IDC_INPUT_PORT_EDIT.GetWindowText(port_string);
-
-		const auto message = CString();
-		this->IDC_EVENT_MESSAGE_LIST.AddString(TEXT("※ TCP/IP SERVER OPEN ※"));
+		
+		const auto message = this->socket->GetCurrentTimeAndMessage(TEXT("TCP/IP SERVER OPEN"));
+		this->IDC_EVENT_MESSAGE_LIST.AddString(message);
 
 		const int port = _ttoi(port_string);
 		this->socket->openTCPSocketServer(port, this->m_hWnd);
@@ -139,7 +151,8 @@ void CChatMFCApplicationDlg::OpenTCPServer() {
 
 void CChatMFCApplicationDlg::CloseTCPServer() {
 
-	this->IDC_EVENT_MESSAGE_LIST.AddString(TEXT("※ TCP/IP SERVER CLOSE ※"));
+	const auto message = this->socket->GetCurrentTimeAndMessage(TEXT("TCP/IP SERVER CLOSE"));
+	this->IDC_EVENT_MESSAGE_LIST.AddString(message);
 
 	this->socket->closeTCPSocketServer();
 

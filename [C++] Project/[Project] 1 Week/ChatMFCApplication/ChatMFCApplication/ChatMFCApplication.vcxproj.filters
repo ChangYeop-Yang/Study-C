@@ -19,12 +19,6 @@
     <Filter Include="소스 파일\WinSocket">
       <UniqueIdentifier>{b5f149eb-7bc0-4cbe-b7cb-df519a085fd8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일\Time">
-      <UniqueIdentifier>{ba6ea2ec-2a47-4224-aa58-761a01dd9300}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Time">
-      <UniqueIdentifier>{d9d6146e-4a2a-4310-8637-49dc298d5965}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChatMFCApplication.h">
@@ -45,9 +39,6 @@
     <ClInclude Include="WinSocket.h">
       <Filter>헤더 파일\WinSocket</Filter>
     </ClInclude>
-    <ClInclude Include="WinTime.h">
-      <Filter>헤더 파일\Time</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChatMFCApplication.cpp">
@@ -61,9 +52,6 @@
     </ClCompile>
     <ClCompile Include="WinSocket.cpp">
       <Filter>소스 파일\WinSocket</Filter>
-    </ClCompile>
-    <ClCompile Include="WinTime.cpp">
-      <Filter>소스 파일\Time</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

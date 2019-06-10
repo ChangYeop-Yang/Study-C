@@ -1,8 +1,9 @@
 #pragma once
 
+#ifndef WINTIME_H_
+#define WINTIME_H_
+
 #include <ctime>
-#include <iomanip>
-#include <sstream>
 #include <iostream>
 
 class WinTime 
@@ -10,7 +11,6 @@ class WinTime
 	// MARK: - System Methods
 	private	:
 		WinTime();
-		~WinTime();
 
 	// MARK: - Object Variables
 	private :
@@ -19,5 +19,7 @@ class WinTime
 	// MARK: - User Methods
 	public :
 		static WinTime * getInstance();
-		const std::string GetCurrentTime();
+		const CString GetCurrentTime_String();
 };
+
+#endif

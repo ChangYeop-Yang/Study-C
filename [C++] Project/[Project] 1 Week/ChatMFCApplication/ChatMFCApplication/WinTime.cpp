@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "WinTime.h"
 
 /* Null, because instance will be initialized on demand. */
@@ -12,14 +13,12 @@ WinTime * WinTime::getInstance() {
 	return shared;
 }
 
-const std::string WinTime::GetCurrentTime() {
+const CString WinTime::GetCurrentTime_String() {
 
-	const auto time = std::time(nullptr);
-	const auto timeInfo = *std::localtime(&time);
+	const auto now = CTime::GetCurrentTime();
+	
+	CString time_str;
+	time_str.Format(_T("%04d-%02d-%02d %02d:%02d:%02d"), now.GetYear(), now.GetMonth(), now.GetDay(), now.GetHour(), now.GetMinute(), now.GetSecond());
 
-	// MARK: http://www.cplusplus.com/reference/iomanip/put_time/
-	std::stringstream stream;
-	stream << std::put_time(&timeInfo, "%F %T");
-
-	return stream.str;
+	return time_str;
 }
