@@ -5,4 +5,4 @@
 
 #include "stdafx.h"
 
-
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
