@@ -40,22 +40,23 @@ class CChatMFCApplicationDlg : public CDialogEx
 	// MARK: - Outlet Variables
 	private:
 		CEdit		IDC_INPUT_PORT_EDIT;
+		CEdit		IDC_INPUT_MESSAGE_EDIT;
 
 		CListBox	IDC_EVENT_MESSAGE_LIST;
 
-		CMFCButton	sendMessageButton;
 		CMFCButton	IDC_SERVER_CLOSE_BUTTON;
+		CMFCButton	IDC_MESSAGE_SEND_BUTTON;
 		CMFCButton	IDC_SERVER_OPEN_BUTTON;
 
 	// MARK: - Object Variables
 	private:
-		//WinTime * winTime;
 		std::unique_ptr<WinSocket>	socket;
 
 	// MARK: - Event Methods
 	private:
 		afx_msg void OnClickedTCPbuttons(const UINT id);
 		afx_msg void OnClickedRadioButtons(const UINT id);
+		afx_msg void OnSendMessage();
 
 	// MARK: - User Methods
 	private:

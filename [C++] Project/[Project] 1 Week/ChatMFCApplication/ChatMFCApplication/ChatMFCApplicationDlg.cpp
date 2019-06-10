@@ -24,19 +24,22 @@ CChatMFCApplicationDlg::CChatMFCApplicationDlg(CWnd* pParent /*=nullptr*/)
 void CChatMFCApplicationDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_MFCBUTTON2, sendMessageButton);
 	DDX_Control(pDX, IDC_EDIT4, IDC_INPUT_PORT_EDIT);
 
 	DDX_Control(pDX, IDC_MFCBUTTON_1, IDC_SERVER_OPEN_BUTTON);
 	DDX_Control(pDX, IDC_MFCBUTTON_2, IDC_SERVER_CLOSE_BUTTON);
 	DDX_Control(pDX, IDC_LIST1, IDC_EVENT_MESSAGE_LIST);
+	DDX_Control(pDX, IDC_MFCBUTTON2, IDC_MESSAGE_SEND_BUTTON);
+	DDX_Control(pDX, IDC_EDIT1, IDC_INPUT_MESSAGE_EDIT);
 }
 
 BEGIN_MESSAGE_MAP(CChatMFCApplicationDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+
 	ON_COMMAND_RANGE( IDC_RADIO_01, IDC_RADIO_02, CChatMFCApplicationDlg::OnClickedRadioButtons )
 	ON_COMMAND_RANGE( IDC_MFCBUTTON_2, IDC_MFCBUTTON_1, CChatMFCApplicationDlg::OnClickedTCPbuttons )
+	ON_BN_CLICKED(IDC_MFCBUTTON2, &CChatMFCApplicationDlg::OnSendMessage)
 END_MESSAGE_MAP()
 
 
@@ -52,8 +55,8 @@ BOOL CChatMFCApplicationDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	sendMessageButton.EnableWindowsTheming(false);
-	sendMessageButton.SetFaceColor(RGB(254, 240, 27));
+	//sendMessageButton.EnableWindowsTheming(false);
+	//sendMessageButton.SetFaceColor(RGB(254, 240, 27));
 
 	this->socket = unique_ptr<WinSocket>(new WinSocket());
 	this->socket->eventListBox = &this->IDC_EVENT_MESSAGE_LIST;
@@ -97,6 +100,8 @@ HCURSOR CChatMFCApplicationDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+// MARK: - Action Methods
+
 void CChatMFCApplicationDlg::OnClickedTCPbuttons(const UINT id) {
 
 	switch (id) {
@@ -125,6 +130,17 @@ void CChatMFCApplicationDlg::OnClickedRadioButtons(const UINT id) {
 
 }
 
+void CChatMFCApplicationDlg::OnSendMessage()
+{
+	CString message;
+
+	if (const int length = this->IDC_INPUT_MESSAGE_EDIT.GetWindowTextLengthW()) {
+		this->IDC_INPUT_MESSAGE_EDIT.GetWindowTextW(message);
+	}
+}
+
+// MARK: - User Methods
+
 void CChatMFCApplicationDlg::OpenTCPServer() {
 
 	if (const int length = this->IDC_INPUT_PORT_EDIT.GetWindowTextLength()) {
@@ -137,6 +153,8 @@ void CChatMFCApplicationDlg::OpenTCPServer() {
 
 		const int port = _ttoi(port_string);
 		this->socket->openTCPSocketServer(port, this->m_hWnd);
+
+		SetDlgItemText(IDC_STATIC_01, this->socket->GetServerIP());
 
 		// MARK: IDC_SERVER_OPEN_BUTTON, IDC_SERVER_CLOSE_BUTTON Enable (버튼 활성화)
 		this->IDC_SERVER_CLOSE_BUTTON.EnableWindow(true);
@@ -160,6 +178,8 @@ void CChatMFCApplicationDlg::CloseTCPServer() {
 	this->IDC_SERVER_CLOSE_BUTTON.EnableWindow(false);
 	this->IDC_SERVER_OPEN_BUTTON.EnableWindow(true);
 }
+
+// MARK: - System Call Methods
 
 LRESULT CChatMFCApplicationDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {

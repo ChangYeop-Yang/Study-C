@@ -35,6 +35,7 @@ class WinSocket
 		void OnSocketEvent(HWND hWnd, SOCKET sock, WORD eid, WORD err);
 		const CString GetCurrentTimeAndMessage(const CString message);
 		const bool OnSendMessage(const SOCKET sock, const std::string message);
+		const CString GetServerIP();
 
 	private:
 		void OnAccept(HWND hDig, WORD eid, WORD error);

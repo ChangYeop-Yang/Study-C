@@ -78,6 +78,10 @@ void WinSocket::closeTCPSocketServer() {
 	WSACleanup(), closesocket(this->hServSock);
 }
 
+const CString WinSocket::GetServerIP() {
+	return CString(inet_ntoa(this->servAddr.sin_addr));
+}
+
 void WinSocket::OnReceiveMessage(SOCKET sock, HWND hDig, WORD eid, WORD error) {
 
 	if ( const int length = recv(sock, this->message, BUFSIZ, 0) ) {
