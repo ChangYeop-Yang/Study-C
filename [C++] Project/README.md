@@ -22,7 +22,9 @@
 
 #### 🔑 DEVLEOPMENT KEYWORD
 
-* 
+* `Android`
+* `JAVA`
+* `TCP/IP`
 
 #### [🚀 Project Source Code]()
 
