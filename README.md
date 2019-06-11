@@ -672,13 +672,13 @@ int WSAAsyncSelect (
 
 #### 📑 WSAAsyncSelect Parameters
 
-1️⃣ `s` - A descriptor that identifies the socket for which event notification is required.
+* `s` - A descriptor that identifies the socket for which event notification is required.
 
-2️⃣ `hWnd` - A handle that identifies the window that will receive a message when a network event occurs.
+* `hWnd` - A handle that identifies the window that will receive a message when a network event occurs.
 
-3️⃣ `wMsg` - A message to be received when a network event occurs.
+* `wMsg` - A message to be received when a network event occurs.
 
-4️⃣ `lEvent` - A bitmask that specifies a combination of network events in which the application is interested.
+* `lEvent` - A bitmask that specifies a combination of network events in which the application is interested.
 
 #### 📖 WSAAsyncSelect Event Type
 
