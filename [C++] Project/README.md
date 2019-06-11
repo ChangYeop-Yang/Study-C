@@ -25,6 +25,8 @@
 * `Android`
 * `JAVA`
 * `TCP/IP`
+* `C/C++`
+* `Android NDK`
 
 #### [🚀 Project Source Code]()
 
