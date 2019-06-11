@@ -673,11 +673,17 @@ int main()
 
 ## 📣 WSAAsyncSelect
 
+<p align="center">
+	<img src="https://user-images.githubusercontent.com/20036523/59235762-e979c780-8c2d-11e9-99c4-cc5cb5f15335.png" />
+</p>
+
 * WSAAsyncSelect 윈도우 메시지 형태로 소켓과 관련 된 네트워크 이벤트를 처리하여 멀티스레드를 사용하지 않고도 여러 개의 소켓을 처리 가능하게 하는 네트워크 모델이다.
 
 * The WSAAsyncSelect function is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in subsequent versions. Rather than use Select-style I/O, use Overlapped I/O and Event Objects with WinSock2.
 
 * The WSAAsyncSelect function requests Windows message-based notification of network events for a socket.
+
+* WSAAsyncSelect 모델은 WSAAsyncSelect() 함수가 핵심적인 역할을 한다는 뜻에서 붙인 이름이다. WSAAsyncSelect모델을 사용하면 윈도우 메시지 형태로 소켓과 관련된 네트워크 이벤트를 처리할 수 있다. 모든 소켓과 관련된 메시지는 하나의 윈도우, 즉 하나의 윈도우 프로시저로 전달되므로 멀티스레드를 사용하지 않고도 여러 소켓을 처리할 수 있다.
 
 #### 📑 WSAAsyncSelect Structure Source Code
 
