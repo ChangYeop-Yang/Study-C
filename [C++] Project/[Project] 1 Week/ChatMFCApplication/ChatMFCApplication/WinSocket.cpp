@@ -56,7 +56,7 @@ void WinSocket::openTCPSocketServer(const int port, HWND hDig) {
 	this->eventListBox->AddString(connection_mssage);
 	
 	// MARK: WSAAsyncSelect()함수를 호출하면 해당 소켓은 자동으로 Non_Blocking 모드로 전환된다.
-	WSAAsyncSelect(this->hServSock, hDig, MWM_EVENT_SOCK, FD_ACCEPT | FD_CLOSE);
+	WSAAsyncSelect(this->hServSock, hDig, MWM_SERVER_EVENT_SOCK, FD_ACCEPT | FD_CLOSE);
 }
 
 void WinSocket::OnSocketEvent(HWND hWnd, SOCKET sock, WORD eid, WORD error) {
@@ -69,6 +69,10 @@ void WinSocket::OnSocketEvent(HWND hWnd, SOCKET sock, WORD eid, WORD error) {
 			WinSocket::OnReceiveMessage(sock, hWnd, eid, error);
 			break;
 		case FD_CLOSE:
+			WinSocket::OnCloseClientSocket(sock, hWnd, eid, error);
+			break;
+		case FD_CONNECT:
+
 			break;
 	}
 
@@ -78,15 +82,13 @@ void WinSocket::closeTCPSocketServer() {
 	WSACleanup(), closesocket(this->hServSock);
 }
 
-const CString WinSocket::GetServerIP() {
-	return CString(inet_ntoa(this->servAddr.sin_addr));
-}
-
 void WinSocket::OnReceiveMessage(SOCKET sock, HWND hDig, WORD eid, WORD error) {
 
 	if ( const int length = recv(sock, this->message, BUFSIZ, 0) ) {
 
-		const auto msg = GetCurrentTimeAndMessage(CString(this->message));
+		const auto receive_msg = this->clients[sock].first + TEXT(" ") + CString(this->message);
+
+		const auto msg = GetCurrentTimeAndMessage(receive_msg);
 		this->eventListBox->AddString(msg);
 
 		std::memset(&this->message, 0, sizeof(this->message));
@@ -112,26 +114,77 @@ void WinSocket::OnAccept(HWND hDig, WORD eid, WORD error) {
 		WSACleanup(), exit(false), closesocket(this->hServSock);
 	}
 
-	// MARK: 
-	const auto value = std::make_pair(user.first, std::make_pair("", user.second));
-	this->clients.insert(value);
-
 	// MARK: Connection Message Output
-	const CString message = GetCurrentTimeAndMessage( CString(inet_ntoa(user.second.sin_addr)) ) + TEXT("의 주소로 접속하였습니다.");
+	const auto ipaddress_str	= CString( inet_ntoa(user.second.sin_addr) );
+	const auto message			= GetCurrentTimeAndMessage(ipaddress_str) + TEXT("의 주소로 접속하였습니다.");
 	this->eventListBox->AddString(message);
 
-	// MARK: Client Socket의 FD_READ, FD_CLOSE Event를 Non_Blocking 작동한다.
-	WSAAsyncSelect(user.first, hDig, MWM_EVENT_SOCK, FD_READ | FD_CLOSE);
+	const auto value = std::make_pair(user.first, std::make_pair(ipaddress_str, user.second));
+	this->clients.insert(value);
+
+	/* 
+		MARK: Client Socket의 FD_READ, FD_CLOSE Event를 Non_Blocking 작동한다.
+		★ WSAAsyncSelect - The WSAAsyncSelect function requests Windows message-based notification of network events for a socket.
+	*/
+	WSAAsyncSelect(user.first, hDig, MWM_SERVER_EVENT_SOCK, FD_READ | FD_CLOSE);
 }
 
 void WinSocket::OnCloseClientSocket(SOCKET sock, HWND hDig, WORD eid, WORD error) {
 
+	ULONG recv;
+
+	if (const int value = ioctlsocket(sock, FIONREAD, &recv) == SUCCESS_CODE) {
+
+		const auto message = GetCurrentTimeAndMessage( this->clients[sock].first + CString("의 클라이언트가 접속을 종료하였습니다.") );
+		
+		if (recv == SUCCESS_CODE) {
+			closesocket(sock); // Client Socket Close.
+
+			this->clients.erase(sock);
+			this->eventListBox->AddString(message);
+		}
+	}
+
 }
 
 void WinSocket::OnAllSendClientMessage(const std::string message) {
-
+	
 	for (const auto user : this->clients) {
 		OnSendMessage(user.first, message);
 	}
+}
+
+void WinSocket::ConnectTCPClient(const std::string ip, const int port, HWND hDig) {
+
+	try {
+
+		if ( WSAStartup(MAKEWORD(2, 2), &this->wasData) ) { 
+			throw Error::SETUP_WINSOCK_WSASTART_UP_ERROR; 
+		}
+
+		this->hServSock = socket(PF_INET, SOCK_STREAM, 0);
+		if (this->hServSock == INVALID_SOCKET) { 
+			throw Error::SETUP_WINSOCK_ERROR; 
+		}
+
+		std::memset( &this->servAddr, 0, sizeof(SOCKADDR_IN) );
+		this->servAddr.sin_family		= AF_INET; // IPv4
+		this->servAddr.sin_addr.s_addr	= inet_addr(ip.c_str());
+		this->servAddr.sin_port			= htons(port);
+
+		// MARK: 생성한 소켓을 통해 서버로 접속을 요청합니다.
+		if ( connect(this->hServSock, (SOCKADDR *)&servAddr, sizeof(SOCKADDR) == SOCKET_FAIL_ERROR) ) {
+			throw Error::CONNECT_SERVER_ERROR;
+		}
+
+		WSAAsyncSelect(this->hServSock, hDig, MWM_CLIENT_EVENT_SOCK, FD_READ | FD_CLOSE);
+	} 
+	catch (const int exception) {
+
+	}
+
+}
+
+void WinSocket::DisConnectTCPSocketClient() {
 
 }

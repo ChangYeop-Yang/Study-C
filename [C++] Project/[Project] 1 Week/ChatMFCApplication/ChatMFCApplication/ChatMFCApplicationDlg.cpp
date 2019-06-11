@@ -31,6 +31,7 @@ void CChatMFCApplicationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST1, IDC_EVENT_MESSAGE_LIST);
 	DDX_Control(pDX, IDC_MFCBUTTON2, IDC_MESSAGE_SEND_BUTTON);
 	DDX_Control(pDX, IDC_EDIT1, IDC_INPUT_MESSAGE_EDIT);
+	DDX_Control(pDX, IDC_RADIO_01, IDC_SERVER_MODE_RADIO);
 }
 
 BEGIN_MESSAGE_MAP(CChatMFCApplicationDlg, CDialogEx)
@@ -39,7 +40,9 @@ BEGIN_MESSAGE_MAP(CChatMFCApplicationDlg, CDialogEx)
 
 	ON_COMMAND_RANGE( IDC_RADIO_01, IDC_RADIO_02, CChatMFCApplicationDlg::OnClickedRadioButtons )
 	ON_COMMAND_RANGE( IDC_MFCBUTTON_2, IDC_MFCBUTTON_1, CChatMFCApplicationDlg::OnClickedTCPbuttons )
-	ON_BN_CLICKED(IDC_MFCBUTTON2, &CChatMFCApplicationDlg::OnSendMessage)
+
+	ON_BN_CLICKED( IDC_MFCBUTTON2, &CChatMFCApplicationDlg::OnSendMessage )
+	ON_EN_CHANGE(IDC_EDIT1, &CChatMFCApplicationDlg::OnChangeMessage)
 END_MESSAGE_MAP()
 
 
@@ -60,6 +63,9 @@ BOOL CChatMFCApplicationDlg::OnInitDialog()
 
 	this->socket = unique_ptr<WinSocket>(new WinSocket());
 	this->socket->eventListBox = &this->IDC_EVENT_MESSAGE_LIST;
+
+	this->IDC_INPUT_PORT_EDIT.SetLimitText(MAX_PORT_EDIT_DIGIT);
+	this->IDC_SERVER_MODE_RADIO.SetCheck(true);
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -106,11 +112,11 @@ void CChatMFCApplicationDlg::OnClickedTCPbuttons(const UINT id) {
 
 	switch (id) {
 		case IDC_MFCBUTTON_1 : { // IDC_SERVER_OPEN_BUTTON
-			CChatMFCApplicationDlg::OpenTCPServer();
+			this->socket_mode ? CChatMFCApplicationDlg::OpenTCPServer() : CChatMFCApplicationDlg::ConnectTCPClient();
 			break; 
 		}
 		case IDC_MFCBUTTON_2 : { // IDC_SERVER_CLOSE_BUTTON
-			CChatMFCApplicationDlg::CloseTCPServer();
+			this->socket_mode ? CChatMFCApplicationDlg::CloseTCPServer() : CChatMFCApplicationDlg::DisConnectTCPSocketClient();
 			break; 
 		}
 	}
@@ -119,15 +125,24 @@ void CChatMFCApplicationDlg::OnClickedTCPbuttons(const UINT id) {
 
 void CChatMFCApplicationDlg::OnClickedRadioButtons(const UINT id) {
 
+	CString message;
+
 	switch (id) {
 		case IDC_RADIO_01: {
+			this->socket_mode = true;
+			this->IDC_INPUT_PORT_EDIT.SetLimitText(MAX_PORT_EDIT_DIGIT);
+			message = "서버 모드 (CHANGE SERVER MODE)";
 			break;
 		}
 		case IDC_RADIO_02: {
+			this->socket_mode = false;
+			this->IDC_INPUT_PORT_EDIT.SetLimitText(MAX_IP_EDIT_DIGIT);
+			message = "클라이언트 모드 (CHANGE CLIENT MODE)";
 			break;
 		}
 	}
 
+	MessageBox(message);
 }
 
 void CChatMFCApplicationDlg::OnSendMessage()
@@ -136,6 +151,14 @@ void CChatMFCApplicationDlg::OnSendMessage()
 
 	if (const int length = this->IDC_INPUT_MESSAGE_EDIT.GetWindowTextLengthW()) {
 		this->IDC_INPUT_MESSAGE_EDIT.GetWindowTextW(message);
+		
+	}
+
+	if (socket_mode) {
+		std::string mm(CW2A(message.GetString()));
+		this->socket->OnAllSendClientMessage( mm );
+	} else {
+
 	}
 }
 
@@ -153,8 +176,6 @@ void CChatMFCApplicationDlg::OpenTCPServer() {
 
 		const int port = _ttoi(port_string);
 		this->socket->openTCPSocketServer(port, this->m_hWnd);
-
-		SetDlgItemText(IDC_STATIC_01, this->socket->GetServerIP());
 
 		// MARK: IDC_SERVER_OPEN_BUTTON, IDC_SERVER_CLOSE_BUTTON Enable (버튼 활성화)
 		this->IDC_SERVER_CLOSE_BUTTON.EnableWindow(true);
@@ -179,6 +200,23 @@ void CChatMFCApplicationDlg::CloseTCPServer() {
 	this->IDC_SERVER_OPEN_BUTTON.EnableWindow(true);
 }
 
+void CChatMFCApplicationDlg::ConnectTCPClient() {
+
+
+	// MARK: IDC_SERVER_OPEN_BUTTON, IDC_SERVER_CLOSE_BUTTON Enable (버튼 활성화)
+	this->IDC_SERVER_CLOSE_BUTTON.EnableWindow(true);
+	this->IDC_SERVER_OPEN_BUTTON.EnableWindow(false);
+}
+
+void CChatMFCApplicationDlg::DisConnectTCPSocketClient() {
+
+	
+
+	// MARK: IDC_SERVER_OPEN_BUTTON, IDC_SERVER_CLOSE_BUTTON Enable (버튼 활성화)
+	this->IDC_SERVER_CLOSE_BUTTON.EnableWindow(false);
+	this->IDC_SERVER_OPEN_BUTTON.EnableWindow(true);
+}
+
 // MARK: - System Call Methods
 
 LRESULT CChatMFCApplicationDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
@@ -186,9 +224,23 @@ LRESULT CChatMFCApplicationDlg::WindowProc(UINT message, WPARAM wParam, LPARAM l
 	const SOCKET socket = (SOCKET) wParam;
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	if (MWM_SOCK == message) {
-		this->socket->OnSocketEvent(this->m_hWnd, socket, lParam, lParam);
+	switch (message) {
+		case MWM_SERVER_EVENT_SOCK:
+			this->socket->OnSocketEvent(this->m_hWnd, socket, lParam, lParam);
+			break;
+		case MWM_CLIENT_EVENT_SOCK:
+
+			break;
 	}
 
 	return CDialogEx::WindowProc(message, wParam, lParam);
+}
+
+void CChatMFCApplicationDlg::OnChangeMessage()
+{
+	if (const int length = this->IDC_INPUT_MESSAGE_EDIT.GetWindowTextLengthW()) {
+		this->IDC_MESSAGE_SEND_BUTTON.EnableWindow(true);
+	} else {
+		this->IDC_MESSAGE_SEND_BUTTON.EnableWindow(false);
+	}
 }

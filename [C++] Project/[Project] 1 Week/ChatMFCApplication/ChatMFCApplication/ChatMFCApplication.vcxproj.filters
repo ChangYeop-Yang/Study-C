@@ -39,6 +39,9 @@
     <ClInclude Include="WinSocket.h">
       <Filter>헤더 파일\WinSocket</Filter>
     </ClInclude>
+    <ClInclude Include="WinSocketError.h">
+      <Filter>헤더 파일\WinSocket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChatMFCApplication.cpp">

@@ -13,10 +13,12 @@
 #define IDC_EDIT4                       1033
 #define IDC_MFCBUTTON_1                 1035
 #define IDC_LIST1                       1039
-#define IDC_STATIC_02                   1042
-#define IDC_STATIC_01                   1043
 #define IDC_RADIO_01                    1044
 #define IDC_RADIO_02                    1045
+#define IDC_COMBO1                      1047
+#define IDC_COMBO2                      1048
+#define IDC_MFCBUTTON1                  1050
+#define IDC_MFCBUTTON3                  1051
 
 // Next default values for new objects
 // 
@@ -24,7 +26,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1047
+#define _APS_NEXT_CONTROL_VALUE         1052
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

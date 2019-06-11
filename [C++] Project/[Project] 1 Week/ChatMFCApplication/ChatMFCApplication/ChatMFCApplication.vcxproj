@@ -185,6 +185,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="WinSocket.h" />
+    <ClInclude Include="WinSocketError.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChatMFCApplication.cpp" />

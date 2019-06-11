@@ -6,12 +6,12 @@
 #include <memory>
 #include <iostream>
 #include <unordered_map>
-
 #include <WinSock2.h>
 
-#define MAX_REQUEST_QUEUE_SIZE 5
+#include "WinSocketError.h"
 
-#define MWM_EVENT_SOCK (WM_USER + 1)
+#define SUCCESS_CODE 0
+#define MAX_REQUEST_QUEUE_SIZE 5
 
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
@@ -19,11 +19,17 @@
 using std::cout;
 using std::endl;
 
+// MARK: - Typedef
+typedef std::pair<CString, SOCKADDR_IN> User;
+
+// MARK: - Enum
+enum EventMessage {
+	MWM_SERVER_EVENT_SOCK			= (WM_USER + 1),
+	MWM_CLIENT_EVENT_SOCK			= (WM_USER + 2)
+};
+
 class WinSocket
 {
-	// MARK: - Typedef
-	typedef std::pair<std::string, SOCKADDR_IN> User;
-
 	// MARK: - System Methods
 	public:
 		~WinSocket();
@@ -32,16 +38,17 @@ class WinSocket
 	public:
 		void openTCPSocketServer(const int port, HWND hDig);
 		void closeTCPSocketServer();
+		void ConnectTCPClient(const std::string ip, const int port, HWND hDig);
+		void DisConnectTCPSocketClient();
 		void OnSocketEvent(HWND hWnd, SOCKET sock, WORD eid, WORD err);
 		const CString GetCurrentTimeAndMessage(const CString message);
 		const bool OnSendMessage(const SOCKET sock, const std::string message);
-		const CString GetServerIP();
+		void OnAllSendClientMessage(const std::string message);
 
 	private:
 		void OnAccept(HWND hDig, WORD eid, WORD error);
 		void OnReceiveMessage(SOCKET sock, HWND hDig, WORD eid, WORD error);
 		void OnCloseClientSocket(SOCKET sock, HWND hDig, WORD eid, WORD error);
-		void OnAllSendClientMessage(const std::string message);
 
 	// MARK: - Object Methods
 	public:

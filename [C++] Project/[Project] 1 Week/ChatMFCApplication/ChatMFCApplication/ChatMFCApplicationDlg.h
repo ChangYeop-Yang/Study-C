@@ -6,10 +6,10 @@
 
 #include <memory>
 
-#include "WinTime.h"
 #include "WinSocket.h"
 
-#define MWM_SOCK (WM_USER+1)
+#define MAX_IP_EDIT_DIGIT 15
+#define MAX_PORT_EDIT_DIGIT 5
 
 // CChatMFCApplicationDlg 대화 상자
 class CChatMFCApplicationDlg : public CDialogEx
@@ -48,8 +48,11 @@ class CChatMFCApplicationDlg : public CDialogEx
 		CMFCButton	IDC_MESSAGE_SEND_BUTTON;
 		CMFCButton	IDC_SERVER_OPEN_BUTTON;
 
+		CButton		IDC_SERVER_MODE_RADIO;
+
 	// MARK: - Object Variables
 	private:
+		bool socket_mode = true;
 		std::unique_ptr<WinSocket>	socket;
 
 	// MARK: - Event Methods
@@ -62,7 +65,10 @@ class CChatMFCApplicationDlg : public CDialogEx
 	private:
 		void OpenTCPServer();
 		void CloseTCPServer();
+		void ConnectTCPClient();
+		void DisConnectTCPSocketClient();
 
 	public:
-		virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+		virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);	
+		afx_msg void OnChangeMessage();
 };
