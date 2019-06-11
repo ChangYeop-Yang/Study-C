@@ -17,7 +17,6 @@
 #define IDC_RADIO_02                    1045
 #define IDC_COMBO1                      1047
 #define IDC_COMBO2                      1048
-#define IDC_MFCBUTTON1                  1050
 #define IDC_MFCBUTTON3                  1051
 
 // Next default values for new objects

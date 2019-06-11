@@ -8,7 +8,7 @@
 
 #include "WinSocket.h"
 
-#define MAX_IP_EDIT_DIGIT 15
+#define MAX_IP_EDIT_DIGIT 21
 #define MAX_PORT_EDIT_DIGIT 5
 
 // CChatMFCApplicationDlg 대화 상자

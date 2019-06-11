@@ -58,8 +58,8 @@ BOOL CChatMFCApplicationDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	//sendMessageButton.EnableWindowsTheming(false);
-	//sendMessageButton.SetFaceColor(RGB(254, 240, 27));
+	this->IDC_MESSAGE_SEND_BUTTON.EnableWindowsTheming(false);
+	this->IDC_MESSAGE_SEND_BUTTON.SetFaceColor(RGB(254, 240, 27));
 
 	this->socket = unique_ptr<WinSocket>(new WinSocket());
 	this->socket->eventListBox = &this->IDC_EVENT_MESSAGE_LIST;
@@ -67,6 +67,7 @@ BOOL CChatMFCApplicationDlg::OnInitDialog()
 	this->IDC_INPUT_PORT_EDIT.SetLimitText(MAX_PORT_EDIT_DIGIT);
 	this->IDC_SERVER_MODE_RADIO.SetCheck(true);
 
+	// MARK: Setting Windows Form Title
 	this->SetWindowTextW( TEXT("TCP/IP CHAT PROJECT") );
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
@@ -165,6 +166,16 @@ void CChatMFCApplicationDlg::OnSendMessage()
 	this->IDC_INPUT_MESSAGE_EDIT.Clear();
 }
 
+void CChatMFCApplicationDlg::OnChangeMessage()
+{
+	if (const int length = this->IDC_INPUT_MESSAGE_EDIT.GetWindowTextLengthW()) {
+		this->IDC_MESSAGE_SEND_BUTTON.EnableWindow(true);
+	}
+	else {
+		this->IDC_MESSAGE_SEND_BUTTON.EnableWindow(false);
+	}
+}
+
 // MARK: - User Methods
 
 void CChatMFCApplicationDlg::OpenTCPServer() {
@@ -257,13 +268,4 @@ LRESULT CChatMFCApplicationDlg::WindowProc(UINT message, WPARAM wParam, LPARAM l
 	}
 
 	return CDialogEx::WindowProc(message, wParam, lParam);
-}
-
-void CChatMFCApplicationDlg::OnChangeMessage()
-{
-	if (const int length = this->IDC_INPUT_MESSAGE_EDIT.GetWindowTextLengthW()) {
-		this->IDC_MESSAGE_SEND_BUTTON.EnableWindow(true);
-	} else {
-		this->IDC_MESSAGE_SEND_BUTTON.EnableWindow(false);
-	}
 }
