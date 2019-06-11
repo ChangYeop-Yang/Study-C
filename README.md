@@ -651,6 +651,39 @@ int main()
 
 * 할당기 (Allocator) - 컨테이너의 메모리 할당 정책을 캡슐화한 클래스 객체로 모든 컨테이너는 자신만의 기본 할당기를 가지고 있다.
 
+## 📣 WSAAsyncSelect
+
+* WSAAsyncSelect 윈도우 메시지 형태로 소켓과 관련 된 네트워크 이벤트를 처리하여 멀티스레드를 사용하지 않고도 여러 개의 소켓을 처리 가능하게 하는 네트워크 모델이다.
+
+* The WSAAsyncSelect function is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in subsequent versions. Rather than use Select-style I/O, use Overlapped I/O and Event Objects with WinSock2.
+
+* The WSAAsyncSelect function requests Windows message-based notification of network events for a socket.
+
+#### 📑 WSAAsyncSelect Structure Source Code
+
+```C++
+int WSAAsyncSelect (
+       SOCKET   s,
+       HWND   hWnd,
+       unsigned int   wMsg,
+       long   lEvent
+);
+```
+
+#### 📑 WSAAsyncSelect Parameters
+
+1️⃣ `s` - A descriptor that identifies the socket for which event notification is required.
+
+2️⃣ `hWnd` - A handle that identifies the window that will receive a message when a network event occurs.
+
+3️⃣ `wMsg` - A message to be received when a network event occurs.
+
+4️⃣ `lEvent` - A bitmask that specifies a combination of network events in which the application is interested.
+
+#### 📖 WSAAsyncSelect Event Type
+
+1️⃣ 
+
 ## 🚀 REFERENCE
 
 ✈️ [C/C++ REFERENCE URL](https://github.com/ChangYeop-Yang/Study-C/issues/2)
