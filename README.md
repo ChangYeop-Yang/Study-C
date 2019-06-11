@@ -443,6 +443,7 @@ int main(void)
 } 
 
 ```
+
 ## 📣 [스마트 포인터 (Smart Functor)](http://tcpschool.com/cpp/cpp_template_smartPointer)
 
 * 스마트 포인터(smart pointer)란 포인터처럼 동작하는 클래스 템플릿으로, 사용이 끝난 메모리를 자동으로 해제해 줍니다.
@@ -603,28 +604,47 @@ int main()
 ###### 🔑 New/Delete
 
 * Allocate/release memory
+
 * Memory allocated from 'Free Store'
+
 * Returns a fully typed pointer.
+
 * new (standard version) never returns a NULL (will throw on failure)
+
 * Are called with Type-ID (compiler calculates the size)
+
 * Has a version explicitly to handle arrays.
+
 * Reallocating (to get more space) not handled intuitively (because of copy constructor).
+
 * Whether they call malloc/free is implementation defined.
+
 * Can add a new memory allocator to deal with low memory (set_new_handler)
+
 * operator new/delete can be overridden legally
+
 * constructor/destructor used to initialize/destroy the object
 
 ###### 🔑 Malloc/Free
 
 * Allocates/release memory
+
 * Memory allocated from 'Heap'
-* Returns a void*
+
+* Returns a `void*`
+
 * Returns NULL on failure
+
 * Must specify the size required in bytes.
+
 * Allocating array requires manual calculation of space.
+
 * Reallocating larger chunk of memory simple (No copy constructor to worry about)
+
 * They will NOT call new/delete
+
 * No way to splice user code into the allocation sequence to help with low memory.
+
 * malloc/free can NOT be overridden legally
 
 ###### 🔑 Malloc과 Free와의 관계
@@ -650,6 +670,63 @@ int main()
 * 어댑터 (Adaptor) - 구성 요소의 인터페이스를 변경하여 새로운 인터페이스를 갖는 구성 요소로 변경한다.
 
 * 할당기 (Allocator) - 컨테이너의 메모리 할당 정책을 캡슐화한 클래스 객체로 모든 컨테이너는 자신만의 기본 할당기를 가지고 있다.
+
+## 📣 WSAAsyncSelect
+
+<p align="center">
+	<img src="https://user-images.githubusercontent.com/20036523/59235762-e979c780-8c2d-11e9-99c4-cc5cb5f15335.png" />
+</p>
+
+* WSAAsyncSelect 윈도우 메시지 형태로 소켓과 관련 된 네트워크 이벤트를 처리하여 멀티스레드를 사용하지 않고도 여러 개의 소켓을 처리 가능하게 하는 네트워크 모델이다.
+
+* The WSAAsyncSelect function is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in subsequent versions. Rather than use Select-style I/O, use Overlapped I/O and Event Objects with WinSock2.
+
+* The WSAAsyncSelect function requests Windows message-based notification of network events for a socket.
+
+* WSAAsyncSelect 모델은 WSAAsyncSelect() 함수가 핵심적인 역할을 한다는 뜻에서 붙인 이름이다. WSAAsyncSelect모델을 사용하면 윈도우 메시지 형태로 소켓과 관련된 네트워크 이벤트를 처리할 수 있다. 모든 소켓과 관련된 메시지는 하나의 윈도우, 즉 하나의 윈도우 프로시저로 전달되므로 멀티스레드를 사용하지 않고도 여러 소켓을 처리할 수 있다.
+
+#### 📑 WSAAsyncSelect Structure Source Code
+
+```C++
+int WSAAsyncSelect (
+       SOCKET   s,
+       HWND   hWnd,
+       unsigned int   wMsg,
+       long   lEvent
+);
+```
+
+#### 📑 WSAAsyncSelect Parameters
+
+* `s` - A descriptor that identifies the socket for which event notification is required.
+
+* `hWnd` - A handle that identifies the window that will receive a message when a network event occurs.
+
+* `wMsg` - A message to be received when a network event occurs.
+
+* `lEvent` - A bitmask that specifies a combination of network events in which the application is interested.
+
+#### 📖 WSAAsyncSelect Event Type
+
+* `FD_READ` - Set to receive notification of readiness for reading.
+
+* `FD_WRITE` - Wants to receive notification of readiness for writing.
+
+* `FD_OOB` - Wants to receive notification of the arrival of OOB data.
+
+* `FD_ACCEPT` - Wants to receive notification of incoming connections.
+
+* `FD_CONNECT` - Wants to receive notification of completed connection or multipoint join operation.
+
+* `FD_CLOSE` - Wants to receive notification of socket closure.
+
+* `FD_QOS` - Wants to receive notification of socket Quality of Service (QoS) changes.
+
+* `FD_GROUP_QOS	` - Wants to receive notification of socket group Quality of Service (QoS) changes (reserved for future use with socket groups).
+
+* `FD_ROUTING_INTERFACE_CHANGE` - Wants to receive notification of routing interface changes for the specified destination(s).
+
+* `FD_ADDRESS_LIST_CHANGE` - Wants to receive notification of local address list changes for the socket protocol family.
 
 ## 🚀 REFERENCE
 
