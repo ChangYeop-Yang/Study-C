@@ -4,6 +4,7 @@
 #define WINSOCK_H_
 
 #include <memory>
+#include <string>
 #include <iostream>
 #include <unordered_map>
 #include <WinSock2.h>
@@ -40,7 +41,8 @@ class WinSocket
 		void closeTCPSocketServer();
 		void ConnectTCPClient(const std::string ip, const int port, HWND hDig);
 		void DisConnectTCPSocketClient();
-		void OnSocketEvent(HWND hWnd, SOCKET sock, WORD eid, WORD err);
+		void OnSocketServerEventHandler(HWND hWnd, SOCKET sock, WORD eid, WORD err);
+		void OnSocketClientEventHandler(HWND hWnd, SOCKET sock, WORD eid, WORD error);
 		const CString GetCurrentTimeAndMessage(const CString message);
 		const bool OnSendMessage(const SOCKET sock, const std::string message);
 		void OnAllSendClientMessage(const std::string message);

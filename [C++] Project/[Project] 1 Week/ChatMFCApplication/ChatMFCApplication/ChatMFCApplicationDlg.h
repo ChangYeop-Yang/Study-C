@@ -67,6 +67,7 @@ class CChatMFCApplicationDlg : public CDialogEx
 		void CloseTCPServer();
 		void ConnectTCPClient();
 		void DisConnectTCPSocketClient();
+		std::pair<std::string, std::string> SplitIPAddressAndPort(const std::string stub);
 
 	public:
 		virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);	

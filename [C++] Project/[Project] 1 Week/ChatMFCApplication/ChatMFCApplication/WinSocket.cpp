@@ -19,47 +19,73 @@ void WinSocket::openTCPSocketServer(const int port, HWND hDig) {
 
 	CString connection_mssage;
 
-	// MARK: WinSock 초기화
-	if ( WSAStartup(MAKEWORD(2, 0), &this->wasData) ) {
-		cout << "Error, SetUp WinSock." << endl;
-		exit(false);
-	}
+	try {
+
+		// MARK: WinSock 초기화
+		if (WSAStartup(MAKEWORD(2, 0), &this->wasData)) {
+			throw Error::SETUP_WINSOCK_WSASTART_UP_ERROR;
+		}
+
+		// MARK: Create TCP Socket
+		this->hServSock = socket(PF_INET, SOCK_STREAM, 0);
+		if (this->hServSock == INVALID_SOCKET) {
+			throw Error::SETUP_WINSOCK_ERROR;
+		}
 		
-	// MARK: Create TCP Socket
-	this->hServSock = socket(PF_INET, SOCK_STREAM, 0);
-	if (this->hServSock == INVALID_SOCKET) {
-		cout << "Error, Set Socket." << endl;
-		WSACleanup(), exit(false);
-	}
-	connection_mssage = GetCurrentTimeAndMessage( TEXT("Success, Create TCP/IP Socket.") );
-	this->eventListBox->AddString(connection_mssage);
+		connection_mssage = GetCurrentTimeAndMessage(TEXT("Success, Create TCP/IP Socket."));
+		this->eventListBox->AddString(connection_mssage);
 
-	std::memset(&this->servAddr, 0, sizeof(SOCKADDR_IN));
-	this->servAddr.sin_family		= AF_INET;
-	this->servAddr.sin_addr.s_addr	= htonl(INADDR_ANY); // INADDR_ANY 모든 IP 대역 접속을 허가한다.
-	this->servAddr.sin_port			= htons(port);
+		std::memset(&this->servAddr, 0, sizeof(SOCKADDR_IN));
+		this->servAddr.sin_family		= AF_INET;
+		this->servAddr.sin_addr.s_addr	= htonl(INADDR_ANY); // INADDR_ANY 모든 IP 대역 접속을 허가한다.
+		this->servAddr.sin_port			= htons(port);
 
-	// MARK: bind 함수는 지역주소를 소켓과 함께 결합(연관)시킵니다.
-	if ( bind(this->hServSock, (sockaddr *)&this->servAddr, sizeof(SOCKADDR_IN)) == SOCKET_ERROR) {
-		cout << "Error, Bind TCP Socket." << endl;
-		WSACleanup(), exit(false), closesocket(this->hServSock);
-	}
-	connection_mssage = GetCurrentTimeAndMessage( TEXT("Success, Bind TCP/IP Socket.") );
-	this->eventListBox->AddString(connection_mssage);
+		// MARK: bind 함수는 지역주소를 소켓과 함께 결합(연관)시킵니다.
+		if (bind(this->hServSock, (sockaddr *)&this->servAddr, sizeof(SOCKADDR_IN)) == SOCKET_ERROR) {
+			throw Error::BIND_WINSOCK_ERROR;
+		}
+		
+		connection_mssage = GetCurrentTimeAndMessage(TEXT("Success, Bind TCP/IP Socket."));
+		this->eventListBox->AddString(connection_mssage);
 
-	// MARK: listen 함수는 소켓을 들어오는 연결에 대해 listening 상태에 배치합니다.
-	if ( listen(this->hServSock, MAX_REQUEST_QUEUE_SIZE) == SOCKET_ERROR ) {
-		cout << "Error, Open Connection-Request-Queue. (Listen)" << endl;
-		WSACleanup(), exit(false), closesocket(this->hServSock);
+		// MARK: listen 함수는 소켓을 들어오는 연결에 대해 listening 상태에 배치합니다.
+		if (listen(this->hServSock, MAX_REQUEST_QUEUE_SIZE) == SOCKET_ERROR) {
+			throw Error::LISTEN_WINSOCK_ERROR;
+		}
+		
+		connection_mssage = GetCurrentTimeAndMessage(TEXT("Success, Open Connection-Request-Queue."));
+		this->eventListBox->AddString(connection_mssage);
+
+		// MARK: WSAAsyncSelect()함수를 호출하면 해당 소켓은 자동으로 Non_Blocking 모드로 전환된다.
+		WSAAsyncSelect(this->hServSock, hDig, MWM_SERVER_EVENT_SOCK, FD_ACCEPT | FD_CLOSE);
 	}
-	connection_mssage = GetCurrentTimeAndMessage( TEXT("Success, Open Connection-Request-Queue.") );
-	this->eventListBox->AddString(connection_mssage);
-	
-	// MARK: WSAAsyncSelect()함수를 호출하면 해당 소켓은 자동으로 Non_Blocking 모드로 전환된다.
-	WSAAsyncSelect(this->hServSock, hDig, MWM_SERVER_EVENT_SOCK, FD_ACCEPT | FD_CLOSE);
+	catch (const int exception) {
+
+		switch (exception) {
+			case Error::SETUP_WINSOCK_WSASTART_UP_ERROR: {
+				connection_mssage = "※ Error, SETUP_WINSOCK_WSASTART_UP_ERROR";
+				break;
+			}
+			case Error::SETUP_WINSOCK_ERROR: {
+				connection_mssage = "※ Error, SETUP_WINSOCK_ERROR";
+				break;
+			}
+			case Error::BIND_WINSOCK_ERROR: {
+				connection_mssage = "※ Error, BIND_WINSOCK_ERROR";
+				break;
+			}
+			case Error::LISTEN_WINSOCK_ERROR: {
+				connection_mssage = "※ Error, LISTEN_WINSOCK_ERROR";
+				break;
+			}
+		}
+
+		closeTCPSocketServer();
+		this->eventListBox->AddString(connection_mssage);
+	}
 }
 
-void WinSocket::OnSocketEvent(HWND hWnd, SOCKET sock, WORD eid, WORD error) {
+void WinSocket::OnSocketServerEventHandler(HWND hWnd, SOCKET sock, WORD eid, WORD error) {
 
 	switch (eid) {
 		case FD_ACCEPT:
@@ -71,8 +97,18 @@ void WinSocket::OnSocketEvent(HWND hWnd, SOCKET sock, WORD eid, WORD error) {
 		case FD_CLOSE:
 			WinSocket::OnCloseClientSocket(sock, hWnd, eid, error);
 			break;
-		case FD_CONNECT:
+	}
 
+}
+
+void WinSocket::OnSocketClientEventHandler(HWND hWnd, SOCKET sock, WORD eid, WORD error) {
+
+	switch (eid) {
+		case FD_READ:
+			WinSocket::OnReceiveMessage(sock, hWnd, eid, error);
+			break;
+		case FD_CLOSE:
+			WinSocket::DisConnectTCPSocketClient();
 			break;
 	}
 
@@ -97,8 +133,7 @@ void WinSocket::OnReceiveMessage(SOCKET sock, HWND hDig, WORD eid, WORD error) {
 }
 
 const bool WinSocket::OnSendMessage(const SOCKET sock, const std::string message) {
-	const auto * msg = message.c_str();
-	return send(sock, msg, sizeof(msg), 0) == 0 ? true : false; // ZERO == Success, EOF == Fail
+	return send(sock, message.c_str(), message.size(), 0) == 0 ? true : false; // ZERO == Success, EOF == Fail
 }
 
 void WinSocket::OnAccept(HWND hDig, WORD eid, WORD error) {
@@ -154,7 +189,11 @@ void WinSocket::OnAllSendClientMessage(const std::string message) {
 	}
 }
 
+// MARK: - Client TCP/IP Methods
+
 void WinSocket::ConnectTCPClient(const std::string ip, const int port, HWND hDig) {
+
+	CString connection_mssage;
 
 	try {
 
@@ -173,7 +212,7 @@ void WinSocket::ConnectTCPClient(const std::string ip, const int port, HWND hDig
 		this->servAddr.sin_port			= htons(port);
 
 		// MARK: 생성한 소켓을 통해 서버로 접속을 요청합니다.
-		if ( connect(this->hServSock, (SOCKADDR *)&servAddr, sizeof(SOCKADDR) == SOCKET_FAIL_ERROR) ) {
+		if ( connect(this->hServSock, (SOCKADDR *)&servAddr, sizeof(SOCKADDR)) == SOCKET_FAIL_ERROR) {
 			throw Error::CONNECT_SERVER_ERROR;
 		}
 
@@ -181,10 +220,31 @@ void WinSocket::ConnectTCPClient(const std::string ip, const int port, HWND hDig
 	} 
 	catch (const int exception) {
 
+		switch (exception) {
+			case Error::SETUP_WINSOCK_WSASTART_UP_ERROR: {
+				connection_mssage = "※ Error, SETUP_WINSOCK_WSASTART_UP_ERROR";
+				break; 
+			}
+			case Error::SETUP_WINSOCK_ERROR: { 
+				connection_mssage = "※ Error, SETUP_WINSOCK_ERROR";
+				break; 
+			}
+			case Error::CONNECT_SERVER_ERROR: { 
+				connection_mssage = "※ Error, CONNECT_SERVER_ERROR";
+				break; 
+			}
+		}
+
+		DisConnectTCPSocketClient();
+		this->eventListBox->AddString(connection_mssage);
 	}
 
 }
 
 void WinSocket::DisConnectTCPSocketClient() {
+	
+	const CString message = GetCurrentTimeAndMessage( TEXT("서버와의 연결이 종료되었습니다.") );
+	this->eventListBox->AddString(message);
 
+	WSACleanup(), closesocket(this->hServSock);
 }

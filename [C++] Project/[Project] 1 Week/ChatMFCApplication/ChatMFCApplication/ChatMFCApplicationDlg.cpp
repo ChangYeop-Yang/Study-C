@@ -67,6 +67,8 @@ BOOL CChatMFCApplicationDlg::OnInitDialog()
 	this->IDC_INPUT_PORT_EDIT.SetLimitText(MAX_PORT_EDIT_DIGIT);
 	this->IDC_SERVER_MODE_RADIO.SetCheck(true);
 
+	this->SetWindowTextW( TEXT("TCP/IP CHAT PROJECT") );
+
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -148,18 +150,19 @@ void CChatMFCApplicationDlg::OnClickedRadioButtons(const UINT id) {
 void CChatMFCApplicationDlg::OnSendMessage()
 {
 	CString message;
+	this->IDC_INPUT_MESSAGE_EDIT.GetWindowTextW(message);
 
-	if (const int length = this->IDC_INPUT_MESSAGE_EDIT.GetWindowTextLengthW()) {
-		this->IDC_INPUT_MESSAGE_EDIT.GetWindowTextW(message);
+	std::string send_message = std::string( ATL::CW2A(message.GetString()) );
+
+	if (socket_mode) {
+		this->socket->OnAllSendClientMessage(send_message);
+	} else {
 		
 	}
 
-	if (socket_mode) {
-		std::string mm(CW2A(message.GetString()));
-		this->socket->OnAllSendClientMessage( mm );
-	} else {
-
-	}
+	// MARK: Clear Edit Contril Message.
+	this->IDC_INPUT_MESSAGE_EDIT.SetSel(0, EOF);
+	this->IDC_INPUT_MESSAGE_EDIT.Clear();
 }
 
 // MARK: - User Methods
@@ -171,12 +174,12 @@ void CChatMFCApplicationDlg::OpenTCPServer() {
 		CString port_string;
 		this->IDC_INPUT_PORT_EDIT.GetWindowText(port_string);
 		
-		const auto message = this->socket->GetCurrentTimeAndMessage(TEXT("TCP/IP SERVER OPEN"));
+		const auto message = this->socket->GetCurrentTimeAndMessage( TEXT("TCP/IP SERVER OPEN") );
 		this->IDC_EVENT_MESSAGE_LIST.AddString(message);
 
 		const int port = _ttoi(port_string);
 		this->socket->openTCPSocketServer(port, this->m_hWnd);
-
+		
 		// MARK: IDC_SERVER_OPEN_BUTTON, IDC_SERVER_CLOSE_BUTTON Enable (버튼 활성화)
 		this->IDC_SERVER_CLOSE_BUTTON.EnableWindow(true);
 		this->IDC_SERVER_OPEN_BUTTON.EnableWindow(false);
@@ -202,6 +205,19 @@ void CChatMFCApplicationDlg::CloseTCPServer() {
 
 void CChatMFCApplicationDlg::ConnectTCPClient() {
 
+	CString message;
+	this->IDC_INPUT_PORT_EDIT.GetWindowTextW(message);
+
+	std::string convert_str = std::string( ATL::CW2A(message.GetString()) );
+	if (convert_str.find(" ") == EOF) {
+		MessageBox( TEXT("[IP PORT]의 형식으로 서버정보를 입력주세요.") );
+		return;
+	}
+
+	auto server_info = SplitIPAddressAndPort(convert_str);
+	
+	// 요기 수정 하기 1
+	this->socket->ConnectTCPClient(server_info.first, std::stoi(server_info.second), this->m_hWnd);
 
 	// MARK: IDC_SERVER_OPEN_BUTTON, IDC_SERVER_CLOSE_BUTTON Enable (버튼 활성화)
 	this->IDC_SERVER_CLOSE_BUTTON.EnableWindow(true);
@@ -210,11 +226,18 @@ void CChatMFCApplicationDlg::ConnectTCPClient() {
 
 void CChatMFCApplicationDlg::DisConnectTCPSocketClient() {
 
-	
+	this->socket->DisConnectTCPSocketClient();
 
 	// MARK: IDC_SERVER_OPEN_BUTTON, IDC_SERVER_CLOSE_BUTTON Enable (버튼 활성화)
 	this->IDC_SERVER_CLOSE_BUTTON.EnableWindow(false);
 	this->IDC_SERVER_OPEN_BUTTON.EnableWindow(true);
+}
+
+std::pair<std::string, std::string> CChatMFCApplicationDlg::SplitIPAddressAndPort(const std::string stub) {
+
+
+
+	return std::make_pair(std::string(), std::string());
 }
 
 // MARK: - System Call Methods
@@ -226,10 +249,10 @@ LRESULT CChatMFCApplicationDlg::WindowProc(UINT message, WPARAM wParam, LPARAM l
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	switch (message) {
 		case MWM_SERVER_EVENT_SOCK:
-			this->socket->OnSocketEvent(this->m_hWnd, socket, lParam, lParam);
+			this->socket->OnSocketServerEventHandler(this->m_hWnd, socket, lParam, lParam);
 			break;
 		case MWM_CLIENT_EVENT_SOCK:
-
+			this->socket->OnSocketClientEventHandler(this->m_hWnd, socket, lParam, lParam);
 			break;
 	}
 

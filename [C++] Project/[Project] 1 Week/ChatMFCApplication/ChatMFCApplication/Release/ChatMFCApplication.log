@@ -1,0 +1,22 @@
+﻿  stdafx.cpp
+  ChatMFCApplication.cpp
+  ChatMFCApplicationDlg.cpp
+c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\chatmfcapplicationdlg.cpp(232): warning C4244: '인수': 'LPARAM'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\chatmfcapplicationdlg.cpp(235): warning C4244: '인수': 'LPARAM'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  WinSocket.cpp
+c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\winsocket.cpp(59): warning C4996: 'WSAAsyncSelect': Use WSAEventSelect() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winsock2.h(2680): note: 'WSAAsyncSelect' 선언을 참조하십시오.
+c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\winsocket.cpp(114): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winsock2.h(1849): note: 'inet_ntoa' 선언을 참조하십시오.
+c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\winsocket.cpp(125): warning C4996: 'WSAAsyncSelect': Use WSAEventSelect() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winsock2.h(2680): note: 'WSAAsyncSelect' 선언을 참조하십시오.
+c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\winsocket.cpp(168): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winsock2.h(1831): note: 'inet_addr' 선언을 참조하십시오.
+c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\winsocket.cpp(174): warning C4996: 'WSAAsyncSelect': Use WSAEventSelect() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winsock2.h(2680): note: 'WSAAsyncSelect' 선언을 참조하십시오.
+c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\winsocket.cpp(176): warning C4101: 'exception' :참조되지 않은 지역 변수입니다.
+stdafx.obj : warning LNK4258: '/entry:WinMainCRTStartup' 지시문은 '/ENTRY:wWinMainCRTStartup' 스위치와 호환되지 않습니다. 무시됩니다.
+  코드를 생성하고 있습니다.
+  All 591 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  코드를 생성했습니다.
+  ChatMFCApplication.vcxproj -> C:\Users\user\Documents\GitHub\Study-C\[C++] Project\[Project] 1 Week\ChatMFCApplication\Release\ChatMFCApplication.exe
