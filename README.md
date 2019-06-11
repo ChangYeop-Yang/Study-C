@@ -443,6 +443,7 @@ int main(void)
 } 
 
 ```
+
 ## 📣 [스마트 포인터 (Smart Functor)](http://tcpschool.com/cpp/cpp_template_smartPointer)
 
 * 스마트 포인터(smart pointer)란 포인터처럼 동작하는 클래스 템플릿으로, 사용이 끝난 메모리를 자동으로 해제해 줍니다.
@@ -603,28 +604,47 @@ int main()
 ###### 🔑 New/Delete
 
 * Allocate/release memory
+
 * Memory allocated from 'Free Store'
+
 * Returns a fully typed pointer.
+
 * new (standard version) never returns a NULL (will throw on failure)
+
 * Are called with Type-ID (compiler calculates the size)
+
 * Has a version explicitly to handle arrays.
+
 * Reallocating (to get more space) not handled intuitively (because of copy constructor).
+
 * Whether they call malloc/free is implementation defined.
+
 * Can add a new memory allocator to deal with low memory (set_new_handler)
+
 * operator new/delete can be overridden legally
+
 * constructor/destructor used to initialize/destroy the object
 
 ###### 🔑 Malloc/Free
 
 * Allocates/release memory
+
 * Memory allocated from 'Heap'
-* Returns a void*
+
+* Returns a `void*`
+
 * Returns NULL on failure
+
 * Must specify the size required in bytes.
+
 * Allocating array requires manual calculation of space.
+
 * Reallocating larger chunk of memory simple (No copy constructor to worry about)
+
 * They will NOT call new/delete
+
 * No way to splice user code into the allocation sequence to help with low memory.
+
 * malloc/free can NOT be overridden legally
 
 ###### 🔑 Malloc과 Free와의 관계
@@ -682,7 +702,25 @@ int WSAAsyncSelect (
 
 #### 📖 WSAAsyncSelect Event Type
 
-1️⃣ 
+* `FD_READ` - Set to receive notification of readiness for reading.
+
+* `FD_WRITE` - Wants to receive notification of readiness for writing.
+
+* `FD_OOB` - Wants to receive notification of the arrival of OOB data.
+
+* `FD_ACCEPT` - Wants to receive notification of incoming connections.
+
+* `FD_CONNECT` - Wants to receive notification of completed connection or multipoint join operation.
+
+* `FD_CLOSE` - Wants to receive notification of socket closure.
+
+* `FD_QOS` - Wants to receive notification of socket Quality of Service (QoS) changes.
+
+* `FD_GROUP_QOS	` - Wants to receive notification of socket group Quality of Service (QoS) changes (reserved for future use with socket groups).
+
+* `FD_ROUTING_INTERFACE_CHANGE` - Wants to receive notification of routing interface changes for the specified destination(s).
+
+* `FD_ADDRESS_LIST_CHANGE` - Wants to receive notification of local address list changes for the socket protocol family.
 
 ## 🚀 REFERENCE
 
