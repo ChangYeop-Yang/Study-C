@@ -6,7 +6,7 @@
 
 #### 🔑 DEVLEOPMENT KEYWORD
 
-* `WSAAsyncSelect`
+* `WSAAsyncSelect`, `TCP/IP`, `SOCKET`, `WINDOWS`, `C++`
 
 #### [🚀 Project Source Code](https://github.com/ChangYeop-Yang/Study-C/tree/master/%5BC%2B%2B%5D%20Project/%5BProject%5D%201%20Week/ChatMFCApplication)
 
