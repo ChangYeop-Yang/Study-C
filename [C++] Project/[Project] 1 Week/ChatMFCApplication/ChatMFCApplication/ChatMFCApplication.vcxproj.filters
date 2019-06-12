@@ -51,6 +51,9 @@
     <ClInclude Include="WinSerial.h">
       <Filter>헤더 파일\WinSerial</Filter>
     </ClInclude>
+    <ClInclude Include="WinSerialError.h">
+      <Filter>헤더 파일\WinSerial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChatMFCApplication.cpp">
