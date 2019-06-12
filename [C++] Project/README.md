@@ -22,10 +22,6 @@
 
 * **MFC (Microsoft Foundation Class Library) Console** </br> `#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")`
 
-* [AsyncSelect 관련 자료](https://github.com/ChangYeop-Yang/Study-C/files/3279696/AsyncSelect.docx)
-
-* [Concurrency in C++11 - The University of Chicago](https://www.classes.cs.uchicago.edu/archive/2013/spring/12300-1/labs/lab6/)
-
 #### [🚀 Project Source Code](https://github.com/ChangYeop-Yang/Study-C/tree/master/%5BC%2B%2B%5D%20Project/%5BProject%5D%201%20Week/ChatMFCApplication)
 
 ## 2️⃣ Android TCP/IP Socket Communication Framework Project
@@ -45,3 +41,7 @@
 ## ✈️ REFERENCE
 
 #### [🚀 Google C++ Style Guide URL](https://google.github.io/styleguide/cppguide.html#Enumerator_Names)
+
+#### [🚀 AsyncSelect Word File](https://github.com/ChangYeop-Yang/Study-C/files/3279696/AsyncSelect.docx)
+
+#### [🚀 Concurrency in C++11 - The University of Chicago](https://www.classes.cs.uchicago.edu/archive/2013/spring/12300-1/labs/lab6/)
