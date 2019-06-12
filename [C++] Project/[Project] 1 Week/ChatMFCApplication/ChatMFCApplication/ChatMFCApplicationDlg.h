@@ -6,6 +6,7 @@
 
 #include <memory>
 
+#include "WinSerial.h"
 #include "WinSocket.h"
 
 #define MAX_IP_EDIT_DIGIT 21
@@ -47,13 +48,18 @@ class CChatMFCApplicationDlg : public CDialogEx
 		CMFCButton	IDC_SERVER_CLOSE_BUTTON;
 		CMFCButton	IDC_MESSAGE_SEND_BUTTON;
 		CMFCButton	IDC_SERVER_OPEN_BUTTON;
+		CMFCButton	IDC_SERIAL_CONNNECT_BUTTON;
 
 		CButton		IDC_SERVER_MODE_RADIO;
+
+		CComboBox	IDC_PORT_DROP_BOX;
+		CComboBox	IDC_BANDWITH_DROP_BOX;
 
 	// MARK: - Object Variables
 	private:
 		bool socket_mode = true;
-		std::unique_ptr<WinSocket>	socket;
+		std::unique_ptr<WinSocket> socket;
+		std::unique_ptr<WinSerial> serial;
 
 	// MARK: - Event Methods
 	private:
@@ -67,9 +73,11 @@ class CChatMFCApplicationDlg : public CDialogEx
 		void CloseTCPServer();
 		void ConnectTCPClient();
 		void DisConnectTCPSocketClient();
+		void SettingDropBoxMenu();
 		std::pair<std::string, std::string> SplitIPAddressAndPort(const std::string stub);
 
 	public:
 		virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);	
 		afx_msg void OnChangeMessage();
+		afx_msg void OnConnectSerial();
 };

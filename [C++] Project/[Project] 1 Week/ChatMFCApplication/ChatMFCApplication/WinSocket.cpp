@@ -3,6 +3,10 @@
 
 WinSocket::~WinSocket() {
 	this->closeTCPSocketServer();
+	
+	// MARK: Remove All Object Variables.
+	this->clients.clear();
+	std::memset(this->message, 0, sizeof(this->message));
 }
 
 const CString WinSocket::GetCurrentTimeAndMessage(const CString message) {
@@ -134,6 +138,10 @@ void WinSocket::OnReceiveMessage(SOCKET sock, HWND hDig, WORD eid, WORD error) {
 
 const bool WinSocket::OnSendMessage(const SOCKET sock, const std::string message) {
 	return send(sock, message.c_str(), message.size(), 0) == 0 ? true : false; // ZERO == Success, EOF == Fail
+}
+
+void WinSocket::OnSendMessageServer(const std::string message) {
+	send(this->hServSock, message.c_str(), message.size(), 0);
 }
 
 void WinSocket::OnAccept(HWND hDig, WORD eid, WORD error) {

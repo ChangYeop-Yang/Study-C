@@ -32,6 +32,9 @@ void CChatMFCApplicationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MFCBUTTON2, IDC_MESSAGE_SEND_BUTTON);
 	DDX_Control(pDX, IDC_EDIT1, IDC_INPUT_MESSAGE_EDIT);
 	DDX_Control(pDX, IDC_RADIO_01, IDC_SERVER_MODE_RADIO);
+	DDX_Control(pDX, IDC_COMBO2, IDC_PORT_DROP_BOX);
+	DDX_Control(pDX, IDC_COMBO1, IDC_BANDWITH_DROP_BOX);
+	DDX_Control(pDX, IDC_MFCBUTTON3, IDC_SERIAL_CONNNECT_BUTTON);
 }
 
 BEGIN_MESSAGE_MAP(CChatMFCApplicationDlg, CDialogEx)
@@ -43,6 +46,7 @@ BEGIN_MESSAGE_MAP(CChatMFCApplicationDlg, CDialogEx)
 
 	ON_BN_CLICKED( IDC_MFCBUTTON2, &CChatMFCApplicationDlg::OnSendMessage )
 	ON_EN_CHANGE(IDC_EDIT1, &CChatMFCApplicationDlg::OnChangeMessage)
+	ON_BN_CLICKED(IDC_MFCBUTTON3, &CChatMFCApplicationDlg::OnConnectSerial)
 END_MESSAGE_MAP()
 
 
@@ -61,6 +65,9 @@ BOOL CChatMFCApplicationDlg::OnInitDialog()
 	this->IDC_MESSAGE_SEND_BUTTON.EnableWindowsTheming(false);
 	this->IDC_MESSAGE_SEND_BUTTON.SetFaceColor(RGB(254, 240, 27));
 
+	this->IDC_SERIAL_CONNNECT_BUTTON.EnableWindowsTheming(false);
+	this->IDC_SERIAL_CONNNECT_BUTTON.SetFaceColor(RGB(254, 240, 27));
+
 	this->socket = unique_ptr<WinSocket>(new WinSocket());
 	this->socket->eventListBox = &this->IDC_EVENT_MESSAGE_LIST;
 
@@ -69,6 +76,8 @@ BOOL CChatMFCApplicationDlg::OnInitDialog()
 
 	// MARK: Setting Windows Form Title
 	this->SetWindowTextW( TEXT("TCP/IP CHAT PROJECT") );
+
+	SettingDropBoxMenu();
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -130,6 +139,10 @@ void CChatMFCApplicationDlg::OnClickedRadioButtons(const UINT id) {
 
 	CString message;
 
+	// MARK: Clear Edit Contril Message.
+	this->IDC_INPUT_PORT_EDIT.SetSel(0, EOF);
+	this->IDC_INPUT_PORT_EDIT.Clear();
+
 	switch (id) {
 		case IDC_RADIO_01: {
 			this->socket_mode = true;
@@ -158,7 +171,7 @@ void CChatMFCApplicationDlg::OnSendMessage()
 	if (socket_mode) {
 		this->socket->OnAllSendClientMessage(send_message);
 	} else {
-		
+		this->socket->OnSendMessageServer(send_message);
 	}
 
 	// MARK: Clear Edit Contril Message.
@@ -176,7 +189,52 @@ void CChatMFCApplicationDlg::OnChangeMessage()
 	}
 }
 
+void CChatMFCApplicationDlg::OnConnectSerial()
+{
+	std::pair<CString, CString> port;
+
+	auto pos = this->IDC_BANDWITH_DROP_BOX.GetCurSel();
+	this->IDC_BANDWITH_DROP_BOX.GetLBText(pos, port.first);
+
+	pos = this->IDC_PORT_DROP_BOX.GetCurSel();
+	this->IDC_PORT_DROP_BOX.GetLBText(pos, port.second);
+	
+	std::pair<std::string, std::string> pass = std::make_pair( std::string( ATL::CW2A(port.first.GetString()) ), std::string( ATL::CW2A(port.second.GetString()) ) );
+	this->serial = std::unique_ptr<WinSerial>( new WinSerial(pass) );
+}
+
 // MARK: - User Methods
+
+void CChatMFCApplicationDlg::SettingDropBoxMenu() {
+
+	// MARK: Setting IDC_PORT_DROP_BOX Add String.
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM1") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM2") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM3") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM4") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM5") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM6") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM7") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM8") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM9") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM10") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM11") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM12") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM13") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM14") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM15") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM16") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM17") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM18") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM19") );
+	this->IDC_PORT_DROP_BOX.AddString( TEXT("COM20") );
+
+	// MARK: Setting IDC_BANDWITH_DROP_BOX Add String.
+	this->IDC_BANDWITH_DROP_BOX.AddString( TEXT("9600") );
+	this->IDC_BANDWITH_DROP_BOX.AddString( TEXT("38400") );
+	this->IDC_BANDWITH_DROP_BOX.AddString( TEXT("57600") );
+	this->IDC_BANDWITH_DROP_BOX.AddString( TEXT("115200") );
+}
 
 void CChatMFCApplicationDlg::OpenTCPServer() {
 
@@ -220,14 +278,13 @@ void CChatMFCApplicationDlg::ConnectTCPClient() {
 	this->IDC_INPUT_PORT_EDIT.GetWindowTextW(message);
 
 	std::string convert_str = std::string( ATL::CW2A(message.GetString()) );
-	if (convert_str.find(" ") == EOF) {
+	if (convert_str.find(' ') == EOF) {
 		MessageBox( TEXT("[IP PORT]의 형식으로 서버정보를 입력주세요.") );
 		return;
 	}
 
 	auto server_info = SplitIPAddressAndPort(convert_str);
 	
-	// 요기 수정 하기 1
 	this->socket->ConnectTCPClient(server_info.first, std::stoi(server_info.second), this->m_hWnd);
 
 	// MARK: IDC_SERVER_OPEN_BUTTON, IDC_SERVER_CLOSE_BUTTON Enable (버튼 활성화)
@@ -246,9 +303,11 @@ void CChatMFCApplicationDlg::DisConnectTCPSocketClient() {
 
 std::pair<std::string, std::string> CChatMFCApplicationDlg::SplitIPAddressAndPort(const std::string stub) {
 
+	auto index = 0;
+	while (stub[index++] != ' ');
 
-
-	return std::make_pair(std::string(), std::string());
+	auto result = std::make_pair( std::string(stub.begin(), stub.begin() + index), std::string(stub.begin() + index, stub.end()) );
+	return result;
 }
 
 // MARK: - System Call Methods

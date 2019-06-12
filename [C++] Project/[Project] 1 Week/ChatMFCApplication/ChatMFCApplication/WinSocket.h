@@ -39,13 +39,18 @@ class WinSocket
 	public:
 		void openTCPSocketServer(const int port, HWND hDig);
 		void closeTCPSocketServer();
+		
 		void ConnectTCPClient(const std::string ip, const int port, HWND hDig);
 		void DisConnectTCPSocketClient();
+
 		void OnSocketServerEventHandler(HWND hWnd, SOCKET sock, WORD eid, WORD err);
 		void OnSocketClientEventHandler(HWND hWnd, SOCKET sock, WORD eid, WORD error);
+		
 		const CString GetCurrentTimeAndMessage(const CString message);
+		
 		const bool OnSendMessage(const SOCKET sock, const std::string message);
 		void OnAllSendClientMessage(const std::string message);
+		void OnSendMessageServer(const std::string message);
 
 	private:
 		void OnAccept(HWND hDig, WORD eid, WORD error);

@@ -19,6 +19,12 @@
     <Filter Include="소스 파일\WinSocket">
       <UniqueIdentifier>{b5f149eb-7bc0-4cbe-b7cb-df519a085fd8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\WinSerial">
+      <UniqueIdentifier>{0aec5148-d3c6-43c6-a8fe-d5dd5ab266b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\WinSerial">
+      <UniqueIdentifier>{cc42f68d-cca5-43d9-8336-f2d7cab018ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChatMFCApplication.h">
@@ -42,6 +48,9 @@
     <ClInclude Include="WinSocketError.h">
       <Filter>헤더 파일\WinSocket</Filter>
     </ClInclude>
+    <ClInclude Include="WinSerial.h">
+      <Filter>헤더 파일\WinSerial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChatMFCApplication.cpp">
@@ -55,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="WinSocket.cpp">
       <Filter>소스 파일\WinSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="WinSerial.cpp">
+      <Filter>소스 파일\WinSerial</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
