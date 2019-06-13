@@ -36,6 +36,10 @@ class CChatMFCApplicationDlg : public CDialogEx
 		virtual BOOL OnInitDialog();
 		afx_msg void OnPaint();
 		afx_msg HCURSOR OnQueryDragIcon();
+
+		afx_msg LRESULT OnDidReceiveSocketMessage(WPARAM wParam, LPARAM lParam);
+		afx_msg LRESULT OnDidReceiveSerialMessage(WPARAM wParam, LPARAM lParam);
+
 		DECLARE_MESSAGE_MAP()
 
 	// MARK: - Outlet Variables
@@ -77,7 +81,9 @@ class CChatMFCApplicationDlg : public CDialogEx
 		std::pair<std::string, std::string> SplitIPAddressAndPort(const std::string stub);
 
 	public:
-		virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);	
+		virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+
 		afx_msg void OnChangeMessage();
 		afx_msg void OnConnectSerial();
+
 };

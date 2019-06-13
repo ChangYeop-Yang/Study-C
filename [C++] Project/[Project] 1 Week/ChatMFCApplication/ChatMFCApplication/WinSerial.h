@@ -10,6 +10,7 @@
 #include <windows.h>
 
 #define SERIAL_TIME_OUT 1000
+#define SERIAL_RECIVE_MESSAGE (WM_USER + 3);
 
 // MARK: - Typedef
 typedef std::pair<std::string, std::string> S_PORT;
@@ -18,21 +19,26 @@ class WinSerial
 {
 	// MARK: - System Methods
 	public:
-		WinSerial(const S_PORT port);
+		WinSerial(const S_PORT port, HWND hWnd);
 		~WinSerial();
 
 	// MARK: - User Methods
 	public:
 		void ReadMessageSerial();
-		const bool	WriteMessageSerial();
+		void CloseWinSerial();
+		const bool	WriteMessageSerial(const std::string message);
 		const bool	GetConnectedSerialState();
+
+		static UINT ThreadFirst(LPVOID _mothod);
 
 	// MARK: - Object Variables
 	private:
 		HANDLE	handler;
 		COMSTAT status;
 		DWORD	errors;
+		HWND	hWindow;
 		bool	connected;
+		OVERLAPPED m_osRead;
 
 		std::mutex mutex_lock;
 

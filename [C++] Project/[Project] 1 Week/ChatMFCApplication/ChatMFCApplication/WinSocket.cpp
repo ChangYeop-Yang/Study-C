@@ -131,6 +131,9 @@ void WinSocket::OnReceiveMessage(SOCKET sock, HWND hDig, WORD eid, WORD error) {
 		const auto msg = GetCurrentTimeAndMessage(receive_msg);
 		this->eventListBox->AddString(msg);
 
+		// Here Serial Sending. (Message) - Server Mode 일경우에만
+		
+
 		std::memset(&this->message, 0, sizeof(this->message));
 	}
 

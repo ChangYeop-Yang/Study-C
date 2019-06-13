@@ -59,6 +59,8 @@ class WinSocket
 
 	// MARK: - Object Methods
 	public:
+		bool socket_Mode;
+
 		CListBox * eventListBox;
 
 	private:		

@@ -40,6 +40,7 @@ void CChatMFCApplicationDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CChatMFCApplicationDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_MESSAGE(19, &CChatMFCApplicationDlg::OnDidReceiveSerialMessage)
 
 	ON_COMMAND_RANGE( IDC_RADIO_01, IDC_RADIO_02, CChatMFCApplicationDlg::OnClickedRadioButtons )
 	ON_COMMAND_RANGE( IDC_MFCBUTTON_2, IDC_MFCBUTTON_1, CChatMFCApplicationDlg::OnClickedTCPbuttons )
@@ -68,7 +69,7 @@ BOOL CChatMFCApplicationDlg::OnInitDialog()
 	this->IDC_SERIAL_CONNNECT_BUTTON.EnableWindowsTheming(false);
 	this->IDC_SERIAL_CONNNECT_BUTTON.SetFaceColor(RGB(254, 240, 27));
 
-	this->socket = unique_ptr<WinSocket>(new WinSocket());
+	this->socket = unique_ptr<WinSocket>( new WinSocket() );
 	this->socket->eventListBox = &this->IDC_EVENT_MESSAGE_LIST;
 
 	this->IDC_INPUT_PORT_EDIT.SetLimitText(MAX_PORT_EDIT_DIGIT);
@@ -170,6 +171,8 @@ void CChatMFCApplicationDlg::OnSendMessage()
 
 	if (socket_mode) {
 		this->socket->OnAllSendClientMessage(send_message);
+		this->serial->WriteMessageSerial(send_message);
+
 	} else {
 		this->socket->OnSendMessageServer(send_message);
 	}
@@ -200,7 +203,7 @@ void CChatMFCApplicationDlg::OnConnectSerial()
 	this->IDC_PORT_DROP_BOX.GetLBText(pos, port.second);
 	
 	std::pair<std::string, std::string> pass = std::make_pair( std::string( ATL::CW2A(port.first.GetString()) ), std::string( ATL::CW2A(port.second.GetString()) ) );
-	this->serial = std::unique_ptr<WinSerial>( new WinSerial(pass) );
+	this->serial = std::unique_ptr<WinSerial>( new WinSerial(pass, this->m_hWnd) );
 }
 
 // MARK: - User Methods
@@ -327,4 +330,14 @@ LRESULT CChatMFCApplicationDlg::WindowProc(UINT message, WPARAM wParam, LPARAM l
 	}
 
 	return CDialogEx::WindowProc(message, wParam, lParam);
+}
+
+LRESULT CChatMFCApplicationDlg::OnDidReceiveSerialMessage(WPARAM wParam, LPARAM lParam) {
+	
+	
+	std::cout << "RECIVE SERIAL MESSAGE" << std::endl;
+
+
+
+	return 0;
 }
