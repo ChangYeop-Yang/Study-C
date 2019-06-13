@@ -16,7 +16,7 @@
 * `WINDOWS`
 * `C/C++`
 * `Serial`
-* `Concurrency`
+* `Concurrency (Thread)`
 
 #### 👀 TIP
 
