@@ -1,9 +1,8 @@
 ﻿  WinSerial.cpp
-c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\winserial.cpp(102): warning C4101: 'mChar' :참조되지 않은 지역 변수입니다.
 stdafx.obj : warning LNK4258: '/entry:WinMainCRTStartup' 지시문은 '/ENTRY:wWinMainCRTStartup' 스위치와 호환되지 않습니다. 무시됩니다.
   코드를 생성하고 있습니다.
-  2 of 662 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+  2 of 671 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    4 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
   ChatMFCApplication.vcxproj -> C:\Users\user\Documents\GitHub\Study-C\[C++] Project\[Project] 1 Week\ChatMFCApplication\Release\ChatMFCApplication.exe

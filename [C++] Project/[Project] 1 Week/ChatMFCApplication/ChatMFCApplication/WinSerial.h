@@ -5,6 +5,7 @@
 
 #include <string>
 #include <thread>
+#include <afxmt.h>
 #include <iostream>
 #include <windows.h>
 
@@ -13,6 +14,7 @@
 
 // MARK: - Typedef
 typedef std::pair<std::string, std::string> S_PORT;
+typedef std::pair<OVERLAPPED, OVERLAPPED> EVENT;
 
 class WinSerial
 {
@@ -23,27 +25,28 @@ class WinSerial
 
 	// MARK: - User Methods
 	public:
-		void ReadMessageSerial();
 		void CloseWinSerial();
 		const bool	WriteMessageSerial(const std::string message);
 		const bool	GetConnectedSerialState();
 
-		static UINT ThreadFirst(LPVOID _mothod);
+		static UINT ReadMessageSerial(LPVOID _mothod);
 
 	// MARK: - Object Variables
+	public:
+		CCriticalSection critical;
+
 	private:
 		HANDLE	handler;
 		COMSTAT status;
 		DWORD	errors;
 		HWND	hWindow;
 		bool	connected;
-		OVERLAPPED m_osRead;
+		
+		EVENT overlaped_event;
 
 		BOOL  Status;                          // Status of the various operations 
 		DWORD dwEventMask;                     // Event mask to trigger
 		DWORD NoBytesRead;                     // Bytes read by ReadFile()
-
-		char message[BUFSIZ];
 };
 
 #endif

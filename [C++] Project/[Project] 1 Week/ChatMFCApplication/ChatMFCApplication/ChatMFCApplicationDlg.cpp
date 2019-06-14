@@ -172,7 +172,6 @@ void CChatMFCApplicationDlg::OnSendMessage()
 	if (socket_mode) {
 		this->socket->OnAllSendClientMessage(send_message);
 		this->serial->WriteMessageSerial(send_message);
-
 	} else {
 		this->socket->OnSendMessageServer(send_message);
 	}
@@ -334,10 +333,17 @@ LRESULT CChatMFCApplicationDlg::WindowProc(UINT message, WPARAM wParam, LPARAM l
 
 LRESULT CChatMFCApplicationDlg::OnDidReceiveSerialMessage(WPARAM wParam, LPARAM lParam) {
 	
+	CString * receive = (CString *) lParam;
 	
-	std::cout << "RECIVE SERIAL MESSAGE" << std::endl;
+	CString message = CString();
+	message.Format( _T("※ [SERIAL - MESSAGE] %s"), *receive);
+	
+	this->IDC_EVENT_MESSAGE_LIST.AddString(message);
 
+	auto convert = std::string(ATL::CW2A(receive->GetString()));
+	this->socket->OnAllSendClientMessage(convert);
 
+	delete(receive);
 
 	return 0;
 }
