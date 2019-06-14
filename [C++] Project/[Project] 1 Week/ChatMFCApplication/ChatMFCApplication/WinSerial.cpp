@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "WinSerial.h"
-// https://github.com/xanthium-enterprises/Serial-Programming-Win32API-C/blob/master/USB2SERIAL_Read/Reciever%20(PC%20Side)/USB2SERIAL_Read_W32.c
-// MARK: - System Methods https://goodjian.tistory.com/entry/%EC%8B%9C%EB%A6%AC%EC%96%BC-%ED%86%B5%EC%8B%A0OVERLAPPED-%EA%B5%AC%EC%A1%B0%EC%B2%B4%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-%EB%B9%84%EB%8F%99%EA%B8%B0-read%EB%A5%BC-%ED%95%B4%EB%B3%B4%EC%9E%90?category=78065
+
 WinSerial::WinSerial(const S_PORT port, HWND hWnd) {
 
 	
@@ -13,7 +12,7 @@ WinSerial::WinSerial(const S_PORT port, HWND hWnd) {
 									0,
 									NULL,
 									OPEN_EXISTING,
-									FILE_ATTRIBUTE_NORMAL,
+									0,
 									NULL);
 
 		this->m_osRead.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -27,10 +26,17 @@ WinSerial::WinSerial(const S_PORT port, HWND hWnd) {
 			}
 		}
 		else {
+
+			std::memset(&m_osRead, 0, sizeof(m_osRead));
+			m_osRead.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+
+			/*------------------------------- Setting the Parameters for the SerialPort ------------------------------*/
+
 			DCB dcbSerialParameters = { 0 };
 
 			if (!GetCommState(this->handler, &dcbSerialParameters)) {}
 			else {
+				dcbSerialParameters.DCBlength = sizeof(dcbSerialParameters);
 				dcbSerialParameters.BaudRate = CBR_115200; // BandWidth
 				dcbSerialParameters.ByteSize = 8;
 				dcbSerialParameters.StopBits = ONESTOPBIT;
@@ -40,15 +46,28 @@ WinSerial::WinSerial(const S_PORT port, HWND hWnd) {
 				if (!SetCommState(handler, &dcbSerialParameters)) {}
 				else {
 
-					this->connected = true;
-					PurgeComm(this->handler, PURGE_RXCLEAR | PURGE_TXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
+					/*------------------------------------ Setting Timeouts --------------------------------------------------*/
+					COMMTIMEOUTS timeouts = { 0 };
+					timeouts.ReadIntervalTimeout = 50;
+					timeouts.ReadTotalTimeoutMultiplier = 10;
+					timeouts.ReadTotalTimeoutConstant = 50;
 
-					//AfxBeginThread(ThreadFirst, this);
-					//winThread->m_bAutoDelete = false;
+					SetCommTimeouts(this->handler, &timeouts);
+
+					this->connected = true;
+
+					SetCommMask(this->handler, EV_RXCHAR);
+
+					
+
+					//PurgeComm(this->handler, PURGE_RXCLEAR | PURGE_TXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
+
+					auto afx_Thread = AfxBeginThread((AFX_THREADPROC) ThreadFirst, (LPVOID) this);
+					//afx_Thread->m_bAutoDelete = false;
 
 					this->hWindow = hWnd;
 
-					Sleep(SERIAL_TIME_OUT);
+					//Sleep(SERIAL_TIME_OUT);
 				}
 			}
 		}
@@ -73,20 +92,23 @@ WinSerial::~WinSerial() {
 // MARK: - User Methods
 UINT WinSerial::ThreadFirst(LPVOID _mothod) {
 
-	DWORD bytesRead;
-	DWORD byte;
-	UINT toRead = 0;
-
+	// MARK: https://github.com/xanthium-enterprises/Serial-Programming-Win32API-C/blob/master/USB2SERIAL_Read/Reciever%20(PC%20Side)/USB2SERIAL_Read_W32.c
 	auto handle = (WinSerial *) _mothod;
 	
-	char msg[BUFSIZ];
+	while (true) {
+		if (WaitCommEvent(handle->handler, &handle->dwEventMask, NULL)) {
 
-	while (handle->connected) {
-		WaitCommEvent(handle->handler, &bytesRead, NULL);
-		if ((bytesRead & EV_RXCHAR) == EV_RXCHAR) {
-			ReadFile(handle->handler, msg, toRead, &byte, NULL);
+			int ii = 0;
+			DWORD  read = 0;
+			char mChar;
+			std::string msg = std::string();
 
-			std::cout << msg << std::endl;
+			std::memset(handle->message, 0, sizeof(handle->message));
+			//do {
+				ReadFile(handle->handler, &handle->message, sizeof(handle->message), &read, NULL);
+				std::cout << handle->message << std::endl;
+			//} while (read > 0);
+
 		}
 	}
 	

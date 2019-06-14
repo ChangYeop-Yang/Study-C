@@ -3,7 +3,6 @@
 #ifndef WIN_SERIAL_H
 #define WIN_SERIAL_H
 
-#include <mutex>
 #include <string>
 #include <thread>
 #include <iostream>
@@ -40,7 +39,9 @@ class WinSerial
 		bool	connected;
 		OVERLAPPED m_osRead;
 
-		std::mutex mutex_lock;
+		BOOL  Status;                          // Status of the various operations 
+		DWORD dwEventMask;                     // Event mask to trigger
+		DWORD NoBytesRead;                     // Bytes read by ReadFile()
 
 		char message[BUFSIZ];
 };
