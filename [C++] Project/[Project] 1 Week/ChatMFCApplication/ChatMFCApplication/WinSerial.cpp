@@ -132,11 +132,11 @@ const bool WinSerial::WriteMessageSerial(const std::string message) {
 
 	DWORD byteSend;
 
-	//this->critical.Lock();
+	this->critical.Lock();
 	{
 		WriteFile(this->handler, (void *) message.c_str(), message.size(), &byteSend, &this->overlaped_event.second);
 	}
-	//this->critical.Unlock();
+	this->critical.Unlock();
 
 	return false;
 }
@@ -147,6 +147,7 @@ const bool WinSerial::GetConnectedSerialState() {
 
 void WinSerial::CloseWinSerial() {
 	if (this->connected) {
+		// MARK: http://www.devpia.com/MAEUL/Contents/Detail.aspx?BoardID=50&MAEULNo=20&no=232925&ref=232925
 		PurgeComm(this->handler, PURGE_RXCLEAR | PURGE_TXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
 		CloseHandle(this->handler);
 	}
