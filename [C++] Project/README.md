@@ -336,7 +336,7 @@ void WinSocket::DisConnectTCPSocketClient() {
 
 * **MFC (Microsoft Foundation Class Library) Console** </br> `#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")`
 
-* **WSAAsyncSelect**
+* [**WSAAsyncSelect**](https://m.blog.naver.com/PostView.nhn?blogId=ymy203&logNo=70102169803&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F)
 ```C++
 // MARK: WSAAsyncSelect()함수를 호출하면 해당 소켓은 자동으로 Non_Blocking 모드로 전환된다.
 (WINDOWS SERVER) WSAAsyncSelect(SOCKET, HWND, MWM, FD_ACCEPT | FD_CLOSE);
