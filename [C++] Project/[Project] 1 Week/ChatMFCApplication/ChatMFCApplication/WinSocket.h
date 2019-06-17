@@ -43,7 +43,7 @@ class WinSocket
 		void ConnectTCPClient(const std::string ip, const int port, HWND hDig);
 		void DisConnectTCPSocketClient();
 
-		void OnSocketServerEventHandler(HWND hWnd, SOCKET sock, WORD eid, WORD err);
+		void OnSocketServerEventHandler(HWND hWnd, SOCKET sock, WORD eid, WORD error, std::string message);
 		void OnSocketClientEventHandler(HWND hWnd, SOCKET sock, WORD eid, WORD error);
 		
 		const CString GetCurrentTimeAndMessage(const CString message);
@@ -55,6 +55,7 @@ class WinSocket
 	private:
 		void OnAccept(HWND hDig, WORD eid, WORD error);
 		void OnReceiveMessage(SOCKET sock, HWND hDig, WORD eid, WORD error);
+		void OnReceiveClientMessage(SOCKET sock, HWND hDig, WORD eid, WORD error, std::string message);
 		void OnCloseClientSocket(SOCKET sock, HWND hDig, WORD eid, WORD error);
 
 	// MARK: - Object Methods

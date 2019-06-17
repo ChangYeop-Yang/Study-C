@@ -89,14 +89,14 @@ void WinSocket::openTCPSocketServer(const int port, HWND hDig) {
 	}
 }
 
-void WinSocket::OnSocketServerEventHandler(HWND hWnd, SOCKET sock, WORD eid, WORD error) {
+void WinSocket::OnSocketServerEventHandler(HWND hWnd, SOCKET sock, WORD eid, WORD error, std::string message) {
 
 	switch (eid) {
 		case FD_ACCEPT:
 			WinSocket::OnAccept(hWnd, eid, error);
 			break;
 		case FD_READ:
-			WinSocket::OnReceiveMessage(sock, hWnd, eid, error);
+			WinSocket::OnReceiveClientMessage(sock, hWnd, eid, error, message);
 			break;
 		case FD_CLOSE:
 			WinSocket::OnCloseClientSocket(sock, hWnd, eid, error);
@@ -129,14 +129,21 @@ void WinSocket::OnReceiveMessage(SOCKET sock, HWND hDig, WORD eid, WORD error) {
 		const auto receive_msg = this->clients[sock].first + TEXT(" ") + CString(this->message);
 
 		const auto msg = GetCurrentTimeAndMessage(receive_msg);
-		this->eventListBox->AddString(msg);
-
-		// Here Serial Sending. (Message) - Server Mode 일경우에만
-		
+		this->eventListBox->AddString(msg);		
 
 		std::memset(&this->message, 0, sizeof(this->message));
 	}
 
+}
+
+void WinSocket::OnReceiveClientMessage(SOCKET sock, HWND hDig, WORD eid, WORD error, std::string message) {
+
+	const auto receive_msg = this->clients[sock].first + TEXT(" ") + CString(message.c_str());
+
+	const auto msg = GetCurrentTimeAndMessage(receive_msg);
+	this->eventListBox->AddString(msg);
+
+	//this->OnAllSendClientMessage(message);
 }
 
 const bool WinSocket::OnSendMessage(const SOCKET sock, const std::string message) {

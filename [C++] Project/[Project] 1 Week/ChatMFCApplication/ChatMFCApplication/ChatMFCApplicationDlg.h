@@ -37,7 +37,6 @@ class CChatMFCApplicationDlg : public CDialogEx
 		afx_msg void OnPaint();
 		afx_msg HCURSOR OnQueryDragIcon();
 
-		afx_msg LRESULT OnDidReceiveSocketMessage(WPARAM wParam, LPARAM lParam);
 		afx_msg LRESULT OnDidReceiveSerialMessage(WPARAM wParam, LPARAM lParam);
 
 		DECLARE_MESSAGE_MAP()

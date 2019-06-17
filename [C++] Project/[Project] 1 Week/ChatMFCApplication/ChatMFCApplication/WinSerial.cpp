@@ -29,11 +29,12 @@ WinSerial::WinSerial(const S_PORT port, HWND hWnd) {
 
 			if (!GetCommState(this->handler, &dcbSerialParameters)) {}
 			else {
-				dcbSerialParameters.DCBlength = sizeof(dcbSerialParameters);
-				dcbSerialParameters.BaudRate = CBR_115200; // BandWidth
-				dcbSerialParameters.ByteSize = 8;
-				dcbSerialParameters.StopBits = ONESTOPBIT;
-				dcbSerialParameters.Parity = NOPARITY;
+
+				dcbSerialParameters.DCBlength	= sizeof(dcbSerialParameters);
+				dcbSerialParameters.BaudRate	= CBR_115200; // BandWidth
+				dcbSerialParameters.ByteSize	= 8;
+				dcbSerialParameters.StopBits	= ONESTOPBIT;
+				dcbSerialParameters.Parity		= NOPARITY;
 				dcbSerialParameters.fDtrControl = DTR_CONTROL_ENABLE;
 
 				if (!SetCommState(handler, &dcbSerialParameters)) {}
@@ -48,18 +49,18 @@ WinSerial::WinSerial(const S_PORT port, HWND hWnd) {
 					timeouts.WriteTotalTimeoutMultiplier = 0;
 
 					SetCommTimeouts(this->handler, &timeouts);
-
+					
 					this->connected = true;
 
 					//
-					this->overlaped_event.second.Offset = 0;
-					this->overlaped_event.second.OffsetHigh = 0;
-					this->overlaped_event.second.hEvent = CreateEvent(0, 1, 0, 0);
+					this->overlaped_event.second.Offset			= 0;
+					this->overlaped_event.second.OffsetHigh		= 0;
+					this->overlaped_event.second.hEvent			= CreateEvent(0, 1, 0, 0);
 
 					//
-					this->overlaped_event.first.Offset = 0;
-					this->overlaped_event.first.OffsetHigh = 0;
-					this->overlaped_event.first.hEvent = CreateEvent(0, 1, 0, 0);
+					this->overlaped_event.first.Offset			= 0;
+					this->overlaped_event.first.OffsetHigh		= 0;
+					this->overlaped_event.first.hEvent			= CreateEvent(0, 1, 0, 0);
 
 					SetCommMask(this->handler, EV_RXCHAR);
 
@@ -112,9 +113,12 @@ UINT WinSerial::ReadMessageSerial(LPVOID _mothod) {
 
 					const auto isSuccess = ReadFile(handle->handler, &message, BUFSIZ, &read_Byte, &handle->overlaped_event.first);
 					if (isSuccess) {
+						
 						CString * msg = new CString(message);
-						PostMessage(handle->hWindow, 19, NULL, (LPARAM)msg);
-						std::cout << message << std::endl;
+						if (!msg->IsEmpty()) {
+							PostMessage(handle->hWindow, 19, NULL, (LPARAM)msg);
+						}
+						
 					}
 				}
 

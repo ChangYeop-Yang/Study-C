@@ -33,6 +33,8 @@ class WinSerial
 
 	// MARK: - Object Variables
 	public:
+		bool	connected;
+
 		CCriticalSection critical;
 
 	private:
@@ -40,7 +42,6 @@ class WinSerial
 		COMSTAT status;
 		DWORD	errors;
 		HWND	hWindow;
-		bool	connected;
 		
 		EVENT overlaped_event;
 

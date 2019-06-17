@@ -169,11 +169,16 @@ void CChatMFCApplicationDlg::OnSendMessage()
 
 	std::string send_message = std::string( ATL::CW2A(message.GetString()) );
 
+	// MARK: TCP/IP Socket Open and TCP/IP Socket Connected.
 	if (socket_mode) {
 		this->socket->OnAllSendClientMessage(send_message);
-		this->serial->WriteMessageSerial(send_message);
 	} else {
 		this->socket->OnSendMessageServer(send_message);
+	}
+
+	// MARK: Serial Socket Open and Serial Socket Connected.
+	if (this->serial != nullptr && this->serial->connected) {
+		this->serial->WriteMessageSerial(send_message);
 	}
 
 	// MARK: Clear Edit Contril Message.
@@ -321,8 +326,21 @@ LRESULT CChatMFCApplicationDlg::WindowProc(UINT message, WPARAM wParam, LPARAM l
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	switch (message) {
 		case MWM_SERVER_EVENT_SOCK:
-			this->socket->OnSocketServerEventHandler(this->m_hWnd, socket, lParam, lParam);
+
+			char message[BUFSIZ];
+			std::memset(&message, 0, sizeof(message));
+
+			if ( const int length = recv(socket, message, BUFSIZ, 0) ) {
+				const std::string message_str = std::string(message);
+				this->socket->OnSocketServerEventHandler(this->m_hWnd, socket, lParam, lParam, message_str);
+				
+				// MARK: Only Socket Connected Client.
+				if (this->serial != nullptr && this->serial->connected && socket_mode) {
+					this->socket->OnAllSendClientMessage(message_str);
+				}
+			}
 			break;
+
 		case MWM_CLIENT_EVENT_SOCK:
 			this->socket->OnSocketClientEventHandler(this->m_hWnd, socket, lParam, lParam);
 			break;
@@ -341,7 +359,6 @@ LRESULT CChatMFCApplicationDlg::OnDidReceiveSerialMessage(WPARAM wParam, LPARAM 
 	this->IDC_EVENT_MESSAGE_LIST.AddString(message);
 
 	auto convert = std::string(ATL::CW2A(receive->GetString()));
-	this->socket->OnAllSendClientMessage(convert);
 
 	delete(receive);
 
