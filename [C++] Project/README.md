@@ -6,7 +6,7 @@
 |:----------------------------------:|:--------------------------:|
 |![](https://user-images.githubusercontent.com/20036523/59315384-856e0680-8cf4-11e9-8897-970753c28be1.jpg)|![]()|
 
-* TCP/IP Socket Communication Project를 수행함으로써 TCP/IP
+* TCP/IP Socket Communication Project를 수행함으로써 TCP/IP에 대한 전반적인 개념을 이해하고자 한다. 또한 프로젝트를 수행하면서 발생하는 소켓통신에 대한 오류점에 대해서도 학습하고자 한다.
 
 #### 📋 TCP/IP Header Source Code
 
