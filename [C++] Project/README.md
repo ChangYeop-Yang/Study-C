@@ -319,16 +319,30 @@ void WinSocket::DisConnectTCPSocketClient() {
 #### 🔑 DEVLEOPMENT KEYWORD
 
 * `WSAAsyncSelect`
+
 * `TCP/IP`
+
 * `SOCKET`
+
 * `WINDOWS`
+
 * `C/C++`
+
 * `Serial`
+
 * `Concurrency (Thread)`
 
 #### 👀 TIP
 
 * **MFC (Microsoft Foundation Class Library) Console** </br> `#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")`
+
+* **WSAAsyncSelect**
+```C++
+// MARK: WSAAsyncSelect()함수를 호출하면 해당 소켓은 자동으로 Non_Blocking 모드로 전환된다.
+(WINDOWS SERVER) WSAAsyncSelect(SOCKET, HWND, MWM, FD_ACCEPT | FD_CLOSE);
+
+(WINDOWS CLIENT) WSAAsyncSelect(SOCKET, HWND, MWM, FD_READ | FD_CLOSE);
+```
 
 #### [🚀 Project Source Code](https://github.com/ChangYeop-Yang/Study-C/tree/master/%5BC%2B%2B%5D%20Project/%5BProject%5D%201%20Week/ChatMFCApplication)
 
@@ -339,9 +353,13 @@ void WinSocket::DisConnectTCPSocketClient() {
 #### 🔑 DEVLEOPMENT KEYWORD
 
 * `Android`
+
 * `JAVA`
+
 * `TCP/IP`
+
 * `C/C++`
+
 * `Android NDK`
 
 #### [🚀 Project Source Code]()
