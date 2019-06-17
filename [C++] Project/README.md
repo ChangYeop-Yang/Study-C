@@ -316,6 +316,8 @@ void WinSocket::DisConnectTCPSocketClient() {
 }
 ```
 
+* * *
+
 #### 📋 Serial Header Source Code
 
 ```C++
