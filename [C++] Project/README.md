@@ -8,7 +8,7 @@
 
 * TCP/IP Socket Communication Project를 수행함으로써 TCP/IP에 대한 전반적인 개념을 이해하고자 한다. 또한 프로젝트를 수행하면서 발생하는 소켓통신에 대한 오류점에 대해서도 학습하고자 한다.
 
-#### 📋 TCP/IP Header Source Code
+#### 📋 TCP/IP Header Source Code (Microsoft Foundation Class Library)
 
 ```C++
 #pragma once
@@ -85,7 +85,8 @@ class WinSocket
 
 #endif
 ```
-#### 📋 TCP/IP Header Source Code
+
+#### 📋 TCP/IP Header Source Code (Microsoft Foundation Class Library)
 
 ```C++
 #include "stdafx.h"
@@ -97,16 +98,6 @@ WinSocket::~WinSocket() {
 	// MARK: Remove All Object Variables.
 	this->clients.clear();
 	std::memset(this->message, 0, sizeof(this->message));
-}
-
-const CString WinSocket::GetCurrentTimeAndMessage(const CString message) {
-
-	const auto now = CTime::GetCurrentTime();
-
-	CString time_str;
-	time_str.Format(_T("※ [%04d-%02d-%02d %02d:%02d:%02d] %s"), now.GetYear(), now.GetMonth(), now.GetDay(), now.GetHour(), now.GetMinute(), now.GetSecond(), message);
-
-	return time_str;
 }
 
 void WinSocket::openTCPSocketServer(const int port, HWND hDig) {
