@@ -350,7 +350,6 @@ class WinSerial
 	public:
 		void CloseWinSerial();
 		const bool	WriteMessageSerial(const std::string message);
-		const bool	GetConnectedSerialState();
 		const DWORD GetBaudRateSerial(const std::string baud_Rate);
 
 		static UINT ReadMessageSerial(LPVOID _mothod);
@@ -533,10 +532,6 @@ const bool WinSerial::WriteMessageSerial(const std::string message) {
 	this->critical.Unlock();
 
 	return false;
-}
-
-const bool WinSerial::GetConnectedSerialState() {
-	return this->connected;
 }
 
 void WinSerial::CloseWinSerial() {
