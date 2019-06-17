@@ -58,9 +58,7 @@ class WinSocket
 
 		void OnSocketServerEventHandler(HWND hWnd, SOCKET sock, WORD eid, WORD error, std::string message);
 		void OnSocketClientEventHandler(HWND hWnd, SOCKET sock, WORD eid, WORD error);
-		
-		const CString GetCurrentTimeAndMessage(const CString message);
-		
+				
 		const bool OnSendMessage(const SOCKET sock, const std::string message);
 		void OnAllSendClientMessage(const std::string message);
 		void OnSendMessageServer(const std::string message);
@@ -74,8 +72,6 @@ class WinSocket
 	// MARK: - Object Methods
 	public:
 		bool socket_Mode;
-
-		CListBox * eventListBox;
 
 	private:		
 		int szClntAddr;
@@ -217,14 +213,6 @@ void WinSocket::OnReceiveMessage(SOCKET sock, HWND hDig, WORD eid, WORD error) {
 
 }
 
-void WinSocket::OnReceiveClientMessage(SOCKET sock, HWND hDig, WORD eid, WORD error, std::string message) {
-
-	const auto receive_msg = this->clients[sock].first + TEXT(" ") + CString(message.c_str());
-
-	const auto msg = GetCurrentTimeAndMessage(receive_msg);
-	this->eventListBox->AddString(msg);
-}
-
 const bool WinSocket::OnSendMessage(const SOCKET sock, const std::string message) {
 	return send(sock, message.c_str(), message.size(), 0) == 0 ? true : false; // ZERO == Success, EOF == Fail
 }
@@ -328,7 +316,6 @@ void WinSocket::ConnectTCPClient(const std::string ip, const int port, HWND hDig
 		}
 
 		DisConnectTCPSocketClient();
-		this->eventListBox->AddString(connection_mssage);
 	}
 
 }
