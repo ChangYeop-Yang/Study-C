@@ -45,19 +45,24 @@ class CChatMFCApplicationDlg : public CDialogEx
 	private:
 		CEdit		IDC_INPUT_PORT_EDIT;
 		CEdit		IDC_INPUT_MESSAGE_EDIT;
+		CEdit		IDC_SERIAL_INPUT_EDIT;
 
 		CListBox	IDC_EVENT_MESSAGE_LIST;
+		CListBox	IDC_SERIAL_MESSAGE_LIST;
 
 		CMFCButton	IDC_SERVER_CLOSE_BUTTON;
 		CMFCButton	IDC_MESSAGE_SEND_BUTTON;
 		CMFCButton	IDC_SERVER_OPEN_BUTTON;
 		CMFCButton	IDC_SERIAL_CONNNECT_BUTTON;
+		CMFCButton	IDC_SERIAL_SEND_BUTTON;
+		CMFCButton	IDC_SERIAL_MESSAGE_CLEAN_BUTTON;
+		CMFCButton	IDC_SOCKET_MESSAGE_CLEAN_BUTTON;
 
 		CButton		IDC_SERVER_MODE_RADIO;
 
 		CComboBox	IDC_PORT_DROP_BOX;
 		CComboBox	IDC_BANDWITH_DROP_BOX;
-
+		
 	// MARK: - Object Variables
 	private:
 		bool socket_mode = true;
@@ -84,5 +89,6 @@ class CChatMFCApplicationDlg : public CDialogEx
 
 		afx_msg void OnChangeMessage();
 		afx_msg void OnConnectSerial();
-
+private:
+	
 };

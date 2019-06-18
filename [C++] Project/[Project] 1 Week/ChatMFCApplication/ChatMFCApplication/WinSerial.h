@@ -27,7 +27,7 @@ class WinSerial
 	public:
 		void CloseWinSerial();
 		const bool	WriteMessageSerial(const std::string message);
-		const bool	GetConnectedSerialState();
+		const DWORD GetBaudRateSerial(const std::string baud_Rate);
 
 		static UINT ReadMessageSerial(LPVOID _mothod);
 
@@ -39,8 +39,6 @@ class WinSerial
 
 	private:
 		HANDLE	handler;
-		COMSTAT status;
-		DWORD	errors;
 		HWND	hWindow;
 		
 		EVENT overlaped_event;

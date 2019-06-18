@@ -35,6 +35,11 @@ void CChatMFCApplicationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO2, IDC_PORT_DROP_BOX);
 	DDX_Control(pDX, IDC_COMBO1, IDC_BANDWITH_DROP_BOX);
 	DDX_Control(pDX, IDC_MFCBUTTON3, IDC_SERIAL_CONNNECT_BUTTON);
+	DDX_Control(pDX, IDC_MFCBUTTON6, IDC_SERIAL_SEND_BUTTON);
+	DDX_Control(pDX, IDC_MFCBUTTON7, IDC_SERIAL_MESSAGE_CLEAN_BUTTON);
+	DDX_Control(pDX, IDC_LIST2, IDC_SERIAL_MESSAGE_LIST);
+	DDX_Control(pDX, IDC_MFCBUTTON4, IDC_SOCKET_MESSAGE_CLEAN_BUTTON);
+	DDX_Control(pDX, IDC_EDIT2, IDC_SERIAL_INPUT_EDIT);
 }
 
 BEGIN_MESSAGE_MAP(CChatMFCApplicationDlg, CDialogEx)
@@ -207,7 +212,14 @@ void CChatMFCApplicationDlg::OnConnectSerial()
 	this->IDC_PORT_DROP_BOX.GetLBText(pos, port.second);
 	
 	std::pair<std::string, std::string> pass = std::make_pair( std::string( ATL::CW2A(port.first.GetString()) ), std::string( ATL::CW2A(port.second.GetString()) ) );
-	this->serial = std::unique_ptr<WinSerial>( new WinSerial(pass, this->m_hWnd) );
+
+	if (this->serial != nullptr) {
+		this->serial = nullptr;
+		this->IDC_SERIAL_CONNNECT_BUTTON.SetWindowTextW(TEXT("연결"));
+	} else {
+		this->serial = std::unique_ptr<WinSerial>(new WinSerial(pass, this->m_hWnd));
+		this->IDC_SERIAL_CONNNECT_BUTTON.SetWindowTextW(TEXT("해제"));
+	}
 }
 
 // MARK: - User Methods
@@ -336,7 +348,7 @@ LRESULT CChatMFCApplicationDlg::WindowProc(UINT message, WPARAM wParam, LPARAM l
 				
 				// MARK: Only Socket Connected Client.
 				if (this->serial != nullptr && this->serial->connected && socket_mode) {
-					this->socket->OnAllSendClientMessage(message_str);
+					this->serial->WriteMessageSerial(message_str);
 				}
 			}
 			break;
@@ -359,6 +371,7 @@ LRESULT CChatMFCApplicationDlg::OnDidReceiveSerialMessage(WPARAM wParam, LPARAM 
 	this->IDC_EVENT_MESSAGE_LIST.AddString(message);
 
 	auto convert = std::string(ATL::CW2A(receive->GetString()));
+	this->socket->OnAllSendClientMessage(convert);
 
 	delete(receive);
 

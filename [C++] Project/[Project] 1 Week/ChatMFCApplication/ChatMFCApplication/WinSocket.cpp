@@ -142,8 +142,6 @@ void WinSocket::OnReceiveClientMessage(SOCKET sock, HWND hDig, WORD eid, WORD er
 
 	const auto msg = GetCurrentTimeAndMessage(receive_msg);
 	this->eventListBox->AddString(msg);
-
-	//this->OnAllSendClientMessage(message);
 }
 
 const bool WinSocket::OnSendMessage(const SOCKET sock, const std::string message) {

@@ -1,9 +1,9 @@
 ﻿  ChatMFCApplicationDlg.cpp
-c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\chatmfcapplicationdlg.cpp(335): warning C4244: '인수': 'LPARAM'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\chatmfcapplicationdlg.cpp(345): warning C4244: '인수': 'LPARAM'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\chatmfcapplicationdlg.cpp(347): warning C4244: '인수': 'LPARAM'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\chatmfcapplicationdlg.cpp(357): warning C4244: '인수': 'LPARAM'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   코드를 생성하고 있습니다.
-  2 of 675 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+  18 of 681 functions ( 2.6%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    4 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
   ChatMFCApplication.vcxproj -> C:\Users\user\Documents\GitHub\Study-C\[C++] Project\[Project] 1 Week\ChatMFCApplication\Release\ChatMFCApplication.exe
