@@ -112,7 +112,9 @@ UINT WinSerial::ReadMessageSerial(LPVOID _mothod) {
 	// MARK: https://github.com/xanthium-enterprises/Serial-Programming-Win32API-C/blob/master/USB2SERIAL_Read/Reciever%20(PC%20Side)/USB2SERIAL_Read_W32.c
 	auto handle = (WinSerial *)_mothod;
 
+	std::string delivery = std::string();
 	char message[BUFSIZ];
+
 	while (handle->connected) {
 
 		if (WaitCommEvent(handle->handler, &handle->dwEventMask, 0)) {
@@ -128,6 +130,7 @@ UINT WinSerial::ReadMessageSerial(LPVOID _mothod) {
 
 						CString * msg = new CString(message);
 						if (!msg->IsEmpty()) {
+							
 							PostMessage(handle->hWindow, 19, NULL, (LPARAM)msg);
 						}
 

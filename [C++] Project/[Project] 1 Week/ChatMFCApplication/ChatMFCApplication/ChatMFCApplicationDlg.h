@@ -57,6 +57,8 @@ class CChatMFCApplicationDlg : public CDialogEx
 		CMFCButton	IDC_SERIAL_SEND_BUTTON;
 		CMFCButton	IDC_SERIAL_MESSAGE_CLEAN_BUTTON;
 		CMFCButton	IDC_SOCKET_MESSAGE_CLEAN_BUTTON;
+		CMFCButton	IDC_CLEAN_SERIAL_INPUT_BUTTON;
+		CMFCButton	IDC_CLEAN_SOCKET_INPUT_BUTTON;
 
 		CButton		IDC_SERVER_MODE_RADIO;
 
@@ -74,6 +76,12 @@ class CChatMFCApplicationDlg : public CDialogEx
 		afx_msg void OnClickedTCPbuttons(const UINT id);
 		afx_msg void OnClickedRadioButtons(const UINT id);
 		afx_msg void OnSendMessage();
+		afx_msg void OnChangeSerialInputEdit();
+		afx_msg void OnChangeMessage();
+		afx_msg void OnConnectSerial();
+		afx_msg void OnSendSerialMessage();
+		afx_msg void OnCleanListBoxButtons(const UINT id);
+		afx_msg void OnCleanInputEditButtons(const UINT id);
 
 	// MARK: - User Methods
 	private:
@@ -82,13 +90,17 @@ class CChatMFCApplicationDlg : public CDialogEx
 		void ConnectTCPClient();
 		void DisConnectTCPSocketClient();
 		void SettingDropBoxMenu();
+		void SetMFCButton();
+
+		const CString GetCurrentTimeAndMessage(const CString message);
 		std::pair<std::string, std::string> SplitIPAddressAndPort(const std::string stub);
 
+	// MARK: - System Call Methods
 	public:
 		virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
-		afx_msg void OnChangeMessage();
-		afx_msg void OnConnectSerial();
-private:
-	
+	// MARK: - Inline Methods
+	private:
+		inline void ChangeEnableSerialView(const bool enable);
+		inline void CleanEditViewContent(const bool type);
 };

@@ -125,8 +125,8 @@ void WinSocket::closeTCPSocketServer() {
 void WinSocket::OnReceiveMessage(SOCKET sock, HWND hDig, WORD eid, WORD error) {
 
 	if ( const int length = recv(sock, this->message, BUFSIZ, 0) ) {
-
-		const auto receive_msg = this->clients[sock].first + TEXT(" ") + CString(this->message);
+		
+		const auto receive_msg = CString(inet_ntoa(this->servAddr.sin_addr)) + TEXT(" (S) ") + CString(this->message);
 
 		const auto msg = GetCurrentTimeAndMessage(receive_msg);
 		this->eventListBox->AddString(msg);		
@@ -138,7 +138,7 @@ void WinSocket::OnReceiveMessage(SOCKET sock, HWND hDig, WORD eid, WORD error) {
 
 void WinSocket::OnReceiveClientMessage(SOCKET sock, HWND hDig, WORD eid, WORD error, std::string message) {
 
-	const auto receive_msg = this->clients[sock].first + TEXT(" ") + CString(message.c_str());
+	const auto receive_msg = this->clients[sock].first + TEXT(" (C) ") + CString(message.c_str());
 
 	const auto msg = GetCurrentTimeAndMessage(receive_msg);
 	this->eventListBox->AddString(msg);
@@ -232,6 +232,7 @@ void WinSocket::ConnectTCPClient(const std::string ip, const int port, HWND hDig
 			throw Error::CONNECT_SERVER_ERROR;
 		}
 
+		this->eventListBox->AddString( GetCurrentTimeAndMessage( TEXT("SUCCESS, CONNECT TO TCP/IP SERVER.") ) );
 		WSAAsyncSelect(this->hServSock, hDig, MWM_CLIENT_EVENT_SOCK, FD_READ | FD_CLOSE);
 	} 
 	catch (const int exception) {

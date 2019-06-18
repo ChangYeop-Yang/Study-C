@@ -5,6 +5,7 @@
 #define IDD_CHATMFCAPPLICATION_DIALOG   102
 #define IDR_MAINFRAME                   128
 #define IDC_EDIT1                       1000
+#define IDC_EDIT_1                      1000
 #define IDC_EDIT3                       1012
 #define IDC_SCROLLBAR1                  1016
 #define IDC_MFCBUTTON2                  1021
@@ -18,12 +19,15 @@
 #define IDC_COMBO1                      1047
 #define IDC_COMBO2                      1048
 #define IDC_MFCBUTTON3                  1051
-#define IDC_MFCBUTTON4                  1053
-#define IDC_EDIT2                       1054
+#define IDC_EDIT_2                      1054
 #define IDC_LIST2                       1055
-#define IDC_MFCBUTTON5                  1056
 #define IDC_MFCBUTTON6                  1057
-#define IDC_MFCBUTTON7                  1058
+
+#define IDC_MFCBUTTON_4                 1064
+#define IDC_MFCBUTTON_7                 1065
+
+#define IDC_MFCBUTTON_C_2               1062
+#define IDC_MFCBUTTON_C_1               1063
 
 // Next default values for new objects
 // 
@@ -31,7 +35,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1059
+#define _APS_NEXT_CONTROL_VALUE         1064
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

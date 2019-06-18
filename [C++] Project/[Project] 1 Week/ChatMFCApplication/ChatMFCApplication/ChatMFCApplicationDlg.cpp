@@ -24,35 +24,44 @@ CChatMFCApplicationDlg::CChatMFCApplicationDlg(CWnd* pParent /*=nullptr*/)
 void CChatMFCApplicationDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_EDIT4, IDC_INPUT_PORT_EDIT);
+	DDX_Control(pDX, IDC_EDIT4,			IDC_INPUT_PORT_EDIT);
+	DDX_Control(pDX, IDC_MFCBUTTON_1,	IDC_SERVER_OPEN_BUTTON);
+	DDX_Control(pDX, IDC_MFCBUTTON_2,	IDC_SERVER_CLOSE_BUTTON);
+	DDX_Control(pDX, IDC_LIST1,			IDC_EVENT_MESSAGE_LIST);
+	DDX_Control(pDX, IDC_MFCBUTTON2,	IDC_MESSAGE_SEND_BUTTON);
+	DDX_Control(pDX, IDC_EDIT_1,		IDC_INPUT_MESSAGE_EDIT);
+	DDX_Control(pDX, IDC_RADIO_01,		IDC_SERVER_MODE_RADIO);
+	DDX_Control(pDX, IDC_COMBO2,		IDC_PORT_DROP_BOX);
+	DDX_Control(pDX, IDC_COMBO1,		IDC_BANDWITH_DROP_BOX);
+	DDX_Control(pDX, IDC_MFCBUTTON3,	IDC_SERIAL_CONNNECT_BUTTON);
+	DDX_Control(pDX, IDC_MFCBUTTON6,	IDC_SERIAL_SEND_BUTTON);
+	DDX_Control(pDX, IDC_MFCBUTTON_7,	IDC_SERIAL_MESSAGE_CLEAN_BUTTON);
+	DDX_Control(pDX, IDC_LIST2,			IDC_SERIAL_MESSAGE_LIST);
+	DDX_Control(pDX, IDC_MFCBUTTON_4,	IDC_SOCKET_MESSAGE_CLEAN_BUTTON);
+	DDX_Control(pDX, IDC_EDIT_2,		IDC_SERIAL_INPUT_EDIT);
 
-	DDX_Control(pDX, IDC_MFCBUTTON_1, IDC_SERVER_OPEN_BUTTON);
-	DDX_Control(pDX, IDC_MFCBUTTON_2, IDC_SERVER_CLOSE_BUTTON);
-	DDX_Control(pDX, IDC_LIST1, IDC_EVENT_MESSAGE_LIST);
-	DDX_Control(pDX, IDC_MFCBUTTON2, IDC_MESSAGE_SEND_BUTTON);
-	DDX_Control(pDX, IDC_EDIT1, IDC_INPUT_MESSAGE_EDIT);
-	DDX_Control(pDX, IDC_RADIO_01, IDC_SERVER_MODE_RADIO);
-	DDX_Control(pDX, IDC_COMBO2, IDC_PORT_DROP_BOX);
-	DDX_Control(pDX, IDC_COMBO1, IDC_BANDWITH_DROP_BOX);
-	DDX_Control(pDX, IDC_MFCBUTTON3, IDC_SERIAL_CONNNECT_BUTTON);
-	DDX_Control(pDX, IDC_MFCBUTTON6, IDC_SERIAL_SEND_BUTTON);
-	DDX_Control(pDX, IDC_MFCBUTTON7, IDC_SERIAL_MESSAGE_CLEAN_BUTTON);
-	DDX_Control(pDX, IDC_LIST2, IDC_SERIAL_MESSAGE_LIST);
-	DDX_Control(pDX, IDC_MFCBUTTON4, IDC_SOCKET_MESSAGE_CLEAN_BUTTON);
-	DDX_Control(pDX, IDC_EDIT2, IDC_SERIAL_INPUT_EDIT);
+	DDX_Control(pDX, IDC_MFCBUTTON_C_1, IDC_CLEAN_SERIAL_INPUT_BUTTON);
+	DDX_Control(pDX, IDC_MFCBUTTON_C_2, IDC_CLEAN_SOCKET_INPUT_BUTTON);
 }
 
 BEGIN_MESSAGE_MAP(CChatMFCApplicationDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+
 	ON_MESSAGE(19, &CChatMFCApplicationDlg::OnDidReceiveSerialMessage)
 
-	ON_COMMAND_RANGE( IDC_RADIO_01, IDC_RADIO_02, CChatMFCApplicationDlg::OnClickedRadioButtons )
-	ON_COMMAND_RANGE( IDC_MFCBUTTON_2, IDC_MFCBUTTON_1, CChatMFCApplicationDlg::OnClickedTCPbuttons )
+	ON_COMMAND_RANGE( IDC_RADIO_01,			IDC_RADIO_02,		CChatMFCApplicationDlg::OnClickedRadioButtons	)
+	ON_COMMAND_RANGE( IDC_MFCBUTTON_2,		IDC_MFCBUTTON_1,	CChatMFCApplicationDlg::OnClickedTCPbuttons		)
+	ON_COMMAND_RANGE( IDC_MFCBUTTON_4,		IDC_MFCBUTTON_7,	CChatMFCApplicationDlg::OnCleanListBoxButtons	)
+	ON_COMMAND_RANGE( IDC_MFCBUTTON_C_2,	IDC_MFCBUTTON_C_1,	CChatMFCApplicationDlg::OnCleanInputEditButtons	)
 
-	ON_BN_CLICKED( IDC_MFCBUTTON2, &CChatMFCApplicationDlg::OnSendMessage )
-	ON_EN_CHANGE(IDC_EDIT1, &CChatMFCApplicationDlg::OnChangeMessage)
-	ON_BN_CLICKED(IDC_MFCBUTTON3, &CChatMFCApplicationDlg::OnConnectSerial)
+	ON_BN_CLICKED(	IDC_MFCBUTTON3, &CChatMFCApplicationDlg::OnConnectSerial)
+	ON_BN_CLICKED(	IDC_MFCBUTTON2, &CChatMFCApplicationDlg::OnSendMessage )
+
+	ON_EN_CHANGE(	IDC_EDIT_1,		&CChatMFCApplicationDlg::OnChangeMessage)
+	ON_EN_CHANGE(	IDC_EDIT_2,		&CChatMFCApplicationDlg::OnChangeSerialInputEdit)
+
+	ON_BN_CLICKED(IDC_MFCBUTTON6, &CChatMFCApplicationDlg::OnSendSerialMessage)
 END_MESSAGE_MAP()
 
 
@@ -68,11 +77,7 @@ BOOL CChatMFCApplicationDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	this->IDC_MESSAGE_SEND_BUTTON.EnableWindowsTheming(false);
-	this->IDC_MESSAGE_SEND_BUTTON.SetFaceColor(RGB(254, 240, 27));
-
-	this->IDC_SERIAL_CONNNECT_BUTTON.EnableWindowsTheming(false);
-	this->IDC_SERIAL_CONNNECT_BUTTON.SetFaceColor(RGB(254, 240, 27));
+	CChatMFCApplicationDlg::SetMFCButton();
 
 	this->socket = unique_ptr<WinSocket>( new WinSocket() );
 	this->socket->eventListBox = &this->IDC_EVENT_MESSAGE_LIST;
@@ -124,17 +129,70 @@ HCURSOR CChatMFCApplicationDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+// MARK: - Inline Methods
+
+inline void CChatMFCApplicationDlg::ChangeEnableSerialView(const bool enable) {
+
+	// MARK: Client Mode의 경우에만 Serial Communication Panel Control.
+	if (this->socket_mode == false) { 
+		this->IDC_SERIAL_INPUT_EDIT.EnableWindow(enable);
+		this->IDC_SERIAL_MESSAGE_LIST.EnableWindow(enable);
+		this->IDC_SERIAL_CONNNECT_BUTTON.EnableWindow(enable);
+	}
+}
+
+inline void CChatMFCApplicationDlg::CleanEditViewContent(const bool type) {
+
+	// MARK: Clear Edit Contril Message.
+	if (type) {
+		this->IDC_INPUT_MESSAGE_EDIT.SetSel(FP_ZERO, EOF),	this->IDC_INPUT_MESSAGE_EDIT.Clear();
+	} else {
+		this->IDC_SERIAL_INPUT_EDIT.SetSel(FP_ZERO, EOF),	this->IDC_SERIAL_INPUT_EDIT.Clear();
+	}
+}
+
 // MARK: - Action Methods
+
+void CChatMFCApplicationDlg::OnCleanListBoxButtons(const UINT id) {
+
+	switch (id) {
+		case IDC_MFCBUTTON_4: {
+			this->IDC_EVENT_MESSAGE_LIST.ResetContent();
+			break;
+		}
+		case IDC_MFCBUTTON_7: { 
+			this->IDC_SERIAL_MESSAGE_LIST.ResetContent();
+			break;
+		}
+	}
+}
+
+void CChatMFCApplicationDlg::OnCleanInputEditButtons(const UINT id) {
+
+	switch (id) {
+		case IDC_MFCBUTTON_C_1: {
+			CChatMFCApplicationDlg::CleanEditViewContent(true);
+			break;
+		}
+		case IDC_MFCBUTTON_C_2: {
+			CChatMFCApplicationDlg::CleanEditViewContent(false);
+			break;
+		}
+	}
+
+}
 
 void CChatMFCApplicationDlg::OnClickedTCPbuttons(const UINT id) {
 
 	switch (id) {
 		case IDC_MFCBUTTON_1 : { // IDC_SERVER_OPEN_BUTTON
 			this->socket_mode ? CChatMFCApplicationDlg::OpenTCPServer() : CChatMFCApplicationDlg::ConnectTCPClient();
+			CChatMFCApplicationDlg::ChangeEnableSerialView(false);
 			break; 
 		}
 		case IDC_MFCBUTTON_2 : { // IDC_SERVER_CLOSE_BUTTON
 			this->socket_mode ? CChatMFCApplicationDlg::CloseTCPServer() : CChatMFCApplicationDlg::DisConnectTCPSocketClient();
+			CChatMFCApplicationDlg::ChangeEnableSerialView(true);
 			break; 
 		}
 	}
@@ -181,23 +239,25 @@ void CChatMFCApplicationDlg::OnSendMessage()
 		this->socket->OnSendMessageServer(send_message);
 	}
 
-	// MARK: Serial Socket Open and Serial Socket Connected.
-	if (this->serial != nullptr && this->serial->connected) {
-		this->serial->WriteMessageSerial(send_message);
-	}
-
 	// MARK: Clear Edit Contril Message.
-	this->IDC_INPUT_MESSAGE_EDIT.SetSel(0, EOF);
-	this->IDC_INPUT_MESSAGE_EDIT.Clear();
+	CChatMFCApplicationDlg::CleanEditViewContent(true);
 }
 
 void CChatMFCApplicationDlg::OnChangeMessage()
 {
-	if (const int length = this->IDC_INPUT_MESSAGE_EDIT.GetWindowTextLengthW()) {
+	if ( const int length = this->IDC_INPUT_MESSAGE_EDIT.GetWindowTextLengthW() ) {
 		this->IDC_MESSAGE_SEND_BUTTON.EnableWindow(true);
-	}
-	else {
+	} else {
 		this->IDC_MESSAGE_SEND_BUTTON.EnableWindow(false);
+	}
+}
+
+void CChatMFCApplicationDlg::OnChangeSerialInputEdit()
+{
+	if ( const int length = this->IDC_SERIAL_INPUT_EDIT.GetWindowTextLengthW() ) {
+		this->IDC_SERIAL_SEND_BUTTON.EnableWindow(true);
+	} else {
+		this->IDC_SERIAL_SEND_BUTTON.EnableWindow(false);
 	}
 }
 
@@ -216,13 +276,52 @@ void CChatMFCApplicationDlg::OnConnectSerial()
 	if (this->serial != nullptr) {
 		this->serial = nullptr;
 		this->IDC_SERIAL_CONNNECT_BUTTON.SetWindowTextW(TEXT("연결"));
+		this->IDC_SERIAL_CONNNECT_BUTTON.SetFaceColor( RGB(47, 157, 39) );
 	} else {
 		this->serial = std::unique_ptr<WinSerial>(new WinSerial(pass, this->m_hWnd));
 		this->IDC_SERIAL_CONNNECT_BUTTON.SetWindowTextW(TEXT("해제"));
+		this->IDC_SERIAL_CONNNECT_BUTTON.SetFaceColor( RGB(0, 130, 153) );
 	}
 }
 
 // MARK: - User Methods
+
+void CChatMFCApplicationDlg::SetMFCButton() {
+
+	this->IDC_MESSAGE_SEND_BUTTON.EnableWindowsTheming(false);
+	this->IDC_MESSAGE_SEND_BUTTON.SetFaceColor( RGB(254, 240, 27) );
+
+	this->IDC_SERIAL_CONNNECT_BUTTON.EnableWindowsTheming(false);
+	this->IDC_SERIAL_CONNNECT_BUTTON.SetFaceColor( RGB(47, 157, 39) );
+	this->IDC_SERIAL_CONNNECT_BUTTON.SetTextColor(RGB(255, 255, 255));
+	
+	this->IDC_SERIAL_SEND_BUTTON.EnableWindowsTheming(false);
+	this->IDC_SERIAL_SEND_BUTTON.SetFaceColor( RGB(254, 240, 27) );
+
+	this->IDC_SERVER_OPEN_BUTTON.EnableWindowsTheming(false);
+	this->IDC_SERVER_OPEN_BUTTON.SetFaceColor( RGB(47, 157, 39) );
+	this->IDC_SERVER_OPEN_BUTTON.SetTextColor(RGB(255, 255, 255));
+
+	this->IDC_SERVER_CLOSE_BUTTON.EnableWindowsTheming(false);
+	this->IDC_SERVER_CLOSE_BUTTON.SetFaceColor( RGB(0, 130, 153) );
+	this->IDC_SERVER_CLOSE_BUTTON.SetTextColor(RGB(255, 255, 255));
+
+	this->IDC_SERIAL_MESSAGE_CLEAN_BUTTON.EnableWindowsTheming(false);
+	this->IDC_SERIAL_MESSAGE_CLEAN_BUTTON.SetTextColor(RGB(255, 255, 255));
+	this->IDC_SERIAL_MESSAGE_CLEAN_BUTTON.SetFaceColor(RGB(0, 122, 255));
+
+	this->IDC_SOCKET_MESSAGE_CLEAN_BUTTON.EnableWindowsTheming(false);
+	this->IDC_SOCKET_MESSAGE_CLEAN_BUTTON.SetTextColor(RGB(255, 255, 255));
+	this->IDC_SOCKET_MESSAGE_CLEAN_BUTTON.SetFaceColor(RGB(0, 122, 255));
+
+	this->IDC_CLEAN_SOCKET_INPUT_BUTTON.EnableWindowsTheming(false);
+	this->IDC_CLEAN_SOCKET_INPUT_BUTTON.SetTextColor(RGB(255, 255, 255));
+	this->IDC_CLEAN_SOCKET_INPUT_BUTTON.SetFaceColor(RGB(0, 122, 255));
+
+	this->IDC_CLEAN_SERIAL_INPUT_BUTTON.EnableWindowsTheming(false);
+	this->IDC_CLEAN_SERIAL_INPUT_BUTTON.SetTextColor( RGB(255, 255, 255) );
+	this->IDC_CLEAN_SERIAL_INPUT_BUTTON.SetFaceColor( RGB(0, 122, 255) );
+}
 
 void CChatMFCApplicationDlg::SettingDropBoxMenu() {
 
@@ -271,9 +370,8 @@ void CChatMFCApplicationDlg::OpenTCPServer() {
 		// MARK: IDC_SERVER_OPEN_BUTTON, IDC_SERVER_CLOSE_BUTTON Enable (버튼 활성화)
 		this->IDC_SERVER_CLOSE_BUTTON.EnableWindow(true);
 		this->IDC_SERVER_OPEN_BUTTON.EnableWindow(false);
-	}
-	else {
-		auto message = TEXT("※ Please, Input Port Number.");
+	} else {
+		const auto message = TEXT("※ Please, Input Port Number.");
 		MessageBox(message);
 	}
 	
@@ -329,6 +427,16 @@ std::pair<std::string, std::string> CChatMFCApplicationDlg::SplitIPAddressAndPor
 	return result;
 }
 
+const CString CChatMFCApplicationDlg::GetCurrentTimeAndMessage(const CString message) {
+
+	const auto now = CTime::GetCurrentTime();
+
+	CString time_str;
+	time_str.Format(_T("※ [%04d-%02d-%02d %02d:%02d:%02d] %s"), now.GetYear(), now.GetMonth(), now.GetDay(), now.GetHour(), now.GetMinute(), now.GetSecond(), message);
+
+	return time_str;
+}
+
 // MARK: - System Call Methods
 
 LRESULT CChatMFCApplicationDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
@@ -364,11 +472,10 @@ LRESULT CChatMFCApplicationDlg::WindowProc(UINT message, WPARAM wParam, LPARAM l
 LRESULT CChatMFCApplicationDlg::OnDidReceiveSerialMessage(WPARAM wParam, LPARAM lParam) {
 	
 	CString * receive = (CString *) lParam;
+
+	const auto message = GetCurrentTimeAndMessage(*receive) + CString("【SERIAL】");
 	
-	CString message = CString();
-	message.Format( _T("※ [SERIAL - MESSAGE] %s"), *receive);
-	
-	this->IDC_EVENT_MESSAGE_LIST.AddString(message);
+	this->IDC_SERIAL_MESSAGE_LIST.AddString(message);
 
 	auto convert = std::string(ATL::CW2A(receive->GetString()));
 	this->socket->OnAllSendClientMessage(convert);
@@ -376,4 +483,20 @@ LRESULT CChatMFCApplicationDlg::OnDidReceiveSerialMessage(WPARAM wParam, LPARAM 
 	delete(receive);
 
 	return 0;
+}
+
+
+void CChatMFCApplicationDlg::OnSendSerialMessage()
+{
+	CString message;
+	this->IDC_SERIAL_INPUT_EDIT.GetWindowTextW(message);
+
+	std::string send_message = std::string(ATL::CW2A(message.GetString()));
+
+	// MARK: Serial Socket Open and Serial Socket Connected.
+	if (this->serial != nullptr && this->serial->connected) {
+		this->serial->WriteMessageSerial(send_message);
+	}
+
+	CChatMFCApplicationDlg::CleanEditViewContent(false);
 }

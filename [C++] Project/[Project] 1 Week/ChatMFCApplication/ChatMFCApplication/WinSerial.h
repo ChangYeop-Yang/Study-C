@@ -3,6 +3,7 @@
 #ifndef WIN_SERIAL_H
 #define WIN_SERIAL_H
 
+#include <queue>
 #include <string>
 #include <thread>
 #include <afxmt.h>
