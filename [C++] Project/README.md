@@ -10,19 +10,19 @@
 
 #### 📋 TCP/IP Socket Header Source Code (Microsoft Foundation Class Library)
 
-* [TCP/IP Socket Header Source Code](https://github.com/ChangYeop-Yang/Study-C/blob/master/%5BC%2B%2B%5D%20Project/%5BProject%5D%201%20Week/ChatMFCApplication/ChatMFCApplication/WinSocket.h)
+* [TCP/IP Socket Header Source Code URL](https://github.com/ChangYeop-Yang/Study-C/blob/master/%5BC%2B%2B%5D%20Project/%5BProject%5D%201%20Week/ChatMFCApplication/ChatMFCApplication/WinSocket.h)
 
 #### 📋 TCP/IP Socket Body Source Code (Microsoft Foundation Class Library)
 
-* [TCP/IP Socket Body Source Code](https://github.com/ChangYeop-Yang/Study-C/blob/master/%5BC%2B%2B%5D%20Project/%5BProject%5D%201%20Week/ChatMFCApplication/ChatMFCApplication/WinSocket.cpp)
+* [TCP/IP Socket Body Source Code URL](https://github.com/ChangYeop-Yang/Study-C/blob/master/%5BC%2B%2B%5D%20Project/%5BProject%5D%201%20Week/ChatMFCApplication/ChatMFCApplication/WinSocket.cpp)
 
 #### 📋 Serial Header Source Code
 
-* [Serial Header Source Code](https://github.com/ChangYeop-Yang/Study-C/blob/master/%5BC%2B%2B%5D%20Project/%5BProject%5D%201%20Week/ChatMFCApplication/ChatMFCApplication/WinSerial.h)
+* [Serial Header Source Code URL](https://github.com/ChangYeop-Yang/Study-C/blob/master/%5BC%2B%2B%5D%20Project/%5BProject%5D%201%20Week/ChatMFCApplication/ChatMFCApplication/WinSerial.h)
 
 #### 📋 Serial Body Source Code
 
-* [Serial Body Source Code](https://github.com/ChangYeop-Yang/Study-C/blob/master/%5BC%2B%2B%5D%20Project/%5BProject%5D%201%20Week/ChatMFCApplication/ChatMFCApplication/WinSerial.cpp)
+* [Serial Body Source Code URL](https://github.com/ChangYeop-Yang/Study-C/blob/master/%5BC%2B%2B%5D%20Project/%5BProject%5D%201%20Week/ChatMFCApplication/ChatMFCApplication/WinSerial.cpp)
 
 #### 🔑 DEVLEOPMENT KEYWORD
 
