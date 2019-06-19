@@ -48,7 +48,7 @@ BEGIN_MESSAGE_MAP(CChatMFCApplicationDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 
-	ON_MESSAGE(19, &CChatMFCApplicationDlg::OnDidReceiveSerialMessage)
+	ON_MESSAGE(SERIAL_RECIVE_MESSAGE, &CChatMFCApplicationDlg::OnDidReceiveSerialMessage)
 
 	ON_COMMAND_RANGE( IDC_RADIO_01,			IDC_RADIO_02,		CChatMFCApplicationDlg::OnClickedRadioButtons	)
 	ON_COMMAND_RANGE( IDC_MFCBUTTON_2,		IDC_MFCBUTTON_1,	CChatMFCApplicationDlg::OnClickedTCPbuttons		)

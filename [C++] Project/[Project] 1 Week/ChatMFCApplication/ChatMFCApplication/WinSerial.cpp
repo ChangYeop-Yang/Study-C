@@ -111,9 +111,7 @@ UINT WinSerial::ReadMessageSerial(LPVOID _mothod) {
 
 	// MARK: https://github.com/xanthium-enterprises/Serial-Programming-Win32API-C/blob/master/USB2SERIAL_Read/Reciever%20(PC%20Side)/USB2SERIAL_Read_W32.c
 	auto handle = (WinSerial *)_mothod;
-
-	std::string delivery = std::string();
-	char message[BUFSIZ];
+	std::string message = std::string();
 
 	while (handle->connected) {
 
@@ -121,19 +119,18 @@ UINT WinSerial::ReadMessageSerial(LPVOID _mothod) {
 			handle->critical.Lock();
 			{
 				DWORD read_Byte = 0;
-				std::memset(message, 0, sizeof(message));
+				message.clear();
 
 				if (handle->dwEventMask & EV_RXCHAR) {
+					char temp;
 
-					const auto isSuccess = ReadFile(handle->handler, &message, BUFSIZ, &read_Byte, &handle->overlaped_event.first);
-					if (isSuccess) {
-
-						CString * msg = new CString(message);
-						if (!msg->IsEmpty()) {
-							
-							PostMessage(handle->hWindow, 19, NULL, (LPARAM)msg);
-						}
-
+					while (ReadFile(handle->handler, &temp, sizeof(char), &read_Byte, &handle->overlaped_event.first) && temp != EOF) {
+						Sleep(SERIAL_SLEEP_TIME), message.push_back(temp);
+					}
+					
+					const auto * delivery = new CString(message.c_str());
+					if (!delivery->IsEmpty()) {
+						PostMessage(handle->hWindow, SERIAL_RECIVE_MESSAGE, NULL, (LPARAM)delivery);
 					}
 				}
 			}
@@ -145,12 +142,13 @@ UINT WinSerial::ReadMessageSerial(LPVOID _mothod) {
 	return 0;
 }
 
-const bool WinSerial::WriteMessageSerial(const std::string message) {
+const bool WinSerial::WriteMessageSerial(std::string message) {
 
 	DWORD byteSend;
 
 	this->critical.Lock();
 	{
+		message.push_back(EOF);
 		WriteFile(this->handler, (void *) message.c_str(), message.size(), &byteSend, &this->overlaped_event.second);
 	}
 	this->critical.Unlock();

@@ -26,7 +26,7 @@ typedef std::pair<CString, SOCKADDR_IN> User;
 // MARK: - Enum
 enum EventMessage {
 	MWM_SERVER_EVENT_SOCK			= (WM_USER + 1),
-	MWM_CLIENT_EVENT_SOCK			= (WM_USER + 2)
+	MWM_CLIENT_EVENT_SOCK			= (WM_USER + 2),
 };
 
 class WinSocket

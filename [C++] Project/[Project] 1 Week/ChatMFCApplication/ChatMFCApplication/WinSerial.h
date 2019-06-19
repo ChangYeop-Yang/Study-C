@@ -10,8 +10,10 @@
 #include <iostream>
 #include <windows.h>
 
+#define SERIAL_SLEEP_TIME 10
 #define SERIAL_TIME_OUT 1000
-#define SERIAL_RECIVE_MESSAGE (WM_USER + 3);
+
+#define SERIAL_RECIVE_MESSAGE (WM_USER + 3)
 
 // MARK: - Typedef
 typedef std::pair<std::string, std::string> S_PORT;
@@ -27,7 +29,7 @@ class WinSerial
 	// MARK: - User Methods
 	public:
 		void CloseWinSerial();
-		const bool	WriteMessageSerial(const std::string message);
+		const bool	WriteMessageSerial(std::string message);
 		const DWORD GetBaudRateSerial(const std::string baud_Rate);
 
 		static UINT ReadMessageSerial(LPVOID _mothod);
