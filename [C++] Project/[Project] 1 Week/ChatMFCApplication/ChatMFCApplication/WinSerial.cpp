@@ -120,10 +120,11 @@ UINT WinSerial::ReadMessageSerial(LPVOID _mothod) {
 			{
 				DWORD read_Byte = 0;
 				message.clear();
-
+				
+				// MARK: https://www.codrey.com/embedded-systems/serial-communication-basics/
 				if (handle->dwEventMask & EV_RXCHAR) {
-					char temp;
 
+					char temp;
 					while (ReadFile(handle->handler, &temp, sizeof(char), &read_Byte, &handle->overlaped_event.first) && temp != EOF) {
 						Sleep(SERIAL_SLEEP_TIME), message.push_back(temp);
 					}

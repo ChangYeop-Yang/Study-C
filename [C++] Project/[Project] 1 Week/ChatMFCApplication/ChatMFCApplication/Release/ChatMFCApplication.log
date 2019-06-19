@@ -1,4 +1,5 @@
-﻿  ChatMFCApplication.cpp
+﻿  stdafx.cpp
+  ChatMFCApplication.cpp
   ChatMFCApplicationDlg.cpp
 c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\chatmfcapplicationdlg.cpp(455): warning C4244: '인수': 'LPARAM'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\chatmfcapplicationdlg.cpp(465): warning C4244: '인수': 'LPARAM'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
@@ -16,10 +17,9 @@ c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapp
   c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winsock2.h(1831): note: 'inet_addr' 선언을 참조하십시오.
 c:\users\user\documents\github\study-c\[c++] project\[project] 1 week\chatmfcapplication\chatmfcapplication\winsocket.cpp(236): warning C4996: 'WSAAsyncSelect': Use WSAEventSelect() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
   c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winsock2.h(2680): note: 'WSAAsyncSelect' 선언을 참조하십시오.
-stdafx.obj : warning LNK4258: '/entry:WinMainCRTStartup' 지시문은 '/ENTRY:wWinMainCRTStartup' 스위치와 호환되지 않습니다. 무시됩니다.
   코드를 생성하고 있습니다.
-  2 of 697 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+  0 of 697 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
   ChatMFCApplication.vcxproj -> C:\Users\user\Documents\GitHub\Study-C\[C++] Project\[Project] 1 Week\ChatMFCApplication\Release\ChatMFCApplication.exe
