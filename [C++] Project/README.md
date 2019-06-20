@@ -47,6 +47,12 @@
 * [**WSAAsyncSelect**](https://m.blog.naver.com/PostView.nhn?blogId=ymy203&logNo=70102169803&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F) </br>
 `WSAAsyncSelect(SOCKET, HWND, MWM, FD_ACCEPT | FD_CLOSE)`
 
+* [**What is Serial Communication and How it works?**](https://www.codrey.com/embedded-systems/serial-communication-basics/)
+
+<p align="center">
+  <img src="https://www.codrey.com/wp-content/uploads/2017/09/Rules-of-Serial-Communication.png" />
+</p>
+
 #### [🚀 Project Source Code](https://github.com/ChangYeop-Yang/Study-C/tree/master/%5BC%2B%2B%5D%20Project/%5BProject%5D%201%20Week/ChatMFCApplication)
 
 ## 2️⃣ Android TCP/IP Socket Communication Framework Project
