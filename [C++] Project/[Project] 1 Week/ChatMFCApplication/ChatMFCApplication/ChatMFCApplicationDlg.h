@@ -103,4 +103,6 @@ class CChatMFCApplicationDlg : public CDialogEx
 	private:
 		inline void ChangeEnableSerialView(const bool enable);
 		inline void CleanEditViewContent(const bool type);
+public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
